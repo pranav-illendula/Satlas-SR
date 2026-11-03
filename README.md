@@ -34,7 +34,6 @@
    - [Folder: `figures/`](#folder-figures)
    - [Folder: `results/`](#folder-results)
    - [Folder: `reports/`](#folder-reports)
-   - [Folder: `scripts/`](#folder-scripts)
    - [Folder: `tests/`](#folder-tests)
 3. [Technical Architecture](#3-technical-architecture)
    - [Residual & Dense Blocks](#residual--dense-blocks-technical_architectureresidual_blocks)
@@ -96,7 +95,6 @@ Satlas-SR/
 │   ├── audit_dataset.py                # Health audit checking tile pairing, missing bands & corruption
 │   ├── audit_spatial_registration.py   # Sub-pixel Fourier phase correlation & shift estimator
 │   ├── reproject_sentinel2.py          # Reproject raw Sentinel-2 TCI granules to 9.555m Web-Mercator
-│   ├── diagnose_registration_estimator.py # Synthetic registration test harness
 │   ├── __init__.py                     # Preprocessing package exports
 │   └── README.md                       # Preprocessing workflows and CLI documentation
 │
@@ -170,11 +168,8 @@ Satlas-SR/
 │   ├── teaser.svg                      # Multi-location visual teaser
 │   ├── car_hallucination.jpg           # Example vehicular hallucination artifact
 │   ├── vessel_hallucination.jpg        # Example maritime phantom vessel artifact
-│   ├── model_architecture_diagram.jpg  # Deep model architecture diagram
-│   ├── uncertainty_pipeline_diagram.jpg # Uncertainty calibration pipeline diagram
 │   ├── kota_india.svg                  # Topographic generalization comparison
-│   ├── stitch_example.svg              # 16x16 mosaic stitching example
-│   └── comparison_sets/                # Per-tile visual comparison crops
+│   └── stitch_example.svg              # 16x16 mosaic stitching example
 │
 ├── results/                            # Benchmark manifests, logs, and reproduction runs
 │   ├── satlas_sr_baseline_freeze_v1/   # Frozen baseline manifest and reproduction records
@@ -186,20 +181,13 @@ Satlas-SR/
 ├── reports/                            # Provenance investigations, reproduction gap analyses & runbooks
 │   ├── MASTER_CONSOLIDATED_RESEARCH_REPORT.md # Master consolidated report unifying all 18 historical reports
 │   ├── README.md                       # Reports documentation index
-│   ├── five_tile_visual_audit.png      # Pilot visual inspection crops
 │   ├── reconstructed_tci_frame_indices.csv # Frame index records
 │   └── individual_reports/             # Archive of original individual research reports
-│
-├── scripts/                            # Research experiment scripts (EXP-001 through EXP-024)
-│   ├── experiment_001_dense_cpsnr.py   # EXP-001 dense cPSNR grid scan
-│   ├── experiment_003_lpips_agreement.py # EXP-003 perceptual metric evaluation
-│   ├── revalidate_and_compare_metrics.py # Automated metric comparison runner
-│   ├── verify_metrics_deep_dive.py     # Independent metric calculator cross-validation
-│   └── README.md                       # Scripts documentation and experiment logs
 │
 └── tests/                              # Automated unit tests
     ├── test_dataset_path_compatibility.py # Verifies dataset path resolution across formats
     ├── test_metrics_rigor.py              # Validates mathematical invariants of cPSNR and PSNR
+    ├── test_uncertainty_reconstruction.py # Validates D4 TTA, temporal subsampling & soft blending
     └── README.md                       # Unit test execution instructions and coverage overview
 ```
 
@@ -274,7 +262,6 @@ preprocessing/
 ├── audit_dataset.py                  # Deep health audit checking tile pairing & black frames
 ├── audit_spatial_registration.py     # 2D Fourier phase correlation spatial shift estimator
 ├── reproject_sentinel2.py            # GDAL/Rasterio bilinear reprojection to Web-Mercator EPSG:3857
-├── diagnose_registration_estimator.py # Synthetic registration test harness
 └── README.md                         # Preprocessing user guide and CLI command documentation
 ```
 
@@ -285,7 +272,6 @@ preprocessing/
 | `preprocessing/audit_dataset.py` | Audits the 1-to-1 pairing between Sentinel-2 and NAIP tiles, scans for missing spectral bands, detects completely or partially black frames, and outputs structured JSON audits. |
 | `preprocessing/audit_spatial_registration.py` | Uses 2D Fourier phase cross-correlation and normalized cross-correlation (NCC) to measure sub-pixel translation shifts $(\Delta x, \Delta y)$ between satellite inputs and aerial references. |
 | `preprocessing/reproject_sentinel2.py` | Reprojects raw ESA Sentinel-2 L1C `.jp2` granules into Web-Mercator (EPSG:3857) at 9.555m resolution matching the S2-NAIP dataset specification. |
-| `preprocessing/diagnose_registration_estimator.py` | Applies synthetic ground-truth translation shifts to reference images and verifies Fourier phase correlation estimator recovery accuracy. |
 | `preprocessing/README.md` | Comprehensive documentation providing instructions, input/output schemas, and usage examples for all preprocessing scripts. |
 
 ---
@@ -442,11 +428,8 @@ figures/
 ├── teaser.svg                      # Multi-location visual teaser comparing input and prediction
 ├── car_hallucination.jpg           # Diagnostic example showing vehicular phantom artifacts
 ├── vessel_hallucination.jpg        # Diagnostic example showing maritime phantom artifacts
-├── model_architecture_diagram.jpg  # Deep model architecture diagram
-├── uncertainty_pipeline_diagram.jpg # Uncertainty calibration pipeline diagram
 ├── kota_india.svg                  # Topographic generalization comparison
 ├── stitch_example.svg              # 16x16 mosaic stitching example
-├── comparison_sets/                # Per-tile qualitative comparison crops
 └── README.md                       # Image registry and descriptive captions
 ```
 
@@ -494,7 +477,6 @@ results/
 reports/
 ├── MASTER_CONSOLIDATED_RESEARCH_REPORT.md # Single master report synthesizing all 18 historical studies
 ├── README.md                              # Index and directory documentation
-├── five_tile_visual_audit.png             # Visual inspection comparisons from pilot verification
 ├── reconstructed_tci_frame_indices.csv    # Validation tile frame indices
 └── individual_reports/                    # Archive of individual historical report files
 ```
@@ -503,31 +485,9 @@ reports/
 | :--- | :--- |
 | `reports/MASTER_CONSOLIDATED_RESEARCH_REPORT.md` | **Master Consolidated Research Report**: Encyclopedic 420+ line synthesis unifying technical architecture, data provenance, 256-tile paper benchmark reproduction, metric invariant proofs, bootstrap statistical distributions, per-tile failure analysis, and Windows platform hardening into a single definitive document. |
 | `reports/README.md` | Reports directory guide explaining the master consolidated report and indexing all topics. |
-| `reports/five_tile_visual_audit.png` | Visual comparison collage examining low-resolution inputs, super-resolved outputs, and NAIP references across the 5 pilot tiles. |
 | `reports/reconstructed_tci_frame_indices.csv` | Records reconstructed Sentinel-2 revisit frame indices for the validation set. |
 | `reports/individual_reports/` | Preserved archive of all 18 original individual historical reports for granular reference. |
 
----
-
-### Folder: `scripts/`
-> **Folder Purpose**: Houses specialized research scripts utilized across experiments EXP-001 through EXP-024 to test specific scientific hypotheses.
-
-```
-scripts/
-├── experiment_001_dense_cpsnr.py    # Dense cPSNR translation grid evaluation (EXP-001)
-├── experiment_003_lpips_agreement.py # Perceptual metric agreement analysis (EXP-003)
-├── revalidate_and_compare_metrics.py # Automated metric comparison runner
-├── verify_metrics_deep_dive.py      # Independent metric cross-validation
-└── README.md                        # Script documentation and execution instructions
-```
-
-| Script | Functionality in Brief |
-| :--- | :--- |
-| `scripts/experiment_001_dense_cpsnr.py` | Scans dense cyclic PSNR translation grids ($\pm 8$ px) across validation tiles to verify shift compensation mechanics. |
-| `scripts/experiment_003_lpips_agreement.py` | Compares perceptual metric agreement across VGG and AlexNet feature extraction backbones. |
-| `scripts/revalidate_and_compare_metrics.py` | Evaluates output directories and compares computed values against frozen benchmark baselines. |
-| `scripts/verify_metrics_deep_dive.py` | Validates metric stability against synthetic perturbations and image transformations. |
-| `scripts/README.md` | Documents individual experiment runner commands and hypotheses. |
 
 ---
 
@@ -831,9 +791,9 @@ Because Satlas-SR fuses multi-temporal revisits spanning up to 3 months, certain
    - `evaluation/` unifies metrics and statistical verification with pure NumPy fallbacks for cross-platform resilience.
    - `ssr/` isolates the core PyTorch training engine, options, and model state managers.
    - `inference/` provides dedicated, battle-tested orchestration scripts for multi-tile batch inference.
-   - `figures/`, `results/`, `reports/`, and `scripts/` provide structured homes for visual assets, frozen benchmarks, technical audits, and experimental studies.
+   - `figures/`, `results/`, and `reports/` provide structured homes for visual assets, frozen benchmarks, and technical audits.
 2. **Elimination of Double-Nesting**:
-   - All contents previously stranded inside the nested `satlas-super-resolution/` directory were migrated into proper functional root directories (`ssr/`, `inference/`, `figures/`, `results/`, `reports/`, `scripts/`, `tests/`), and the nested redundant folder was completely removed.
+   - All contents previously stranded inside the nested `satlas-super-resolution/` directory were migrated into proper functional root directories (`ssr/`, `inference/`, `figures/`, `results/`, `reports/`, `tests/`), and the nested redundant folder was completely removed.
 3. **Reusability & Extensibility**: Modules in `technical_architecture.residual_blocks` and `technical_architecture.gan_architecture` can be directly imported and subclassed in external projects without dragging along the entire training framework.
 
 ### Recommendations for Future Evolution

@@ -30,7 +30,6 @@ This authoritative document covers:
 reports/
 ├── README.md                               # This documentation index
 ├── MASTER_CONSOLIDATED_RESEARCH_REPORT.md  # Single consolidated master research report
-├── five_tile_visual_audit.png              # Visual comparison crops from the pilot audit
 ├── reconstructed_tci_frame_indices.csv     # Reconstructed frame indices for validation tiles
 └── individual_reports/                     # Archive of individual historical report files
     ├── TECHNICAL_APPROACH_DEEP_DIVE.md
