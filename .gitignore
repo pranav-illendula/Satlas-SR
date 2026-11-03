@@ -1,20 +1,107 @@
-# Virtual environments
+# ==============================================================================
+# Satlas-SR Comprehensive Gitignore Configuration
+# ==============================================================================
+
+# --- Python Bytecode & Runtime Cache ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# --- Distribution, Build & Packaging ---
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Unit Test & Coverage ---
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# --- Virtual Environments ---
+.env
+.venv
 .venv/
 venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
 
-# Python cache
-__pycache__/
-*.pyc
-
-# Environment variables
-.env
-
-# Jupyter
+# --- Jupyter Notebooks & IPython ---
 .ipynb_checkpoints/
+profile_default/
+ipython_config.py
 
-# IDE
+# --- Deep Learning Model Checkpoints & Weights (>100MB) ---
+*.pth
+*.pt
+*.ckpt
+*.bin
+*.onnx
+*.safetensors
+*.h5
+*.pkl
+experiments/*.pth
+experiments/*.pt
+
+# --- Incomplete & Browser Downloads ---
+*.crdownload
+*.part
+
+# --- Large Datasets & Archives ---
+*.tar
+*.tar.gz
+*.7z
+*.7z.*
+*.zip
+*.rar
+*.gz
+
+# Whitelist .gitkeep and documentation inside data directories
+!data/**/.gitkeep
+!data/**/README.md
+
+# --- Experiment Logging & Telemetry ---
+wandb/
+wandb*
+tb_logger/
+*.log
+
+# --- IDEs, Editors & OS Files ---
 .vscode/
 .idea/
-
-# Logs
-*.log
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
