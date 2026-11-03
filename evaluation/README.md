@@ -33,7 +33,7 @@ Measures high-level visual semantic consistency using the vision transformer of 
 ### 1. Evaluate Prediction Directory (Standard Metrics)
 ```bash
 python evaluation/evaluate_validation.py \
-  --predictions satlas-super-resolution/results/satlas_sr_pilot_five_tiles \
+  --predictions results/satlas_sr_pilot_five_tiles \
   --dataset data/small_val_set \
   --output-csv results/validation_report.csv
 ```
@@ -41,7 +41,7 @@ python evaluation/evaluate_validation.py \
 ### 2. Compute Official Paper Metrics Benchmark
 ```bash
 python evaluation/evaluate_paper_metrics.py \
-  --predictions satlas-super-resolution/results/satlas_sr_full_validation \
+  --predictions results/satlas_sr_full_validation \
   --dataset data/small_val_set \
   --output-json results/paper_metrics.json \
   --output-csv results/paper_metrics.csv
@@ -50,6 +50,6 @@ python evaluation/evaluate_paper_metrics.py \
 ### 3. Non-Parametric Bootstrap Statistical Analysis
 Calculate 95% bootstrap confidence intervals, median, and interquartile distribution stats:
 ```bash
-python evaluation/run_statistical_analysis.py satlas-super-resolution/results/satlas_sr_revalidation/per_tile_metrics.csv
+python evaluation/run_statistical_analysis.py results/satlas_sr_revalidation/per_tile_metrics.csv
 ```
 

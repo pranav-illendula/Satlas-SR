@@ -66,7 +66,7 @@ def analyze_metrics_csv(csv_path: Path) -> dict:
 
 
 def main() -> int:
-    default_csv = Path("satlas-super-resolution/results/satlas_sr_revalidation/per_tile_metrics.csv")
+    default_csv = Path("results/satlas_sr_revalidation/per_tile_metrics.csv")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("csv_path", nargs="?", type=Path, default=default_csv, help=f"Path to per-tile metrics CSV (default: {default_csv})")
     parser.add_argument("--output-json", type=Path, default=None, help="Save distribution stats to JSON")

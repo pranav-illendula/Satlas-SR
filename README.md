@@ -11,8 +11,8 @@
 ---
 
 <p align="center">
-  <img src="satlas-super-resolution/figures/kenya_sentinel2.gif" alt="Low-res Sentinel-2 Input" width="340" />
-  <img src="satlas-super-resolution/figures/kenya_superres.gif" alt="4x Super-Resolved Output" width="340" />
+  <img src="figures/kenya_sentinel2.gif" alt="Low-res Sentinel-2 Input" width="340" />
+  <img src="figures/kenya_superres.gif" alt="4x Super-Resolved Output" width="340" />
 </p>
 
 <p align="center">
@@ -29,17 +29,28 @@
    - [Folder: `preprocessing/`](#folder-preprocessing)
    - [Folder: `technical_architecture/`](#folder-technical_architecture)
    - [Folder: `evaluation/`](#folder-evaluation)
-   - [Folder: `satlas-super-resolution/`](#folder-satlas-super-resolution)
+   - [Folder: `ssr/`](#folder-ssr)
+   - [Folder: `inference/`](#folder-inference)
+   - [Folder: `figures/`](#folder-figures)
+   - [Folder: `results/`](#folder-results)
+   - [Folder: `reports/`](#folder-reports)
+   - [Folder: `scripts/`](#folder-scripts)
+   - [Folder: `tests/`](#folder-tests)
 3. [Technical Architecture](#3-technical-architecture)
-   - [Residual & Dense Blocks](#residual--dense-blocks)
-   - [GAN Architecture (Generator & Discriminator)](#gan-architecture-generator--discriminator)
+   - [Residual & Dense Blocks](#residual--dense-blocks-technical_architectureresidual_blocks)
+   - [GAN Architecture (Generator & Discriminator)](#gan-architecture-technical_architecturegan_architecture)
+   - [Uncertainty Calibration & Guided Reconstruction](#uncertainty-calibration--guided-reconstruction-technical_architectureuncertainty_and_reconstruction)
    - [Baseline Models](#baseline-models)
-4. [Data Management & Layout](#4-data-management--layout)
+4. [Dataset Origins & Provenance (Sentinel-2, NAIP, Kenya, Kota)](#4-dataset-origins--provenance-sentinel-2-naip-kenya-kota)
+   - [A. Sentinel-2 Satellite Dataset (ESA Copernicus)](#a-sentinel-2-satellite-dataset-esa-copernicus)
+   - [B. NAIP Aerial Dataset (USDA FSA)](#b-naip-aerial-dataset-usda-fsa)
+   - [C. Showcase Assets: Nakuru, Kenya & Kota, India](#c-showcase-assets-nakuru-kenya--kota-india)
+   - [D. Dataset Splits & Download Mirrors](#d-dataset-splits--download-mirrors)
 5. [Environment Setup & Installation](#5-environment-setup--installation)
 6. [End-to-End Workflow Guide](#6-end-to-end-workflow-guide)
    - [A. Data Preprocessing & Ingestion](#a-data-preprocessing--ingestion)
    - [B. Model Training](#b-model-training)
-   - [C. Inference & Large-Scale Grid Stitching](#c-inference--large-scale-grid-stitching)
+   - [C. High-Level Inference & Mosaic Stitching](#c-high-level-inference--mosaic-stitching)
    - [D. Evaluation & Research Benchmarking](#d-evaluation--research-benchmarking)
 7. [Verified Baseline Benchmark Reproduction](#7-verified-baseline-benchmark-reproduction)
 8. [Hallucination & Accuracy Limitations](#8-hallucination--accuracy-limitations)
@@ -50,13 +61,17 @@
 
 ## 1. Repository Architecture & Layout
 
-This repository is structured into clear functional domains separating data, preprocessing, model architectures, evaluation pipelines, and research experiment engines:
+This repository is structured into clear functional domains separating data, preprocessing, modular model architectures, evaluation pipelines, training engines, inference runners, figures, benchmark results, research reports, and test suites:
 
 ```
 Satlas-SR/
 ├── README.md                           # Master project documentation (root)
 ├── MASTER_PROJECT_COMPREHENSIVE_REPORT.md # Master project research report (EXP-001 through EXP-024)
-├── Satlas-SR_Uncertainty_Calibration_and_Guided_Reconstruction.pdf # Research presentation slide deck
+├── Satlas-SR_Uncertainty_Calibration_and_Guided_Reconstruction.pdf # Slide deck (23 slides)
+├── presentation_deck.html              # Interactive HTML slide deck
+├── requirements.txt                    # Project Python dependencies
+├── install.sh                          # Conda bash environment installation script
+├── LICENSE.txt                         # MIT License
 ├── .gitignore                          # Comprehensive ignore rules (checkpoints, tars, caches)
 │
 ├── data/                               # Dataset storage & structural documentation
@@ -73,13 +88,15 @@ Satlas-SR/
 │   │   ├── naip/                       # Ground-truth 128x128 2.5m aerial chips
 │   │   └── sentinel2/                  # [T*32, 32, 3] temporal multi-frame stacks
 │   ├── small_val_set_tci_pilot/        # 5-tile pilot subset for rapid smoke verification
+│   ├── small_val_set_tci_five_tiles/   # 5-tile isolated benchmark subset
 │   └── super_resolution_small_val_set_2024-01-09.tar # Frozen validation archive
 │
 ├── preprocessing/                      # Preprocessing, data ingestion & spatial auditing
-│   ├── inspect_data.py                 # Fast inspection tool for dimensions, channels & frames
+│   ├── inspect_data.py                 # Fast inspection tool for dimensions, channels & modes
 │   ├── audit_dataset.py                # Health audit checking tile pairing, missing bands & corruption
 │   ├── audit_spatial_registration.py   # Sub-pixel Fourier phase correlation & shift estimator
 │   ├── reproject_sentinel2.py          # Reproject raw Sentinel-2 TCI granules to 9.555m Web-Mercator
+│   ├── diagnose_registration_estimator.py # Synthetic registration test harness
 │   ├── __init__.py                     # Preprocessing package exports
 │   └── README.md                       # Preprocessing workflows and CLI documentation
 │
@@ -100,6 +117,14 @@ Satlas-SR/
 │   │   ├── esrgan_gan_model.py         # Relativistic Average GAN (RaGAN) training orchestrator
 │   │   ├── __init__.py                 # GAN architecture exports
 │   │   └── README.md                   # RaGAN loss dynamics & discriminator Lipschitz bounds
+│   ├── uncertainty_and_reconstruction/ # Spatial-temporal uncertainty calibration & soft repair
+│   │   ├── spatial_uncertainty.py      # D4 dihedral group Test-Time Augmentation (TTA)
+│   │   ├── temporal_uncertainty.py     # Multi-revisit frame subsampling & volatility maps
+│   │   ├── hybrid_uncertainty_map.py   # Standardized z-score fusion (alpha=0.19)
+│   │   ├── soft_reconstruction.py      # Continuous budget-constrained sigmoid soft blending
+│   │   ├── reconstruction_metrics.py   # Alignment shifts, Sobel edge MAE & sharpness metrics
+│   │   ├── __init__.py                 # Uncertainty & reconstruction package exports
+│   │   └── README.md                   # Calibration theory, math & empirical gains
 │   ├── srcnn.py                        # Baseline Super-Resolution CNN
 │   ├── highresnet.py                   # Baseline Recursive HighResNet
 │   ├── __init__.py                     # Master architecture exports
@@ -118,17 +143,64 @@ Satlas-SR/
 │   ├── __init__.py                     # Evaluation package export
 │   └── README.md                       # Benchmark protocol definitions & metric math
 │
-└── satlas-super-resolution/            # Engine, configs, results, and research artifacts
-    ├── ssr/                            # Core training and inference engine
-    │   ├── train.py                    # Distributed training script
-    │   ├── infer.py                    # Single-tile inference runner
-    │   ├── infer_grid.py               # Large mosaic stitching inference runner
-    │   ├── options/                    # Experiment YAML configuration files
-    │   └── utils/                      # Model, dataset, and metric utilities
-    ├── figures/                        # Architectural diagrams, teasers, and animations
-    ├── results/                        # Frozen benchmark artifacts & reproduction runbooks
-    ├── tests/                          # Unit and path compatibility tests
-    └── requirements.txt                # Python package dependencies
+├── ssr/                                # Core training, data pipeline, loss & model engine
+│   ├── train.py                        # Distributed PyTorch training entry point
+│   ├── test.py                         # Evaluation and quantitative metrics runner
+│   ├── infer.py                        # Single-tile inference script without ground truth
+│   ├── infer_grid.py                   # Contiguous 16x16 tile grid inference and mosaic stitching
+│   ├── options/                        # YAML configuration files for experiments and models
+│   ├── data/                           # PyTorch Datasets (S2-NAIP, OLI2MSI, WorldStrat)
+│   ├── models/                         # Model training orchestrator (ssr_esrgan_model.py)
+│   ├── archs/                          # Engine architecture definitions (RRDBNet, HighResNet, SRCNN)
+│   ├── losses/                         # Loss functions (CLIP loss, SSIM loss)
+│   ├── metrics/                        # Core metric calculators (cPSNR, LPIPS, CLIPScore)
+│   └── utils/                          # Model builders, option parsers, and data formatting
+│
+├── inference/                          # High-level inference execution runners
+│   ├── run_pilot_inference.py          # Automated 5-tile pilot inference pipeline
+│   ├── run_full_validation_inference.py # Full 256-tile validation inference pipeline
+│   ├── __init__.py                     # Inference package exports
+│   └── README.md                       # Inference documentation & execution commands
+│
+├── figures/                            # Architectural diagrams, animations & hallucination visuals
+│   ├── kenya_sentinel2.gif             # Animated low-res Sentinel-2 input
+│   ├── kenya_superres.gif              # Animated 4x super-resolution prediction
+│   ├── esrgan_generator.svg            # ESRGAN generator architecture diagram
+│   ├── image_pair.svg                  # S2-NAIP temporal pairing illustration
+│   ├── teaser.svg                      # Multi-location visual teaser
+│   ├── car_hallucination.jpg           # Example vehicular hallucination artifact
+│   ├── vessel_hallucination.jpg        # Example maritime phantom vessel artifact
+│   ├── model_architecture_diagram.jpg  # Deep model architecture diagram
+│   ├── uncertainty_pipeline_diagram.jpg # Uncertainty calibration pipeline diagram
+│   ├── kota_india.svg                  # Topographic generalization comparison
+│   ├── stitch_example.svg              # 16x16 mosaic stitching example
+│   └── comparison_sets/                # Per-tile visual comparison crops
+│
+├── results/                            # Benchmark manifests, logs, and reproduction runs
+│   ├── satlas_sr_baseline_freeze_v1/   # Frozen baseline manifest and reproduction records
+│   ├── satlas_sr_revalidation/         # Per-tile evaluation CSVs across all 256 tiles
+│   ├── satlas_sr_pilot_five_tiles/     # Super-resolved prediction PNGs for the 5 pilot tiles
+│   ├── satlas_sr_full_validation/      # Prediction images and logs for 256 validation tiles
+│   └── satlas_sr_experiment_001_.../   # Research experiment folders (EXP-001 through EXP-024)
+│
+├── reports/                            # Provenance investigations, reproduction gap analyses & runbooks
+│   ├── MASTER_CONSOLIDATED_RESEARCH_REPORT.md # Master consolidated report unifying all 18 historical reports
+│   ├── README.md                       # Reports documentation index
+│   ├── five_tile_visual_audit.png      # Pilot visual inspection crops
+│   ├── reconstructed_tci_frame_indices.csv # Frame index records
+│   └── individual_reports/             # Archive of original individual research reports
+│
+├── scripts/                            # Research experiment scripts (EXP-001 through EXP-024)
+│   ├── experiment_001_dense_cpsnr.py   # EXP-001 dense cPSNR grid scan
+│   ├── experiment_003_lpips_agreement.py # EXP-003 perceptual metric evaluation
+│   ├── revalidate_and_compare_metrics.py # Automated metric comparison runner
+│   ├── verify_metrics_deep_dive.py     # Independent metric calculator cross-validation
+│   └── README.md                       # Scripts documentation and experiment logs
+│
+└── tests/                              # Automated unit tests
+    ├── test_dataset_path_compatibility.py # Verifies dataset path resolution across formats
+    ├── test_metrics_rigor.py              # Validates mathematical invariants of cPSNR and PSNR
+    └── README.md                       # Unit test execution instructions and coverage overview
 ```
 
 ---
@@ -144,6 +216,10 @@ This section provides an exhaustive reference of each folder in the repository, 
 | [`README.md`](README.md) | **Master Project Documentation**: Contains complete scientific context, directory breakdown, architecture diagrams, data pipelines, execution commands, reproduction benchmarks, and best practices. |
 | [`MASTER_PROJECT_COMPREHENSIVE_REPORT.md`](MASTER_PROJECT_COMPREHENSIVE_REPORT.md) | **Master Research Report**: Comprehensive 199-line audit report covering the full experimental trajectory (EXP-001 through EXP-024), holdout validation ($N=107$), hybrid uncertainty calibration ($+39.5\%$ gain), and soft-blending reconstruction ($+0.571$ dB PSNR gain, $p < 10^{-13}$). |
 | [`Satlas-SR_Uncertainty_Calibration_and_Guided_Reconstruction.pdf`](Satlas-SR_Uncertainty_Calibration_and_Guided_Reconstruction.pdf) | **Research Presentation Slide Deck (23 slides)**: Complete presentation on uncertainty calibration, spatial-temporal test-time augmentation (TTA), and adaptive uncertainty-guided reconstruction in multi-frame satellite super-resolution. |
+| [`requirements.txt`](requirements.txt) | **Core Python Dependencies**: Lists all required runtime and development libraries, including PyTorch, torchvision, Pillow, NumPy, open-clip-torch, lpips, and scipy. |
+| [`install.sh`](install.sh) | **Environment Setup Script**: Bash script for configuring and activating a clean conda environment with PyTorch and geospatial tooling. |
+| [`LICENSE.txt`](LICENSE.txt) | **Open Source License**: MIT License terms and conditions. |
+| [`presentation_deck.html`](presentation_deck.html) | **Interactive HTML Slide Deck**: Standalone web presentation summarizing model architecture, visual comparisons, and verified research metrics. |
 | [`.gitignore`](.gitignore) | **Git Exclusion Rules**: Protects repository from large model weights (`*.pth`, `*.pt`, `*.ckpt`), dataset archives (`*.tar`, `*.7z`), compiled bytecode, virtual environments (`.venv/`), and IDE caches, while whitelisting `.gitkeep` and documentation. |
 
 ---
@@ -174,14 +250,14 @@ data/
 
 | File / Subfolder | Functionality in Brief |
 | :--- | :--- |
-| `data/README.md` | Explains the $2^{17} \times 2^{17}$ Web-Mercator coordinate grid at Zoom 17, $4\times$ resolution upscaling factor, and temporal vertical PNG stacking ($[32 \times T, 32, 3]$). |
+| `data/README.md` | Explains the $2^{17} 	imes 2^{17}$ Web-Mercator coordinate grid at Zoom 17, $4	imes$ resolution upscaling factor, and temporal vertical PNG stacking ($[32 	imes T, 32, 3]$). |
 | `data/super_resolution_small_val_set_2024-01-09.tar` | The official frozen archive containing 256 urban validation tile pairs used to benchmark model accuracy against aerial ground truth. |
 | `data/training_data/README.md` | Documents direct download links (parts 1-4 for urban set, full set tar) and explains the folder layout required for training. |
 | `data/training_data/train_urban_set/` | Target folder for the 1.1 million S2-NAIP image pairs within 5km of US cities (used for paper experiments). |
 | `data/training_data/train_full_set/` | Target folder for the 44 million nationwide S2-NAIP pairs across the contiguous USA. |
 | `data/training_data/osm_weights/` | Target folder for `osm_chips_to_masks.json` and OpenStreetMap category frequency weighting files. |
 | `data/validation_data/README.md` | Reference guide describing the 256-tile urban validation subset and the 8,192-tile nationwide validation set. |
-| `data/test_data/README.md` | Guide for running inference on the eight $16 \times 16$ tile test grids from global locations (Bolivia, France, South Africa, Japan). |
+| `data/test_data/README.md` | Guide for running inference on the eight $16 	imes 16$ tile test grids from global locations (Bolivia, France, South Africa, Japan). |
 | `data/small_val_set/` | Pre-extracted validation dataset with 256 paired tiles matching Sentinel-2 stacks with NAIP reference images. |
 | `data/small_val_set_tci_pilot/` | 5 selected urban tiles (`20771_46525`, `20890_46801`, `20926_46045`, `21068_45692`, `21856_49804`) for fast verification. |
 | `data/small_val_set_tci_five_tiles/` | Isolated 5-tile set used for baseline consistency and reproduction checks. |
@@ -198,16 +274,18 @@ preprocessing/
 ├── audit_dataset.py                  # Deep health audit checking tile pairing & black frames
 ├── audit_spatial_registration.py     # 2D Fourier phase correlation spatial shift estimator
 ├── reproject_sentinel2.py            # GDAL/Rasterio bilinear reprojection to Web-Mercator EPSG:3857
+├── diagnose_registration_estimator.py # Synthetic registration test harness
 └── README.md                         # Preprocessing user guide and CLI command documentation
 ```
 
 | File | Functionality in Brief |
 | :--- | :--- |
 | `preprocessing/__init__.py` | Makes the preprocessing directory a clean Python package, exposing `inspect_dataset`, `audit_dataset_directory`, and `audit_pair_registration`. |
-| `preprocessing/inspect_data.py` | Quickly iterates through Sentinel-2 and NAIP folders, verifying dimensions ($32 \times 32 \times T$ for S2, $128 \times 128$ for NAIP), color modes (RGB vs L), and unreadable/corrupted PNGs. |
+| `preprocessing/inspect_data.py` | Quickly iterates through Sentinel-2 and NAIP folders, verifying dimensions ($32 	imes 32 	imes T$ for S2, $128 	imes 128$ for NAIP), color modes (RGB vs L), and unreadable/corrupted PNGs. |
 | `preprocessing/audit_dataset.py` | Audits the 1-to-1 pairing between Sentinel-2 and NAIP tiles, scans for missing spectral bands, detects completely or partially black frames, and outputs structured JSON audits. |
 | `preprocessing/audit_spatial_registration.py` | Uses 2D Fourier phase cross-correlation and normalized cross-correlation (NCC) to measure sub-pixel translation shifts $(\Delta x, \Delta y)$ between satellite inputs and aerial references. |
 | `preprocessing/reproject_sentinel2.py` | Reprojects raw ESA Sentinel-2 L1C `.jp2` granules into Web-Mercator (EPSG:3857) at 9.555m resolution matching the S2-NAIP dataset specification. |
+| `preprocessing/diagnose_registration_estimator.py` | Applies synthetic ground-truth translation shifts to reference images and verifies Fourier phase correlation estimator recovery accuracy. |
 | `preprocessing/README.md` | Comprehensive documentation providing instructions, input/output schemas, and usage examples for all preprocessing scripts. |
 
 ---
@@ -248,7 +326,7 @@ technical_architecture/
 | `technical_architecture/srcnn.py` | Multi-channel Super-Resolution CNN baseline using bicubic pre-upsampling, 9x9 feature extraction, and 5x5 reconstruction. |
 | `technical_architecture/highresnet.py` | HighResNet baseline architecture utilizing recursive residual fusion and sub-pixel convolution upsampling. |
 | `residual_blocks/__init__.py` | Exports `ResidualDenseBlock`, `RRDB`, `ResidualBlockNoBN`, `FusionBlock`, `PixelShuffleBlock`, and initialization utilities. |
-| `residual_blocks/residual_dense_block.py` | Implements the 5-layer Residual Dense Block (RDB) where activations from all preceding layers are concatenated before convolution, scaled by $\beta = 0.2$. |
+| `residual_blocks/residual_dense_block.py` | Implements the 5-layer Residual Dense Block (RDB) where activations from all preceding layers are concatenated before convolution, scaled by $eta = 0.2$. |
 | `residual_blocks/rrdb.py` | Implements the Residual-in-Residual Dense Block (RRDB), cascading 3 RDB units within an outer residual connection for deep gradient propagation. |
 | `residual_blocks/residual_basic.py` | Standard residual blocks including `ResidualBlockNoBN`, which omits Batch Normalization to preserve absolute pixel intensity and eliminate halo artifacts. |
 | `residual_blocks/dense_block.py` | Multi-convolution dense block implementation for multi-scale feature reuse. |
@@ -256,7 +334,7 @@ technical_architecture/
 | `residual_blocks/upsample_block.py` | Sub-pixel convolution (`PixelShuffleBlock`), transposed convolution, and nearest-neighbor interpolation (`Upsample`) modules. |
 | `residual_blocks/README.md` | Mathematical theory and equations for dense feature accumulation, residual scaling, and why BatchNorm is excluded in super-resolution. |
 | `gan_architecture/__init__.py` | Exports `SSR_RRDBNet`, `SSR_UNetDiscriminatorSN`, `OSMObjDiscriminator`, and `SSRESRGANModel`. |
-| `gan_architecture/generator.py` | The complete ESRGAN generator network (`SSR_RRDBNet`) with 23 RRDB trunk blocks, taking stacked multi-frame Sentinel-2 inputs ($[B, 24, 32, 32]$) and producing $4\times$ super-resolved outputs ($[B, 3, 128, 128]$). |
+| `gan_architecture/generator.py` | The complete ESRGAN generator network (`SSR_RRDBNet`) with 23 RRDB trunk blocks, taking stacked multi-frame Sentinel-2 inputs ($[B, 24, 32, 32]$) and producing $4	imes$ super-resolved outputs ($[B, 3, 128, 128]$). |
 | `gan_architecture/discriminator.py` | U-Net discriminator with Spectral Normalization (`SSR_UNetDiscriminatorSN`) producing dense pixel-level discrimination feedback maps to guide structural realism. |
 | `gan_architecture/osm_discriminator.py` | Object-aware discriminator integrating OpenStreetMap polygon masks with a non-local `SelfAttentionBlock` to penalize structural hallucinations. |
 | `gan_architecture/esrgan_gan_model.py` | High-level GAN orchestrator implementing the Relativistic Average GAN (RaGAN) loss, L1 pixel reconstruction loss, and VGG perceptual loss. |
@@ -297,94 +375,235 @@ evaluation/
 
 ---
 
-### Folder: `satlas-super-resolution/`
-> **Folder Purpose**: Preserved core engine containing the original training and inference loops, YAML configuration presets, research experiment reports, reproduction runbooks, unit tests, and figure assets.
+### Folder: `ssr/`
+> **Folder Purpose**: Core training, testing, and modeling engine for the Satlas-SR project, containing PyTorch dataset loaders, model definitions, options parsing, and distributed execution pipelines.
 
 ```
-satlas-super-resolution/
-├── README.md                         # Original upstream repository documentation
-├── LICENSE.txt                       # MIT License
-├── requirements.txt                  # Python dependencies (PyTorch, torchvision, basicsr, open_clip)
-├── install.sh                        # Bash setup script for conda environments
-├── presentation_deck.html            # Interactive HTML slide deck summarizing research results
-├── run_five_tile_inference.py        # Pilot inference execution script for 5 tiles
-├── run_full_validation_inference.py  # Full 256-tile validation inference pipeline
-│
-├── ssr/                              # Core engine package
-│   ├── train.py                      # Distributed training entry point (single & multi-GPU)
-│   ├── test.py                       # Testing and quantitative metrics logger
-│   ├── infer.py                      # Single-tile inference script without ground truth
-│   ├── infer_grid.py                 # Contiguous 16x16 tile grid inference and mosaic stitching
-│   ├── options/                      # YAML configuration files for models and datasets
-│   ├── utils/                        # Data loaders, model builders, option parsers & misc helpers
-│   ├── models/                       # Original engine model training classes (ssr_esrgan_model.py)
-│   ├── archs/                        # Original engine architecture files
-│   └── losses/                       # Original loss definitions (clip_loss.py, ssim_loss.py)
-│
-├── figures/                          # Figures, animations & visualizations
-│   ├── kenya_sentinel2.gif           # Animated low-res Sentinel-2 input
-│   ├── kenya_superres.gif            # Animated 4x super-resolution prediction
-│   ├── esrgan_generator.svg          # ESRGAN generator architecture diagram
-│   ├── image_pair.svg                # S2-NAIP temporal pairing illustration
-│   ├── teaser.svg                    # Multi-location visual teaser
-│   ├── car_hallucination.jpg         # Example vehicular hallucination artifact
-│   └── vessel_hallucination.jpg      # Example maritime phantom vessel artifact
-│
-├── results/                          # Frozen benchmark results & audit runbooks
-│   ├── MASTER_PROJECT_COMPREHENSIVE_REPORT.md # Comprehensive project verification report
-│   ├── satlas_sr_baseline_freeze_v1/ # Frozen baseline manifest, freeze report & runbook
-│   ├── satlas_sr_revalidation/       # Per-tile evaluation CSVs across all 256 tiles
-│   └── satlas_sr_pilot_five_tiles/   # Prediction images for the 5 pilot tiles
-│
-└── tests/                            # Unit test suite
-    ├── test_dataset_path_compatibility.py # Verifies data loader path resolution
-    └── test_metrics_rigor.py              # Validates mathematical properties of cPSNR and PSNR
+ssr/
+├── train.py          # Distributed training entry point (PyTorch DDP)
+├── test.py           # Testing runner with quantitative metric logging
+├── infer.py          # Single-tile inference script without ground truth
+├── infer_grid.py     # 16x16 contiguous tile grid inference and mosaic stitching
+├── archs/            # Model architecture classes (RRDBNet, HighResNet, SRCNN)
+├── data/             # PyTorch Dataset loaders (S2NAIP, OLI2MSI, WorldStrat)
+├── losses/           # Specialized loss functions (CLIP semantic loss, SSIM loss)
+├── metrics/          # Quantitative metric functions (cPSNR, LPIPS, CLIPScore)
+├── models/           # Training orchestrators (SSRESRGANModel)
+├── options/          # YAML configuration templates for training and inference
+├── utils/            # Model builders, option parsers, and data formatting
+└── README.md         # Engine architectural documentation
 ```
 
 | File / Subfolder | Functionality in Brief |
 | :--- | :--- |
-| `satlas-super-resolution/ssr/train.py` | Main training script supporting single-GPU execution and distributed multi-GPU training with PyTorch DDP. |
-| `satlas-super-resolution/ssr/infer.py` | Runs super-resolution inference on unannotated Sentinel-2 imagery, saving low-res and super-res PNGs to disk. |
-| `satlas-super-resolution/ssr/infer_grid.py` | Specialized inference runner that evaluates an entire $16 \times 16$ tile grid (256 chunks) and stitches them into a seamless high-resolution mosaic. |
-| `satlas-super-resolution/ssr/test.py` | Runs full testing on datasets where ground-truth reference imagery is available and outputs aggregate metrics. |
-| `satlas-super-resolution/ssr/options/` | Contains YAML configuration files specifying data paths, input channels, batch sizes, learning rates, and loss weights for various experiments. |
-| `satlas-super-resolution/figures/` | Houses all architectural schematics, animated comparison GIFs, and hallucination diagnostic examples. |
-| `satlas-super-resolution/results/` | Preserves frozen benchmark manifests (`baseline_manifest.json`), reproduction runbooks, and per-tile metric CSV records (`per_tile_metrics.csv`). |
-| `satlas-super-resolution/tests/` | Unit tests checking data loader path parsing and verifying metric mathematical invariants (e.g. translation invariance of cPSNR). |
-| `satlas-super-resolution/requirements.txt` | Lists all necessary Python dependencies including PyTorch, torchvision, Pillow, NumPy, open-clip-torch, and lpips. |
+| `ssr/train.py` | Main distributed training pipeline supporting single-GPU execution and multi-GPU distributed data parallel (`torch.distributed`). |
+| `ssr/test.py` | Testing pipeline evaluating super-resolved outputs against high-resolution reference images with automated metric logging. |
+| `ssr/infer.py` | Inference pipeline for running super-resolution models on unannotated Sentinel-2 imagery chips. |
+| `ssr/infer_grid.py` | High-throughput mosaic runner that processes an entire $16 	imes 16$ tile grid (256 tiles) and stitches them into a seamless high-resolution mosaic. |
+| `ssr/archs/` | Contains neural network definitions, including `rrdbnet_arch.py` (ESRGAN generator), `srcnn_arch.py`, and `highresnet_arch.py`. |
+| `ssr/data/` | Implements dataset loaders: `s2naip_dataset.py` (temporal stacks paired with NAIP chips), `oli2msi_dataset.py`, and `worldstrat_dataset.py`. |
+| `ssr/losses/` | Contains custom loss functions: `clip_loss.py` (semantic cosine loss) and `ssim_loss.py`. |
+| `ssr/models/` | Houses the `SSRESRGANModel` class orchestrating optimizers, learning rate schedulers, and adversarial step dynamics. |
+| `ssr/options/` | YAML configuration files defining hyper-parameters, network architectures, and dataset directories. |
+| `ssr/utils/` | Utility functions for option parsing (`options.py`), model instantiation (`model_utils.py`), and frame formatting (`infer_utils.py`). |
+| `ssr/README.md` | Engine documentation explaining package structure, configuration syntax, and distributed training setups. |
+
+---
+
+### Folder: `inference/`
+> **Folder Purpose**: Houses high-level, production-grade inference orchestration scripts for automated multi-tile and full validation batch processing.
+
+```
+inference/
+├── __init__.py                     # Package export interface
+├── run_pilot_inference.py          # Automated 5-tile pilot inference pipeline
+├── run_full_validation_inference.py # Full 256-tile validation inference pipeline
+└── README.md                       # Inference documentation & execution commands
+```
+
+| File | Functionality in Brief |
+| :--- | :--- |
+| `inference/__init__.py` | Exposes inference package entry points and helper functions. |
+| `inference/run_pilot_inference.py` | Automated pipeline executing the 5 pilot urban tiles, logging runtime, peak GPU memory allocation, and prediction status to CSV. |
+| `inference/run_full_validation_inference.py` | Scalable validation pipeline executing all 256 validation tiles with automated exception handling and structured audit logging. |
+| `inference/README.md` | Command-line guide for executing pilot and full validation inference runs. |
+
+---
+
+### Folder: `figures/`
+> **Folder Purpose**: Centralized repository for all visual assets, animated teasers, architecture schematics, and hallucination diagnostic examples.
+
+```
+figures/
+├── kenya_sentinel2.gif             # Animated multi-frame low-resolution Sentinel-2 input
+├── kenya_superres.gif              # Animated 4x super-resolved prediction
+├── esrgan_generator.svg            # Vector diagram of the 23-block RRDBNet generator
+├── image_pair.svg                  # Temporal multi-frame pairing illustration
+├── teaser.svg                      # Multi-location visual teaser comparing input and prediction
+├── car_hallucination.jpg           # Diagnostic example showing vehicular phantom artifacts
+├── vessel_hallucination.jpg        # Diagnostic example showing maritime phantom artifacts
+├── model_architecture_diagram.jpg  # Deep model architecture diagram
+├── uncertainty_pipeline_diagram.jpg # Uncertainty calibration pipeline diagram
+├── kota_india.svg                  # Topographic generalization comparison
+├── stitch_example.svg              # 16x16 mosaic stitching example
+├── comparison_sets/                # Per-tile qualitative comparison crops
+└── README.md                       # Image registry and descriptive captions
+```
+
+| File / Folder | Functionality in Brief |
+| :--- | :--- |
+| `figures/kenya_sentinel2.gif` | Visual demonstration of 8 temporal Sentinel-2 revisits over rural Kenya (10m ground resolution). |
+| `figures/kenya_superres.gif` | Corresponding $4	imes$ super-resolved prediction demonstrating reconstruction of roads and field boundaries (2.5m resolution). |
+| `figures/esrgan_generator.svg` | Detailed schematic showing the 23 RRDB block layout, channel depths ($C=64$), and nearest-neighbor upsamplers. |
+| `figures/image_pair.svg` | Illustrates how temporal multi-frame revisits are stacked into $[32 	imes T, 32, 3]$ PNGs and paired with aerial NAIP tiles. |
+| `figures/car_hallucination.jpg` | Highlights transient object hallucination where cars absent in aerial ground truth appear due to temporal revisit variance. |
+| `figures/vessel_hallucination.jpg` | Highlights phantom maritime vessels generated by GAN hallucination in water bodies. |
+| `figures/README.md` | Documents all visual assets, descriptions, and file formats. |
+
+---
+
+### Folder: `results/`
+> **Folder Purpose**: Stores immutable benchmark results, frozen manifests, reproduction runbooks, per-tile metric CSV files, and prediction archives across all experimental iterations (EXP-001 through EXP-024).
+
+```
+results/
+├── satlas_sr_baseline_freeze_v1/   # Frozen baseline manifest and reproduction records
+├── satlas_sr_revalidation/         # Per-tile evaluation CSVs across all 256 tiles
+├── satlas_sr_pilot_five_tiles/     # Super-resolved prediction PNGs for the 5 pilot tiles
+├── satlas_sr_full_validation/      # Prediction images and logs for 256 validation tiles
+├── satlas_sr_paper_metrics/        # Official paper reproduction benchmark results
+├── satlas_sr_experiment_001_.../   # Research experiment folders (EXP-001 through EXP-024)
+└── README.md                       # Results registry and artifact descriptions
+```
+
+| Subdirectory / File | Functionality in Brief |
+| :--- | :--- |
+| `results/satlas_sr_baseline_freeze_v1/` | Contains `baseline_manifest.json` locking official checkpoint SHA-256 (`167d6b9d...`) and baseline metric scores. |
+| `results/satlas_sr_revalidation/per_tile_metrics.csv` | Full 256-tile metric table recording cPSNR, PSNR, SSIM, LPIPS, and CLIPScore for each tile. |
+| `results/satlas_sr_pilot_five_tiles/` | Super-resolved PNGs and execution logs for the 5 pilot smoke-test tiles. |
+| `results/satlas_sr_full_validation/` | Model output directory housing full 256-tile super-resolved images and metadata logs. |
+| `results/satlas_sr_paper_metrics/` | Master paper metrics benchmark output formatted in JSON and CSV. |
+| `results/README.md` | Documents directory organization, file schemas, and reproduction validation checksums. |
+
+---
+
+### Folder: `reports/`
+> **Folder Purpose**: Contains technical research reports, provenance investigations, gap analyses, and reproduction runbooks documenting the full scientific trajectory. All 18 historical reports are consolidated into a single master report (`MASTER_CONSOLIDATED_RESEARCH_REPORT.md`) with individual source files preserved in `individual_reports/`.
+
+```
+reports/
+├── MASTER_CONSOLIDATED_RESEARCH_REPORT.md # Single master report synthesizing all 18 historical studies
+├── README.md                              # Index and directory documentation
+├── five_tile_visual_audit.png             # Visual inspection comparisons from pilot verification
+├── reconstructed_tci_frame_indices.csv    # Validation tile frame indices
+└── individual_reports/                    # Archive of individual historical report files
+```
+
+| File / Folder | Functionality in Brief |
+| :--- | :--- |
+| `reports/MASTER_CONSOLIDATED_RESEARCH_REPORT.md` | **Master Consolidated Research Report**: Encyclopedic 420+ line synthesis unifying technical architecture, data provenance, 256-tile paper benchmark reproduction, metric invariant proofs, bootstrap statistical distributions, per-tile failure analysis, and Windows platform hardening into a single definitive document. |
+| `reports/README.md` | Reports directory guide explaining the master consolidated report and indexing all topics. |
+| `reports/five_tile_visual_audit.png` | Visual comparison collage examining low-resolution inputs, super-resolved outputs, and NAIP references across the 5 pilot tiles. |
+| `reports/reconstructed_tci_frame_indices.csv` | Records reconstructed Sentinel-2 revisit frame indices for the validation set. |
+| `reports/individual_reports/` | Preserved archive of all 18 original individual historical reports for granular reference. |
+
+---
+
+### Folder: `scripts/`
+> **Folder Purpose**: Houses specialized research scripts utilized across experiments EXP-001 through EXP-024 to test specific scientific hypotheses.
+
+```
+scripts/
+├── experiment_001_dense_cpsnr.py    # Dense cPSNR translation grid evaluation (EXP-001)
+├── experiment_003_lpips_agreement.py # Perceptual metric agreement analysis (EXP-003)
+├── revalidate_and_compare_metrics.py # Automated metric comparison runner
+├── verify_metrics_deep_dive.py      # Independent metric cross-validation
+└── README.md                        # Script documentation and execution instructions
+```
+
+| Script | Functionality in Brief |
+| :--- | :--- |
+| `scripts/experiment_001_dense_cpsnr.py` | Scans dense cyclic PSNR translation grids ($\pm 8$ px) across validation tiles to verify shift compensation mechanics. |
+| `scripts/experiment_003_lpips_agreement.py` | Compares perceptual metric agreement across VGG and AlexNet feature extraction backbones. |
+| `scripts/revalidate_and_compare_metrics.py` | Evaluates output directories and compares computed values against frozen benchmark baselines. |
+| `scripts/verify_metrics_deep_dive.py` | Validates metric stability against synthetic perturbations and image transformations. |
+| `scripts/README.md` | Documents individual experiment runner commands and hypotheses. |
+
+---
+
+### Folder: `tests/`
+> **Folder Purpose**: Contains automated unit tests verifying dataset path compatibility, data loader resilience, and mathematical invariants of metric implementations.
+
+```
+tests/
+├── test_dataset_path_compatibility.py # Verifies dataset path resolution across formats
+├── test_metrics_rigor.py              # Validates mathematical invariants of cPSNR and PSNR
+└── README.md                          # Test suite execution instructions
+```
+
+| Test File | Functionality in Brief |
+| :--- | :--- |
+| `tests/test_dataset_path_compatibility.py` | Unit tests checking data loader path parsing across various directory structures and verifying fallback handling. |
+| `tests/test_metrics_rigor.py` | Unit tests verifying mathematical invariants: identity mapping ($cPSNR = \infty$), translation invariance ($\pm 8$ px), and crop border handling. |
+| `tests/README.md` | Instructions for executing the unit test suite and interpreting results. |
 
 ---
 
 ## 3. Technical Architecture
 
 <p align="center">
-  <img src="satlas-super-resolution/figures/esrgan_generator.svg" alt="ESRGAN Generator Diagram" width="700" />
+  <img src="figures/esrgan_generator.svg" alt="ESRGAN Generator Diagram" width="700" />
 </p>
 
 ### Residual & Dense Blocks (`technical_architecture/residual_blocks/`)
 1. **Residual Dense Block (`ResidualDenseBlock`)**:
-   - Accumulates features through 5 dense convolutional layers with LeakyReLU ($\alpha = 0.2$):
-     $$x_l = \sigma\left(W_l * [x_0, x_1, \dots, x_{l-1}]\right)$$
-   - Features are scaled by residual factor $\beta = 0.2$ and added to the input: $x_{\text{out}} = x_0 + 0.2 \cdot x_5$.
+   - Accumulates features through 5 dense convolutional layers with LeakyReLU ($lpha = 0.2$):
+     $$x_l = \sigma\left(W_l * [x_0, x_1, \dots, x_{l-1}]
+ight)$$
+   - Features are scaled by residual factor $eta = 0.2$ and added to the input: $x_{	ext{out}} = x_0 + 0.2 \cdot x_5$.
 2. **Residual in Residual Dense Block (`RRDB`)**:
    - Cascades 3 `ResidualDenseBlock` modules inside an outer residual connection:
-     $$y = x + 0.2 \cdot \text{RDB}_3\left(\text{RDB}_2\left(\text{RDB}_1(x)\right)\right)$$
+     $$y = x + 0.2 \cdot 	ext{RDB}_3\left(	ext{RDB}_2\left(	ext{RDB}_1(x)
+ight)
+ight)$$
    - Omits Batch Normalization entirely (`ResidualBlockNoBN`). In super-resolution, Batch Normalization rescales batch variance, destroying image contrast and producing sharp ringing/checkerboard artifacts along high-contrast geographic boundaries.
 
 ### GAN Architecture (`technical_architecture/gan_architecture/`)
 1. **Generator (`SSR_RRDBNet`)**:
-   - **Input**: Multi-frame temporal tensor of shape $[B, C \times T, H, W]$ (e.g. $[B, 24, 32, 32]$ for 8 RGB revisits).
+   - **Input**: Multi-frame temporal tensor of shape $[B, C 	imes T, H, W]$ (e.g. $[B, 24, 32, 32]$ for 8 RGB revisits).
    - **Backbone**: 23 RRDB trunk blocks (16,710,083 parameters) with global residual connection.
-   - **Upsampling**: Dual $2\times$ nearest-neighbor interpolations combined with $3\times 3$ convolutions and LeakyReLU activations, achieving $4\times$ spatial super-resolution to $128 \times 128$ px.
+   - **Upsampling**: Dual $2	imes$ nearest-neighbor interpolations combined with $3	imes 3$ convolutions and LeakyReLU activations, achieving $4	imes$ spatial super-resolution to $128 	imes 128$ px.
 2. **U-Net Discriminator with Spectral Normalization (`SSR_UNetDiscriminatorSN`)**:
    - Employs an encoder-decoder U-Net with skip connections.
    - Applies Spectral Normalization to all convolutional weights to enforce a 1-Lipschitz bound, stabilizing adversarial dynamics.
-   - Rather than returning a scalar classification, it produces a $128 \times 128$ pixel-wise discrimination map, providing dense spatial gradient feedback to the generator.
+   - Rather than returning a scalar classification, it produces a $128 	imes 128$ pixel-wise discrimination map, providing dense spatial gradient feedback to the generator.
 3. **Relativistic Average GAN (RaGAN) Loss**:
    - Discriminator predicts whether real data is more realistic than average fake data:
-     $$D_{Ra}(x_r, x_f) = \sigma\left(C(x_r) - \mathbb{E}_{x_f}[C(x_f)]\right)$$
+     $$D_{Ra}(x_r, x_f) = \sigma\left(C(x_r) - \mathbb{E}_{x_f}[C(x_f)]
+ight)$$
    - Objective function:
-     $$L_{\text{total}} = L_{\text{pix}}(G(x), y) + \lambda_{\text{percep}} L_{\text{percep}}(G(x), y) + \lambda_{\text{gan}} L_G^{Ra}$$
+     $$L_{	ext{total}} = L_{	ext{pix}}(G(x), y) + \lambda_{	ext{percep}} L_{	ext{percep}}(G(x), y) + \lambda_{	ext{gan}} L_G^{Ra}$$
+
+### Uncertainty Calibration & Guided Reconstruction (`technical_architecture/uncertainty_and_reconstruction/`)
+
+Developed across experiments EXP-014 through EXP-024 to overcome blind hallucination and the perception-distortion tradeoff:
+
+1. **Spatial Uncertainty ($D_4$ Dihedral TTA)**:
+   - Measures epistemic predictive variance across the 8 dihedral transformations (4 rotations $\times$ 2 reflections):
+     $$\sigma_{\text{spatial}}^2(x, y) = \frac{1}{8} \sum_{i=1}^8 \| T_i^{-1}(\hat{y}_i(x, y)) - \bar{y}_{\text{TTA}}(x, y) \|_2^2, \quad U_{\text{spatial}}(x, y) = \sqrt{\frac{1}{C}\sum_{c=1}^C \sigma_{\text{spatial}, c}^2(x, y)}$$
+2. **Temporal Uncertainty (Multi-Revisit Subsampling)**:
+   - Measures aleatoric volatility across revisit sequences ($S_0 \dots S_6$):
+     $$\sigma_{\text{temporal}}^2(x, y) = \frac{1}{K-1} \sum_{k=1}^K \| \hat{y}_k(x, y) - \bar{y}_{\text{ens}}(x, y) \|_2^2, \quad U_{\text{temporal}}(x, y) = \sqrt{\frac{1}{C}\sum_{c=1}^C \sigma_{\text{temporal}, c}^2(x, y)}$$
+3. **Calibrated Hybrid Uncertainty Fusion**:
+   - Standardizes spatial and temporal maps via z-score scaling with frozen optimal parameter $\alpha \approx 0.19$:
+     $$z_{\text{spatial}} = \frac{U_{\text{spatial}} - \mu_{\text{spatial}}}{\sigma_{\text{spatial}} + \epsilon}, \quad z_{\text{temporal}} = \frac{U_{\text{temporal}} - \mu_{\text{temporal}}}{\sigma_{\text{temporal}} + \epsilon}$$
+     $$U_{\text{hybrid}} = \alpha \cdot z_{\text{spatial}} + (1 - \alpha) \cdot z_{\text{temporal}}$$
+   - Yields $+39.5\%$ higher Spearman rank correlation with empirical ground-truth error on locked holdout validation.
+4. **Adaptive Continuous Soft-Blending Reconstruction**:
+   - Converts uncertainty into an active repair operator using temperature-scaled sigmoid weighting constrained by target budget $B$:
+     $$w(x, y) = \sigma\left(\frac{U_{\text{hybrid}}(x, y) - \tau^*}{\beta}\right), \quad \frac{1}{HW}\sum_{x, y} w(x, y) = B$$
+     $$\hat{y}_{\text{recon}}(x, y) = (1 - w(x, y)) \cdot \hat{y}_{\text{single}}(x, y) + w(x, y) \cdot \bar{y}_{\text{ens}}(x, y)$$
+   - At $B = 0.20, \beta = 0.20$: achieved a statistically significant **$+0.571\text{ dB}$ PSNR gain** ($p < 10^{-13}$), $100\%$ win rate across holdout tiles, and total elimination of boundary seam step-discontinuities.
 
 ### Baseline Models
 - **SRCNN (`technical_architecture/srcnn.py`)**: 3-layer convolutional network operating on bicubic upsampled inputs.
@@ -392,19 +611,85 @@ satlas-super-resolution/
 
 ---
 
-## 4. Data Management & Layout
+## 4. Dataset Origins & Provenance (Sentinel-2, NAIP, Kenya, Kota)
 
-The dataset pairs low-resolution Sentinel-2 time series with high-resolution aerial NAIP imagery across a $2^{17} \times 2^{17}$ Web-Mercator coordinate grid at Zoom 17.
+This project relies on multi-temporal optical satellite observations paired with high-resolution airborne photography. The imagery originates from two authoritative geospatial programs (ESA Copernicus and USDA NAIP), curated and preprocessed by the Allen Institute for Artificial Intelligence (AI2) for the Satlas-SR benchmark (*Bastani et al., arXiv:2311.18082*).
 
-### Dimensions & Properties
-- **Sentinel-2 L1C**: 32x32 px per tile (~10m GSD). Temporal stacks of $T$ revisits within 3 months are stored vertically as $[32 \times T, 32, 3]$ PNGs.
-- **NAIP Ground Truth**: 128x128 px per tile (2.5m GSD, downsampled $4\times$ from 0.6m source NAIP).
+```
+                                  DATASET PROVENANCE ARCHITECTURE
+ ┌─────────────────────────────────────────┐          ┌─────────────────────────────────────────┐
+ │   Sentinel-2 MSI (ESA Copernicus)       │          │      USDA NAIP Airborne Photography     │
+ ├─────────────────────────────────────────┤          ├─────────────────────────────────────────┤
+ │ • Satellites: Sentinel-2A & 2B          │          │ • Low-altitude aircraft surveys (CONUS) │
+ │ • Level-1C Top-Of-Atmosphere (TOA)      │          │ • Digital pushbroom sensors (Leica/Z/I) │
+ │ • Native GSD: 10m (B02, B03, B04, B08)  │          │ • Native GSD: 0.6m - 1.0m               │
+ │ • Web-Mercator Zoom 17: 9.555m / pixel  │          │ • Bicubic 4x downscaling to 2.5m GSD    │
+ │ • Footprint: 32x32 px per tile          │          │ • Footprint: 128x128 px per tile        │
+ │ • Temporal Stack: 8 revisits [256, 32, 3]│         │ • Preprocessed with Gaussian USM        │
+ └────────────────────┬────────────────────┘          └────────────────────┬────────────────────┘
+                      │                                                    │
+                      └──────────────────────────┬─────────────────────────┘
+                                                 ▼
+                         ┌─────────────────────────────────────────┐
+                         │   Web-Mercator Zoom 17 Spatial Pairing  │
+                         │     (2^17 x 2^17 Global Coordinate Grid)│
+                         └─────────────────────────────────────────┘
+```
 
-### Training Datasets (Download Links)
-- **Urban Training Set (`train_urban_set`)**: ~1.1M pairs within 5km of US cities ($\ge 50\text{k}$ pop). Used for all paper experiments.
-  - [Part 1](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.001) | [Part 2](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.002) | [Part 3](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.003) | [Part 4](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.004)
-- **Full Training Set (`train_full_set`)**: ~44M pairs covering all US NAIP footprints: [Download TAR](https://pub-956f3eb0f5974f37b9228e0a62f449bf.r2.dev/satlas_explorer_datasets/super_resolution_train-full-set_2023-12-01.tar).
-- **Validation Archive (Small)**: [super_resolution_small_val_set_2024-01-09.tar](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/super_resolution_small_val_set_2024-01-09.tar) (already extracted to `data/small_val_set/`).
+---
+
+### A. Sentinel-2 Satellite Dataset (ESA Copernicus)
+- **Origin & Program**: Collected by the European Space Agency (ESA) under the European Commission's Copernicus Earth Observation Programme. Sourced from the twin satellites **Sentinel-2A** (launched June 2015) and **Sentinel-2B** (launched March 2017) operating in sun-synchronous orbit at $786\,\text{km}$ altitude with a 5-day equatorial revisit interval.
+- **Sensor & Product**: MultiSpectral Instrument (MSI) collecting 12 spectral bands. The primary RGB bands (B04 Red: $665\,\text{nm}$, B03 Green: $560\,\text{nm}$, B02 Blue: $490\,\text{nm}$) and Near-Infrared (B08: $842\,\text{nm}$) feature a native Ground Sample Distance (GSD) of **$10\,\text{m}$**. Sourced as **Level-1C (L1C)** Top-of-Atmosphere (TOA) reflectance granules.
+- **Tiling & Preprocessing**:
+  - Reprojected to the global **Web-Mercator coordinate grid (EPSG:3857) at Zoom level 17** ($2^{17} \times 2^{17} = 131,072 \times 131,072$ tiles globally). At this zoom level, nominal pixel pitch is $9.555\,\text{m}$, matching the $\sim 10\,\text{m}$ sensor GSD.
+  - Each chip is exactly $32 \times 32$ pixels.
+  - Multi-temporal revisits within a $\pm 2$ to $3$ month window of corresponding NAIP captures are concatenated vertically into single $[32 \times T, 32, 3]$ PNG images (e.g. $[256, 32, 3]$ for $T=8$ frames in `tci.png`), alongside nine auxiliary spectral bands (`b01.png` through `b12.png`).
+
+---
+
+### B. NAIP Aerial Dataset (USDA FSA)
+- **Origin & Program**: Sourced from the **National Agriculture Imagery Program (NAIP)**, administered by the United States Department of Agriculture (USDA) Farm Service Agency (FSA) Aerial Photography Field Office (APFO).
+- **Sensor Platform**: Captured via high-resolution airborne digital sensors (e.g., Leica ADS100, Z/I DMC III) flown aboard low-altitude crewed aircraft during agricultural leaf-on growing seasons (2019–2020) across the contiguous United States (CONUS).
+- **Resolution & Target Downsampling**:
+  - Native NAIP imagery is collected at $0.6\,\text{m}$ to $1.0\,\text{m}$ GSD per pixel, orthorectified to USGS digital elevation models (DEMs).
+  - To establish a ground-truth target with an exact **$4\times$ resolution ratio** relative to $10\,\text{m}$ Sentinel-2, the full-resolution $512 \times 512$ NAIP Zoom-17 tiles were downscaled by $4\times$ using bicubic filtering to **$128 \times 128$ pixels at $2.5\,\text{m}$ GSD**.
+  - During training, NAIP chips are sharpened with Gaussian **Unsharp Masking (USM)** to enhance high-frequency edges for perceptual and L1 loss optimization.
+
+---
+
+### C. Showcase Assets: Nakuru, Kenya & Kota, India
+
+The repository figures include specific external geographic scenes that illustrate model capability and boundaries outside the US NAIP training footprint:
+
+#### 1. Nakuru, Kenya (`figures/kenya_sentinel2.gif` & `figures/kenya_superres.gif`)
+- **Where did the data come from?** Sourced directly from **ESA Copernicus Sentinel-2 L1C multi-temporal granules** over Nakuru County in the Great Rift Valley, Kenya (East Africa). Because NAIP is strictly a United States domestic program, there is no aerial NAIP ground truth for Kenya.
+- **What is it?** This is the project's **flagship animated teaser comparison** displayed at the top of the repository. It captures a rural/semi-urban agricultural landscape with smallholder farming plots, unpaved dirt tracks, and scattered dwellings.
+- **Why is it in the repository?** It serves as the primary visual demonstration of **zero-shot global super-resolution**:
+  - The left animation (`kenya_sentinel2.gif`) demonstrates the 8 raw, low-resolution $10\,\text{m}$ Sentinel-2 revisit frames, where dirt roads and building clusters are blurred and noisy.
+  - The right animation (`kenya_superres.gif`) shows the $4\times$ super-resolved $2.5\,\text{m}$ output generated by the 23-block ESRGAN model, proving that multi-frame temporal revisit fusion successfully synthesizes sharp road networks and field boundaries even in non-US regions where no aerial training data was available.
+
+#### 2. Kota, Rajasthan, India (`figures/kota_india.svg`)
+- **Where did the data come from?** Sourced from **Sentinel-2 L1C** multi-frame revisit stacks paired with high-resolution commercial **Mapbox Satellite** imagery (derived from Maxar WorldView satellites). The research configuration is preserved in [`ssr/options/experiments/india_finetune.yml`](ssr/options/experiments/india_finetune.yml) (`sentinel2_path: /data/piperw/data/india_train_set/sentinel2`, `naip_path: /data/piperw/data/india_train_set/mapbox`).
+- **What is it?** Sourced by AI2 researchers (Piper Wolters & Favyen Bastani) for Section 4.3 and Figure 6 of the Satlas-SR paper (*"Accuracy Limitations & Domain Adaptation"*).
+- **Why is it in the repository?** It illustrates the **geographic domain generalization gap**:
+  - The model was trained predominantly on US cities (`train_urban_set`), which feature wide asphalt roadways, orthogonal suburban street grids, and detached homes with pitched roofs and lawns.
+  - When tested on **Kota, Rajasthan, India**—an ancient, dense arid urban center characterized by narrow winding alleyways, contiguous flat-roof concrete masonry, courtyards, and dry sandy soil—the model's learned spatial priors suffered out-of-distribution failure.
+  - As highlighted by the red bounding box and arrow in `figures/kota_india.svg`, the model hallucinates clumped tree foliage where dense building rooftops exist, or transposes building boundaries with arid soil. This asset documents the necessity of local fine-tuning (`india_finetune.yml`) when deploying super-resolution across diverse non-Western architectures.
+
+---
+
+### D. Dataset Splits & Download Mirrors
+
+All datasets are hosted publicly on Hugging Face and Cloudflare R2 by the Allen Institute for Artificial Intelligence:
+
+| Dataset Split | Tile Count / Size | Spatial Footprint | Target Use Case | Download Link |
+| :--- | :--- | :--- | :--- | :--- |
+| **Small Validation Set** | 256 tiles (34.9 MB) | 256 urban US locations | Local benchmarking & reproduction audit | [Download TAR](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/super_resolution_small_val_set_2024-01-09.tar) *(extracted to `data/small_val_set/`)* |
+| **Urban Training Set** | ~1.1M pairs (4 parts) | Within 5km of US cities ($\ge 50\text{k}$ pop) | Official paper training baseline | [Part 1](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.001) \| [Part 2](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.002) \| [Part 3](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.003) \| [Part 4](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/train_urban_set.7z.004) |
+| **Full Training Set** | ~44M pairs | Entire contiguous United States | Large-scale foundation model pretraining | [Download TAR](https://pub-956f3eb0f5974f37b9228e0a62f449bf.r2.dev/satlas_explorer_datasets/super_resolution_train-full-set_2023-12-01.tar) |
+| **Global Test Set** | 8 grids ($16 \times 16$) | Global (Bolivia, France, Japan, Kenya) | Unannotated full-mosaic inference & stitching | [Download TAR](https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/super_resolution_test_set_2024-01-09.tar) |
+| **Hugging Face Mirror** | 974 GB corpus | Full training, val, and test trees | Full repository dataset mirror | [`allenai/satlas-super-resolution`](https://huggingface.co/datasets/allenai/satlas-super-resolution) |
 
 ---
 
@@ -422,15 +707,14 @@ conda install -c conda-forge gdal rasterio
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 
 # Install project dependencies
-pip install -r satlas-super-resolution/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Option 2: Pretrained Checkpoint Download
 Download the official 8-input Sentinel-2 ESRGAN model checkpoint (16.7M parameters):
 ```bash
-mkdir -p satlas-super-resolution/experiments
-curl -L -o satlas-super-resolution/experiments/esrgan_8S2.pth \
-  https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/esrgan_8S2.pth
+mkdir -p experiments
+curl -L -o experiments/esrgan_8S2.pth   https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/esrgan_8S2.pth
 ```
 - **Verified SHA-256**: `167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07`
 
@@ -448,50 +732,46 @@ python preprocessing/inspect_data.py data/small_val_set --samples 2
 python preprocessing/audit_dataset.py data/small_val_set --output-json results/dataset_audit.json
 
 # 3. Spatial registration audit between low-res preview and aerial reference
-python preprocessing/audit_spatial_registration.py \
-  --ref data/small_val_set/naip/m_3211716_ne_11_060_20190317_20190412/22917_52849/rgb.png \
-  --moving data/small_val_set/sentinel2/22917_52849/tci.png
+python preprocessing/audit_spatial_registration.py   --ref data/small_val_set/naip/m_3211716_ne_11_060_20190317_20190412/22917_52849/rgb.png   --moving data/small_val_set/sentinel2/22917_52849/tci.png
 ```
 
 ### B. Model Training
 Train an ESRGAN model using the configuration system:
 ```bash
 # Single GPU training
-python -m satlas-super-resolution.ssr.train -opt satlas-super-resolution/ssr/options/esrgan_s2naip_urban.yml
+python -m ssr.train -opt ssr/options/esrgan_s2naip_urban.yml
 
 # Multi-GPU distributed training (8 GPUs)
-PYTHONPATH=. python -m torch.distributed.launch --nproc_per_node=8 --master_port=1234 \
-  satlas-super-resolution/ssr/train.py -opt satlas-super-resolution/ssr/options/esrgan_s2naip_urban.yml --launcher pytorch
+PYTHONPATH=. python -m torch.distributed.launch --nproc_per_node=8 --master_port=1234   ssr/train.py -opt ssr/options/esrgan_s2naip_urban.yml --launcher pytorch
 ```
 
-### C. Inference & Large-Scale Grid Stitching
+### C. High-Level Inference & Mosaic Stitching
 Run super-resolution inference on raw Sentinel-2 inputs:
 ```bash
-# Single-tile inference
-python -m satlas-super-resolution.ssr.infer -opt satlas-super-resolution/ssr/options/infer_example.yml
+# 1. Automated 5-tile pilot inference pipeline
+python inference/run_pilot_inference.py -opt ssr/options/infer_satlas_five_tiles.yml
 
-# Contiguous 16x16 grid mosaic inference and seamless stitching
-python -m satlas-super-resolution.ssr.infer_grid -opt satlas-super-resolution/ssr/options/infer_grid_example.yml
+# 2. Full 256-tile validation inference pipeline
+python inference/run_full_validation_inference.py -opt ssr/options/infer_satlas_full_validation.yml
+
+# 3. Single-tile inference via core engine
+python -m ssr.infer -opt ssr/options/infer_example.yml
+
+# 4. Contiguous 16x16 grid mosaic inference and seamless stitching
+python -m ssr.infer_grid -opt ssr/options/infer_grid_example.yml
 ```
 
 ### D. Evaluation & Research Benchmarking
 Evaluate predictions against ground-truth NAIP using official paper metrics:
 ```bash
 # 1. Standard PSNR & SSIM validation report
-python evaluation/evaluate_validation.py \
-  --predictions satlas-super-resolution/results/satlas_sr_pilot_five_tiles \
-  --dataset data/small_val_set \
-  --output-csv results/validation_report.csv
+python evaluation/evaluate_validation.py   --predictions results/satlas_sr_pilot_five_tiles   --dataset data/small_val_set   --output-csv results/validation_report.csv
 
 # 2. Official Paper Metrics Benchmark (cPSNR, LPIPS, CLIPScore)
-python evaluation/evaluate_paper_metrics.py \
-  --predictions satlas-super-resolution/results/satlas_sr_full_validation \
-  --dataset data/small_val_set \
-  --output-json results/paper_benchmark.json \
-  --output-csv results/paper_benchmark.csv
+python evaluation/evaluate_paper_metrics.py   --predictions results/satlas_sr_full_validation   --dataset data/small_val_set   --output-json results/paper_benchmark.json   --output-csv results/paper_benchmark.csv
 
 # 3. 95% Bootstrap Confidence Interval Distribution Analysis
-python evaluation/run_statistical_analysis.py satlas-super-resolution/results/satlas_sr_revalidation/per_tile_metrics.csv
+python evaluation/run_statistical_analysis.py results/satlas_sr_revalidation/per_tile_metrics.csv
 ```
 
 ---
@@ -525,8 +805,13 @@ Because Satlas-SR fuses multi-temporal revisits spanning up to 3 months, certain
    - The training set (`train_urban_set`) is trained primarily on US urban footprints. When applied to non-US arid or densely packed topographies (e.g., Kota, India), the model may transpose building footprints with dense foliage or vice versa.
 
 <p align="center">
-  <img src="satlas-super-resolution/figures/vessel_hallucination.jpg" width="300" alt="Vessel Hallucination" />
-  <img src="satlas-super-resolution/figures/car_hallucination.jpg" width="300" alt="Car Hallucination" />
+  <img src="figures/vessel_hallucination.jpg" width="300" alt="Vessel Hallucination" />
+  <img src="figures/car_hallucination.jpg" width="300" alt="Car Hallucination" />
+</p>
+
+<p align="center">
+  <img src="figures/kota_india.svg" width="650" alt="Kota India Geographic Domain Shift" /><br />
+  <em>Out-of-Domain Geographic Generalization Artifacts (Kota, Rajasthan, India): When evaluated on dense non-Western topographies, the US-trained prior hallucinates foliage over dense building masonry (indicated by red callout box).</em>
 </p>
 
 ---
@@ -534,7 +819,7 @@ Because Satlas-SR fuses multi-temporal revisits spanning up to 3 months, certain
 ## 9. Architectural Analysis & Best Practices
 
 ### Analysis of the Original Repository Structure
-- **Double-Nesting Anti-pattern**: The repository originally contained a nested `satlas-super-resolution/` repository inside `Satlas-SR/`, with data directories stranded outside in `Satlas-SR/data/`. This broke relative configuration paths and forced brittle `sys.path` insertions.
+- **Double-Nesting Anti-pattern**: The repository originally contained a nested `satlas-super-resolution/` repository inside `Satlas-SR/`, with data directories stranded outside in `Satlas-SR/data/`. This broke relative configuration paths, forced brittle `sys.path` insertions, and caused path confusion across scripts.
 - **Entangled Architectural Components**: Residual dense blocks, generator trunks, and discriminators were all packed inside monolithic utility files (`arch_util.py`, `rrdbnet_arch.py`), making component reuse in other models or unit tests difficult.
 - **Scattered Evaluation Scripts**: Validation runners and experiment scripts were mixed together without standard CLI contracts or modular metric imports.
 
@@ -543,15 +828,19 @@ Because Satlas-SR fuses multi-temporal revisits spanning up to 3 months, certain
    - `data/` isolates data storage, training manifests, and tiling schemas.
    - `preprocessing/` encapsulates dataset auditing, spatial shift estimation, and coordinate re-projection.
    - `technical_architecture/` cleanly decouples building blocks (`residual_blocks/`) from full model graphs (`gan_architecture/`).
-   - `evaluation/` unifies metrics and statistical verification.
-2. **Reusability & Extensibility**: Modules in `technical_architecture.residual_blocks` and `technical_architecture.gan_architecture` can be directly imported and subclassed in external projects without dragging along the entire training framework.
-3. **100% Backward Compatibility**: All original paths inside `satlas-super-resolution/` remain functional for existing automated runbooks and reproduction scripts.
+   - `evaluation/` unifies metrics and statistical verification with pure NumPy fallbacks for cross-platform resilience.
+   - `ssr/` isolates the core PyTorch training engine, options, and model state managers.
+   - `inference/` provides dedicated, battle-tested orchestration scripts for multi-tile batch inference.
+   - `figures/`, `results/`, `reports/`, and `scripts/` provide structured homes for visual assets, frozen benchmarks, technical audits, and experimental studies.
+2. **Elimination of Double-Nesting**:
+   - All contents previously stranded inside the nested `satlas-super-resolution/` directory were migrated into proper functional root directories (`ssr/`, `inference/`, `figures/`, `results/`, `reports/`, `scripts/`, `tests/`), and the nested redundant folder was completely removed.
+3. **Reusability & Extensibility**: Modules in `technical_architecture.residual_blocks` and `technical_architecture.gan_architecture` can be directly imported and subclassed in external projects without dragging along the entire training framework.
 
 ### Recommendations for Future Evolution
 - **Config Management**: Transition from legacy YAML configurations to **Hydra** with strict Pydantic schemas for compile-time validation of raster paths and learning rates.
 - **Data Versioning**: Track datasets using **DVC (Data Version Control)** or Hugging Face Datasets instead of manual `.tar` downloads.
 - **CI/CD Regression**: Add a lightweight GitHub Actions workflow running `evaluation/evaluate_pilot.py` on the 5 pilot tiles on every pull request to catch regression errors before merging.
-- **Inference Optimization**: Export `SSR_RRDBNet` to **TensorRT / ONNX Runtime** with FP16 precision, reducing inference latency by up to $3.5\times$ on NVIDIA Tensor Core GPUs.
+- **Inference Optimization**: Export `SSR_RRDBNet` to **TensorRT / ONNX Runtime** with FP16 precision, reducing inference latency by up to $3.5	imes$ on NVIDIA Tensor Core GPUs.
 
 ---
 
@@ -568,4 +857,4 @@ If you use this codebase or pretrained models in your research, please cite:
 }
 ```
 
-We acknowledge foundational code and inspiration from [BasicSR](https://github.com/XPixelGroup/BasicSR), [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), and [WorldStrat](https://github.com/worldstrat/worldstrat).
+We acknowledge foundational code and inspiration from [BasicSR](https://github.com/XPixelGroup/BasicSR), [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN), and [WorldStrat](https://github.com/worldstrat/worldstrat).\n

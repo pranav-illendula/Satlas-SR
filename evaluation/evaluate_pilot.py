@@ -18,7 +18,7 @@ PILOT_IDS = ["20771_46525", "20890_46801", "20926_46045", "21068_45692", "21856_
 
 
 def main() -> int:
-    default_pred = repo_root / "satlas-super-resolution" / "results" / "satlas_sr_pilot_five_tiles"
+    default_pred = repo_root / "results" / "satlas_sr_pilot_five_tiles"
     default_data = repo_root / "data" / "small_val_set"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--predictions", type=Path, default=default_pred, help=f"Predictions path (default: {default_pred})")

@@ -33,3 +33,21 @@ data/
    - Time series of $T$ revisit captures within a 3-month window are stacked vertically into a single PNG of dimensions $[32 \times T, 32, C]$.
    - Models slice this stack into $T$ separate $[C, 32, 32]$ tensors and fuse them across channels (e.g. $8 \times 3 = 24$ input channels for 8 revisits).
 
+---
+
+## Dataset Provenance & Global Test Grids
+
+### 1. Sentinel-2 (ESA Copernicus)
+- **Source**: European Space Agency (ESA) Copernicus Sentinel-2A & Sentinel-2B satellites (L1C Top-Of-Atmosphere reflectance).
+- **Native Resolution**: $10\text{m}$ GSD across RGB (B04, B03, B02) and NIR (B08) bands.
+- **Tiling**: Re-projected into Web-Mercator Zoom 17 ($9.555\text{m}$ nominal pitch), with 8 temporal observations per tile.
+
+### 2. NAIP Aerial Imagery (USDA FSA)
+- **Source**: United States Department of Agriculture (USDA) National Agriculture Imagery Program (NAIP) airborne surveys (2019–2020) across the contiguous US.
+- **Native Resolution**: $0.6\text{m} - 1.0\text{m}$ GSD aerial orthophotography, downsampled $4\times$ to $2.5\text{m}$ GSD ($128 \times 128$ px) to provide the benchmark ground truth.
+
+### 3. Global Test Grids: Kenya & Kota, India
+- **Nakuru, Kenya (`figures/kenya_*.gif`)**: Sourced from raw Sentinel-2 L1C imagery over Nakuru County, Kenya (East Africa). Used as the project's flagship teaser to demonstrate zero-shot multi-frame super-resolution in regions outside the US without aerial NAIP coverage.
+- **Kota, Rajasthan, India (`figures/kota_india.svg`)**: Sourced from Sentinel-2 L1C paired with high-resolution commercial Mapbox Satellite imagery (`ssr/options/experiments/india_finetune.yml`). Used to analyze out-of-domain geographic generalization limits and inductive bias breakdown when deploying US-trained priors on dense South Asian masonry architectures.
+
+
