@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="800" height="450" fill="#ffffff" />
+  <text x="400" y="32" font-family="Arial, sans-serif" font-size="17" font-weight="bold" text-anchor="middle" fill="#0f172a">Perception-Distortion Tradeoff: Error Reduction vs Edge Sharpness Preservation</text>
+  
+  <line x1="80" y1="390" x2="720" y2="390" stroke="#cbd5e1" stroke-width="1.5" />
+  <line x1="80" y1="70" x2="80" y2="390" stroke="#cbd5e1" stroke-width="1.5" />
+  
+  <text x="400" y="425" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#334155">Mean Reconstruction MAE (Lower is Better Fidelity)</text>
+  <text x="30" y="230" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#334155" transform="rotate(-90 30,230)">Mean Gradient Magnitude (Sharpness)</text>
+
+  <!-- S0 Baseline -->
+  <circle cx="620" cy="120" r="8" fill="#dc2626" />
+  <text x="635" y="125" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">S0 Baseline (Sharpest, Higher MAE)</text>
+
+  <!-- Hybrid 20% -->
+  <circle cx="430" cy="180" r="8" fill="#2563eb" />
+  <text x="445" y="185" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2563eb">Hybrid 20% (Balanced Error &amp; Detail)</text>
+
+  <!-- Full Ensemble -->
+  <circle cx="210" cy="300" r="8" fill="#16a34a" />
+  <text x="225" y="305" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">Full Ensemble (Lowest MAE, Blurring Penalty)</text>
+</svg>

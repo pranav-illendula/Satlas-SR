@@ -1,0 +1,56 @@
+{
+  "experiment": "EXP-023",
+  "verdict": "VERIFIED",
+  "duration_sec": 4.77,
+  "checks": [
+    {
+      "check_id": "CHK-01",
+      "name": "Development Split Conformance",
+      "requirement": "Evaluated exactly 107 development tiles; locked holdout (107) and quarantine (42) untouched.",
+      "status": "PASS",
+      "evidence": "Split manifest verified: len(dev_tiles)==107, zero overlap with holdout or quarantined partitions."
+    },
+    {
+      "check_id": "CHK-02",
+      "name": "Hard-Mask Reproduction Gate",
+      "requirement": "Reproduce hard top-10%, 20%, 30% and S0/Ensemble baselines within numerical precision.",
+      "status": "PASS",
+      "evidence": "Matched EXP-020A Phase 2 MAE: S0 (0.08396), Hard 10% (0.08151), Hard 20% (0.07989), Hard 30% (0.07867), Ens (0.07477)."
+    },
+    {
+      "check_id": "CHK-03",
+      "name": "Reference-Independent Tau Root-Finding",
+      "requirement": "Threshold tau determined strictly from frozen hybrid uncertainty map and budget B without reference metrics.",
+      "status": "PASS",
+      "evidence": "Tau solved using 1D Brent root-finding on sigmoid(u - tau) matching target budgets (0.10, 0.20, 0.30) to < 10^-6 tolerance."
+    },
+    {
+      "check_id": "CHK-04",
+      "name": "Prespecified Primary Beta",
+      "requirement": "Primary beta = 0.20 selected prior to evaluation; sensitivity grid treated as secondary.",
+      "status": "PASS",
+      "evidence": "Primary beta locked at 0.20; sensitivity grid (0.05, 0.10, 0.20, 0.40) evaluated with multiple-testing caveats."
+    },
+    {
+      "check_id": "CHK-05",
+      "name": "Prespecified Boundary Band Construction",
+      "requirement": "Morphological boundary band around hard mask constructed prior to metric calculation.",
+      "status": "PASS",
+      "evidence": "3-pixel wide boundary ribbon defined via dilation minus erosion (dil & ~ero) of hard 20% mask; identical region used for all arms."
+    },
+    {
+      "check_id": "CHK-06",
+      "name": "Visual Failure Case Prespecification",
+      "requirement": "Failure cases selected based on prior EXP-022 rankings without post-hoc selection.",
+      "status": "PASS",
+      "evidence": "Top 3 degraded (27398_49397, 24552_52637, 30541_51662), top 3 improved, and 1 neutral tile analyzed."
+    },
+    {
+      "check_id": "CHK-07",
+      "name": "Perception-Distortion Guardrail Compliance",
+      "requirement": "Report explicitly states smoother boundaries do not prove enhanced super-resolution or authentic detail.",
+      "status": "PASS",
+      "evidence": "Documented in EXP023_SOFT_BLENDING_REPORT.md Section 7."
+    }
+  ]
+}

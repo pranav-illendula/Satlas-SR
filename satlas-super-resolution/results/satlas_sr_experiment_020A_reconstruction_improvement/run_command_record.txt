@@ -1,0 +1,43 @@
+EXP-020A RUN RECORD: READ-ONLY FEASIBILITY AUDIT
+================================================================================
+Timestamp: 2026-10-23T21:18:00+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Git Commit Hash: 3e67973f6746bedbd91cc032b4888574980e1daf
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Python Version: 3.10.11 (tags/v3.10.11:7d4cc5a, Apr 5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+Host OS: Windows 10/11 (win32)
+
+Scope:
+- Phase 1: Read-Only Feasibility Audit for Uncertainty-Guided Reconstruction Improvement
+- Development Partition Only (107 tiles)
+- Zero Holdout Access (107-tile holdout partition remains strictly locked)
+- 42 Quarantined Tiles Excluded
+
+Files & Directories Inspected:
+1. results/satlas_sr_experiment_014_tta_uncertainty/split_manifest.json (107 dev tiles)
+2. results/satlas_sr_experiment_014_tta_uncertainty/maps/ (*_uncertainty.npz precomputed TTA arrays)
+3. results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/predictions/ (S0, S1, S3, S4, S5, S6)
+4. results/satlas_sr_full_validation/inference_manifest.csv (NAIP aerial reference paths)
+5. results/satlas_sr_experiment_015_hybrid_uncertainty/per_tile_oof_metrics.csv
+6. results/satlas_sr_experiment_016_independent_audit/EXP016_INDEPENDENT_AUDIT_REPORT.md
+7. results/satlas_sr_experiment_017_locked_holdout/preflight_protocol.json
+8. results/satlas_sr_experiment_018_holdout_consistency_audit/audit_checks.json
+9. results/satlas_sr_experiment_019_research_report/EXP019_RESEARCH_REPORT.md
+
+Deliverables Generated in results/satlas_sr_experiment_020A_reconstruction_improvement/:
+- EXP020A_FEASIBILITY_AUDIT.md
+- run_command_record.txt
+
+Inspection Summary & Key Verification:
+- All 107 development tiles have complete predictions, TTA maps, and NAIP references.
+- Zero missing files or dropped tiles.
+- Tested candidate interventions on development tiles:
+  * Baseline S0 MAE: 0.08396 (PSNR: 19.30 dB)
+  * Full Uniform Ensemble MAE: 0.07477 (PSNR: 20.45 dB, 98/107 wins)
+  * Uncertainty-Gated Replacement Top 10%: MAE = 0.08151 (100/107 wins)
+  * Uncertainty-Gated Replacement Top 20%: MAE = 0.07989 (99/107 wins)
+  * Uncertainty-Gated Replacement Top 30%: MAE = 0.07867 (99/107 wins)
+- Zero neural network training or external dependencies required.
+- Identified the Perception-Distortion Trap: Uniform spatial smoothing improves pixel MAE by suppressing high frequencies, highlighting the necessity of random-mask and spatial-gradient controls.
+- Recommended proceeding to controlled Phase 2 implementation on development tiles only.
+================================================================================

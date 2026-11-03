@@ -1,0 +1,24 @@
+# Official Satlas-SR eight-image ESRGAN inference for small_val_set
+name: satlas_sr_full_validation
+model_type: SSRESRGANModel
+scale: 4
+num_gpu: 1
+manual_seed: 0
+
+data_dir: C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set/sentinel2
+naip_dir: C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set/naip
+n_lr_images: 8
+save_path: C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/results/satlas_sr_full_validation
+
+network_g:
+  type: SSR_RRDBNet
+  num_in_ch: 24
+  num_out_ch: 3
+  num_feat: 64
+  num_block: 23
+  num_grow_ch: 32
+
+path:
+  pretrain_network_g: C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/experiments/esrgan_8S2.pth
+  param_key_g: params_ema
+  strict_load_g: true

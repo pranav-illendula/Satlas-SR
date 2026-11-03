@@ -1,0 +1,5 @@
+Experiment: EXP-003 (Satlas-SR Paper Metric Standardization)
+Timestamp: 2026-10-22T09:27:41.580378+00:00
+Command: python scripts/experiment_003_lpips_agreement.py
+Python: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Evaluation: 256 validation tiles, input validation, provenance gap analysis

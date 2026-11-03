@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" style="background-color:#ffffff; font-family:sans-serif;">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="32" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">EXP-022: Replacement Fraction &amp; Perception-Distortion Tradeoff</text>
+  <text x="400" y="52" font-size="12" text-anchor="middle" fill="#64748b">Reconstruction MAE vs. Sobel Gradient Magnitude across Replacement Budgets</text>
+  
+  <!-- Left Axis: MAE (Lower is better) -->
+  <line x1="120" y1="80" x2="120" y2="300" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="60" y="195" font-size="12" font-weight="bold" fill="#dc2626" transform="rotate(-90 60 195)">Reconstruction MAE (↓)</text>
+  <text x="110" y="100" font-size="10" text-anchor="end" fill="#64748b">0.084</text>
+  <text x="110" y="150" font-size="10" text-anchor="end" fill="#64748b">0.081</text>
+  <text x="110" y="200" font-size="10" text-anchor="end" fill="#64748b">0.078</text>
+  <text x="110" y="250" font-size="10" text-anchor="end" fill="#64748b">0.075</text>
+
+  <!-- Right Axis: Grad Magnitude (Higher is sharper) -->
+  <line x1="680" y1="80" x2="680" y2="300" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="740" y="195" font-size="12" font-weight="bold" fill="#2563eb" transform="rotate(90 740 195)">Gradient Magnitude (↑)</text>
+  <text x="690" y="100" font-size="10" fill="#64748b">0.360</text>
+  <text x="690" y="150" font-size="10" fill="#64748b">0.330</text>
+  <text x="690" y="200" font-size="10" fill="#64748b">0.300</text>
+  <text x="690" y="250" font-size="10" fill="#64748b">0.260</text>
+
+  <!-- Horizontal Axis: Budget Fractions -->
+  <line x1="120" y1="300" x2="680" y2="300" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="180" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">0% (S0)</text>
+  <text x="300" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">10% Budget</text>
+  <text x="420" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">20% Budget</text>
+  <text x="540" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">30% Budget</text>
+  <text x="640" y="325" font-size="11" font-weight="bold" text-anchor="middle" fill="#0f172a">100% (Ensemble)</text>
+
+  <!-- Curve 1: Hybrid MAE (Red) -->
+  <polyline points="180,100 300,141 420,168 540,188 640,253" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <circle cx="180" cy="100" r="5" fill="#dc2626"/>
+  <circle cx="300" cy="141" r="5" fill="#dc2626"/>
+  <circle cx="420" cy="168" r="5" fill="#dc2626"/>
+  <circle cx="540" cy="188" r="5" fill="#dc2626"/>
+  <circle cx="640" cy="253" r="5" fill="#dc2626"/>
+
+  <!-- Curve 2: Random MAE (Dashed Red) -->
+  <polyline points="180,100 300,115 420,131 540,146" fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="5,5"/>
+  <circle cx="300" cy="115" r="4" fill="#f87171"/>
+  <circle cx="420" cy="131" r="4" fill="#f87171"/>
+  <circle cx="540" cy="146" r="4" fill="#f87171"/>
+
+  <!-- Curve 3: Hybrid Gradient Sharpness (Blue) -->
+  <polyline points="180,95 300,138 420,165 540,186 640,254" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <circle cx="180" cy="95" r="5" fill="#2563eb"/>
+  <circle cx="300" cy="138" r="5" fill="#2563eb"/>
+  <circle cx="420" cy="165" r="5" fill="#2563eb"/>
+  <circle cx="540" cy="186" r="5" fill="#2563eb"/>
+  <circle cx="640" cy="254" r="5" fill="#2563eb"/>
+
+  <!-- Legend -->
+  <g transform="translate(180, 365)">
+    <line x1="0" y1="8" x2="25" y2="8" stroke="#dc2626" stroke-width="3"/>
+    <text x="32" y="12" font-size="11" fill="#334155">Hybrid MAE (Error ↓)</text>
+    <line x1="180" y1="8" x2="205" y2="8" stroke="#f87171" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="212" y="12" font-size="11" fill="#334155">Random MAE</text>
+    <line x1="330" y1="8" x2="355" y2="8" stroke="#2563eb" stroke-width="3"/>
+    <text x="362" y="12" font-size="11" fill="#334155">Hybrid Gradient Magnitude (Sharpness ↑)</text>
+  </g>
+</svg>

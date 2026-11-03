@@ -1,0 +1,6 @@
+spatial_fold,n_tiles,mean_mae_s0,mean_mae_hybrid_20,mean_mae_random_20,mean_mae_sobel_20,paired_diff_vs_rnd,t_p_vs_rnd,wilcoxon_p_vs_rnd,cohens_d_vs_rnd,win_rate_vs_rnd_pct,paired_diff_vs_s0,t_p_vs_s0,win_rate_vs_s0_pct,consistency_verdict
+fold_0,21,0.08452,0.08020,0.08224,0.08168,-0.00204,6.2025e-05,5.2452e-05,-1.1008,90.48%,-0.00432,1.9777e-04,85.71%,Consistent advantage across all folds
+fold_1,21,0.08338,0.08015,0.08198,0.08146,-0.00183,7.6804e-04,8.5163e-04,-0.8647,90.48%,-0.00323,1.5982e-04,90.48%,Consistent advantage across all folds
+fold_2,21,0.08684,0.08197,0.08485,0.08334,-0.00288,6.0527e-09,9.5367e-07,-2.0991,100.00%,-0.00487,1.6466e-10,100.00%,Consistent advantage across all folds
+fold_3,22,0.07849,0.07506,0.07702,0.07565,-0.00196,2.9742e-04,4.2820e-04,-0.9225,86.36%,-0.00343,3.5285e-05,95.45%,Consistent advantage across all folds
+fold_4,22,0.08668,0.08221,0.08461,0.08340,-0.00240,6.6814e-06,1.5736e-05,-1.2677,90.91%,-0.00447,8.1121e-07,90.91%,Consistent advantage across all folds

@@ -1,0 +1,6 @@
+tile_id,seed,valid_frames,selected_stack_indices_zero_based,selection_note
+20771_46525,0,32,24 31 28 13 1 8 16 15,reconstructed by replaying format_s2naip_data in tile order; indices were not recorded by original inference run
+20890_46801,0,32,25 29 31 26 9 15 11 18,reconstructed by replaying format_s2naip_data in tile order; indices were not recorded by original inference run
+20926_46045,0,32,13 16 4 9 29 24 3 19,reconstructed by replaying format_s2naip_data in tile order; indices were not recorded by original inference run
+21068_45692,0,32,16 29 17 22 25 19 4 9,reconstructed by replaying format_s2naip_data in tile order; indices were not recorded by original inference run
+21856_49804,0,32,6 23 2 28 27 21 10 15,reconstructed by replaying format_s2naip_data in tile order; indices were not recorded by original inference run

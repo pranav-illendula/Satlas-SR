@@ -1,0 +1,136 @@
+{
+  "experiment_id": "satlas_sr_small_esrgan_reproduction_v2",
+  "audit_date_utc": "2026-10-22",
+  "repository": {
+    "root": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution",
+    "git_branch": "experiments",
+    "git_head_commit": "3e67973f6746bedbd91cc032b4888574980e1daf",
+    "modified_tracked_files": [
+      "ssr/infer.py",
+      "ssr/metrics/clipscore.py",
+      "ssr/data/s2-naip_dataset.py"
+    ]
+  },
+  "environment": {
+    "os": "Windows 11 / Windows NT 64-bit",
+    "python_version": "3.9.6 (tags/v3.9.6:db3ff76, Jun 28 2021, 15:26:21) [MSC v.1929 64 bit (AMD64)]",
+    "pytorch_version": "2.1.0+cu121",
+    "cuda_version": "12.1",
+    "gpu": "NVIDIA RTX 2000 Ada Generation",
+    "vram_gb": 16.0,
+    "key_libraries": {
+      "torchvision": "0.16.0+cu121",
+      "open_clip": "3.3.0",
+      "lpips": "0.1.4 (installed in venv)",
+      "scikit-image": "0.24.0",
+      "scipy": "1.13.1",
+      "numpy": "1.26.4"
+    }
+  },
+  "dataset": {
+    "name": "small_val_set",
+    "sample_count": 256,
+    "sentinel2_path": "C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set/sentinel2",
+    "naip_reference_path": "C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set/naip",
+    "pairing_correspondence": "256 / 256 exact 3-way match (S2 tci.png, NAIP rgb.png, SR prediction)"
+  },
+  "model": {
+    "variant": "SSR_RRDBNet (Multi-Frame ESRGAN)",
+    "scale_factor": 4,
+    "input_channels": 24,
+    "output_channels": 3,
+    "feature_channels": 64,
+    "growth_channels": 32,
+    "rrdb_blocks": 23,
+    "total_parameters": 16707331,
+    "checkpoint_path": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/experiments/esrgan_8S2.pth",
+    "checkpoint_sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+    "loaded_parameter_key": "params_ema",
+    "strict_loading": true
+  },
+  "inference_configuration": {
+    "config_path": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/ssr/options/infer_satlas_full_validation.yml",
+    "config_sha256": "946a3c79c8463cac506e1187cf0ebf9d6e7a12a210c0915dfb5a8999205a9904",
+    "manual_seed": 0,
+    "frame_selection_policy": "Sorted tile IDs; black pixel filter; uniform random.sample of 8 frames with fixed seed 0",
+    "output_directory": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/results/satlas_sr_full_validation",
+    "manifest_path": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/results/satlas_sr_full_validation/inference_manifest.csv"
+  },
+  "metric_configurations": {
+    "cpsnr": {
+      "function": "calculate_cpsnr",
+      "crop_border": 4,
+      "max_offset": 8,
+      "offset_stride": 2,
+      "offsets_tested": 81,
+      "brightness_bias_compensation": true
+    },
+    "lpips": {
+      "function": "calculate_lpips",
+      "backbone": "vgg16",
+      "weights": "official vgg.pth",
+      "input_range": "[0, 1] scaled by internal scaling_layer"
+    },
+    "clipscore": {
+      "function": "calculate_clipscore",
+      "model_tag": "ViT-bigG-14-CLIPA-336",
+      "pretrained_tag": "datacomp1b",
+      "interpolation_size": [336, 336],
+      "input_normalization": "div 255 into [0, 1] (unstandardized)"
+    },
+    "psnr": {
+      "function": "calculate_psnr",
+      "crop_border": 4
+    },
+    "ssim": {
+      "function": "calculate_ssim",
+      "crop_border": 4,
+      "window_size": 11,
+      "gaussian_sigma": 1.5
+    }
+  },
+  "aggregate_metrics": {
+    "sample_count": 256,
+    "cpsnr_crop4_mean": 20.2144,
+    "cpsnr_crop4_std": 4.1478,
+    "cpsnr_crop4_median": 19.46,
+    "cpsnr_crop4_95ci": [19.6852, 20.7486],
+    "psnr_crop4_mean": 18.887,
+    "psnr_crop4_std": 3.86,
+    "psnr_crop4_median": 18.3366,
+    "psnr_crop4_95ci": [18.4129, 19.3646],
+    "cpsnr_gain_mean": 1.3274,
+    "cpsnr_gain_median": 0.6076,
+    "ssim_mean": 0.3912,
+    "ssim_std": 0.1564,
+    "ssim_median": 0.3784,
+    "ssim_95ci": [0.373, 0.4113],
+    "lpips_mean": 0.347,
+    "lpips_std": 0.0809,
+    "lpips_median": 0.3396,
+    "lpips_95ci": [0.3375, 0.3572],
+    "clipscore_mean": 0.9612,
+    "clipscore_std": 0.0344,
+    "clipscore_median": 0.9736,
+    "clipscore_95ci": [0.9569, 0.965]
+  },
+  "spatial_registration_diagnostic": {
+    "total_tiles": 256,
+    "reliable_tiles": 214,
+    "reliable_fraction_pct": 83.6,
+    "reliable_subset_displacement_mean_px": 3.863,
+    "reliable_subset_displacement_std_px": 5.741,
+    "reliable_subset_displacement_median_px": 1.736,
+    "reliable_subset_within_2px_pct": 55.6,
+    "reliable_subset_within_8px_pct": 86.9,
+    "spectral_wraparound_flagged_tiles": 14,
+    "low_correlation_flagged_tiles": 37,
+    "extreme_outlier_flagged_tiles": 5
+  },
+  "known_limitations_and_deviations": [
+    "cPSNR uses a 2-pixel stride grid search, under-estimating alignment for odd-pixel translations",
+    "CLIPScore input is divided by 255 without ImageNet mean/std standardization, compressing cosine similarity dynamic range to [0.73, 1.00]",
+    "Raw unwindowed Fourier phase correlation suffers from periodic boundary wraparound on 14 tiles (mean 8.58 px artifact), resolved by windowed phase correlation and NCC",
+    "small_val_set is an urban 256-tile subset and does not represent global test performance across diverse biomes"
+  ]
+}

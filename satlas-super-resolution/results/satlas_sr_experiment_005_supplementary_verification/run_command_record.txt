@@ -1,0 +1,13 @@
+Experiment: EXP-005 (Supplementary PDF Verification)
+Timestamp: 2026-10-22T09:44:00Z
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Git Commit: 3e67973f6746bedbd91cc032b4888574980e1daf (branch: experiments)
+Remote Commit Inspected: 7ccf8d118307cfc58062d488fd8b7c3ab27e2fa6 (branch: origin/favyen/20260322-update-links-from-r2-to-gcs)
+Downloaded Asset: Zooming_Out_On_Zooming_In_Supplementary.pdf
+Download URL: https://storage.googleapis.com/satlas-satellite-super-resolution/Zooming_Out_On_Zooming_In_Supplementary.pdf
+Download HTTP Status: 200 OK
+Download Content-Length: 1748394 bytes (1.67 MB / 1.74 MB nominal)
+Download SHA-256: ebdf117d07337a0fd65f639fd85c12ac67e54d7ce0ed3e00b8859a81f2e7c51a
+Target Directory: results/satlas_sr_experiment_005_supplementary_verification/
+Actions Performed: Inspected commit 7ccf8d1, downloaded supplementary PDF to new experiment directory, performed full text and visual OCR audit of all 7 pages.
+Safety Constraints Observed: Zero training/inference, zero dataset/checkpoint downloads, zero modifications to existing baseline files, no fabricated formulas.

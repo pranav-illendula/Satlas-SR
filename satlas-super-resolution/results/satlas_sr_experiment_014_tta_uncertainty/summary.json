@@ -1,0 +1,130 @@
+{
+  "experiment_id": "EXP-014",
+  "title": "D4 Test-Time Augmentation Uncertainty Prototype Development Evaluation",
+  "timestamp": "2026-10-23T15:20:00+05:30",
+  "evaluated_partition": "development_split_only",
+  "tile_count": 107,
+  "holdout_status": "LOCKED_UNTOUCHED",
+  "quarantine_status": "LOCKED_EXCLUDED",
+  "runtime_total_seconds": 60.06,
+  "registration_shifts": {
+    "mean": 1.354738,
+    "std": 1.199897,
+    "sem": 0.115998,
+    "ci95": [
+      1.12476,
+      1.584717
+    ],
+    "median": 1.0,
+    "iqr": 0.414,
+    "min": 0.0,
+    "max": 5.657
+  },
+  "spearman_rho": {
+    "tta_compensated": {
+      "mean": 0.190989,
+      "std": 0.165065,
+      "sem": 0.015957,
+      "ci95": [
+        0.159352,
+        0.222626
+      ],
+      "median": 0.18955,
+      "iqr": 0.178158,
+      "min": -0.442099,
+      "max": 0.588919
+    },
+    "tta_uncompensated": {
+      "mean": 0.200859,
+      "std": 0.162392,
+      "sem": 0.015699,
+      "ci95": [
+        0.169734,
+        0.231984
+      ],
+      "median": 0.201861,
+      "iqr": 0.174992,
+      "min": -0.441694,
+      "max": 0.588919
+    },
+    "gradient_baseline": {
+      "mean": 0.222004,
+      "std": 0.163995,
+      "sem": 0.015854,
+      "ci95": [
+        0.190572,
+        0.253436
+      ],
+      "median": 0.232301,
+      "iqr": 0.176799,
+      "min": -0.415568,
+      "max": 0.58011
+    },
+    "random_baseline": {
+      "mean": -0.000781,
+      "std": 0.008735,
+      "sem": 0.000844,
+      "ci95": [
+        -0.002455,
+        0.000893
+      ],
+      "median": -0.000746,
+      "iqr": 0.01141,
+      "min": -0.024163,
+      "max": 0.023108
+    }
+  },
+  "area_under_random_gain_aurg": {
+    "tta_aurg": {
+      "mean": 0.012466,
+      "std": 0.010726,
+      "sem": 0.001037,
+      "ci95": [
+        0.010411,
+        0.014522
+      ],
+      "median": 0.011549,
+      "iqr": 0.01019,
+      "min": -0.016444,
+      "max": 0.076447
+    },
+    "gradient_aurg": {
+      "mean": 0.012193,
+      "std": 0.009405,
+      "sem": 0.000909,
+      "ci95": [
+        0.01039,
+        0.013995
+      ],
+      "median": 0.012167,
+      "iqr": 0.01195,
+      "min": -0.017961,
+      "max": 0.040062
+    },
+    "wilcoxon_test_tta_gt_zero": {
+      "statistic": 5537.0,
+      "p_value": 9.359143933863836e-17,
+      "is_significant_p_lt_0001": true
+    }
+  },
+  "pct_mae_reduction_at_20pct_removal": {
+    "mean": 8.476664,
+    "std": 6.63299,
+    "sem": 0.641235,
+    "ci95": [
+      7.20535,
+      9.747977
+    ],
+    "median": 7.582,
+    "iqr": 5.6705,
+    "min": -13.129,
+    "max": 35.598
+  },
+  "paired_comparisons_tta_vs_gradient": {
+    "mean_difference": -0.031015,
+    "paired_t_statistic": -2.4549416974957894,
+    "paired_t_p_value": 0.01571770394674489,
+    "wilcoxon_statistic": 2174.0,
+    "wilcoxon_p_value": 0.026267883579649046
+  }
+}

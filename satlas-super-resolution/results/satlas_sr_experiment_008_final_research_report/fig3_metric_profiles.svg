@@ -1,0 +1,28 @@
+<svg width="660" height="380" viewBox="0 0 660 380" xmlns="http://www.w3.org/2000/svg" style="background:#0f172a; font-family:system-ui, -apple-system, sans-serif;">
+<text x="330.0" y="28" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="bold">Verified Satlas-SR Baseline Metric Profile (N=256 Urban Tiles)</text>
+<rect x="30" y="50" width="290" height="140" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<circle cx="50" cy="75" r="6" fill="#38bdf8"/>
+<text x="65" y="79" fill="#f1f5f9" font-size="13" font-weight="600">cPSNR (crop 4)</text>
+<text x="50" y="115" fill="#38bdf8" font-size="24" font-weight="bold">20.21 dB</text>
+<text x="50" y="138" fill="#94a3b8" font-size="11">Std: 4.15 dB  •  Min: 9.59 | Max: 39.54</text>
+<text x="50" y="165" fill="#64748b" font-size="10" font-style="italic">Spatial jitter & brightness compensated</text>
+<rect x="340" y="50" width="290" height="140" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<circle cx="360" cy="75" r="6" fill="#818cf8"/>
+<text x="375" y="79" fill="#f1f5f9" font-size="13" font-weight="600">Raw PSNR</text>
+<text x="360" y="115" fill="#818cf8" font-size="24" font-weight="bold">18.81 dB</text>
+<text x="360" y="138" fill="#94a3b8" font-size="11">Std: 3.81 dB  •  Min: 5.73 | Max: 33.82</text>
+<text x="360" y="165" fill="#64748b" font-size="10" font-style="italic">Unaligned MSE pixel fidelity</text>
+<rect x="30" y="205" width="290" height="140" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<circle cx="50" cy="230" r="6" fill="#f43f5e"/>
+<text x="65" y="234" fill="#f1f5f9" font-size="13" font-weight="600">VGG LPIPS</text>
+<text x="50" y="270" fill="#f43f5e" font-size="24" font-weight="bold">0.3470</text>
+<text x="50" y="293" fill="#94a3b8" font-size="11">Std: 0.0809  •  Min: 0.144 | Max: 0.720</text>
+<text x="50" y="320" fill="#64748b" font-size="10" font-style="italic">Deep feature perceptual distance</text>
+<rect x="340" y="205" width="290" height="140" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+<circle cx="360" cy="230" r="6" fill="#34d399"/>
+<text x="375" y="234" fill="#f1f5f9" font-size="13" font-weight="600">CLIPScore</text>
+<text x="360" y="270" fill="#34d399" font-size="24" font-weight="bold">0.9612</text>
+<text x="360" y="293" fill="#94a3b8" font-size="11">Std: 0.0344  •  Min: 0.777 | Max: 0.993</text>
+<text x="360" y="320" fill="#64748b" font-size="10" font-style="italic">CLIPA-ViT cosine semantic alignment</text>
+<text x="330.0" y="368" text-anchor="middle" fill="#64748b" font-size="11">Evaluated on small ESRGAN (16.71M parameters) against NAIP ground truth</text>
+</svg>

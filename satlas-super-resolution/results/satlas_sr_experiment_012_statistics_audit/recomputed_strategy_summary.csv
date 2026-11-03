@@ -1,0 +1,36 @@
+strategy_id,strategy_name,strategy_type,metric_key,metric_name,direction,n_tiles,mean,sample_std_ddof1,population_std_ddof0,standard_error_sem,ci_95_half_width,ci_95_lower,ci_95_upper,median,iqr,min,max
+S0,Baseline Frozen (Seed 0),Pseudorandom,cpsnr_crop4_db,"cPSNR (crop 4, dB)",higher,256,20.2144,4.1478,4.1397,0.2592,0.5105,19.7039,20.725,19.46,3.6366,9.5912,39.5373
+S0,Baseline Frozen (Seed 0),Pseudorandom,psnr_raw_db,"PSNR (raw, dB)",higher,256,18.8122,3.8138,3.8064,0.2384,0.4694,18.3428,19.2817,18.322,3.4621,5.726,33.8205
+S0,Baseline Frozen (Seed 0),Pseudorandom,ssim_crop4,SSIM (crop 4),higher,256,0.3912,0.1564,0.1561,0.0098,0.0192,0.372,0.4105,0.3784,0.1687,0.0501,0.9129
+S0,Baseline Frozen (Seed 0),Pseudorandom,lpips_vgg,LPIPS (VGG),lower,256,0.347,0.0809,0.0807,0.0051,0.01,0.337,0.3569,0.3396,0.0834,0.1443,0.7196
+S0,Baseline Frozen (Seed 0),Pseudorandom,clipscore,CLIPScore,higher,256,0.9612,0.0344,0.0343,0.0021,0.0042,0.9569,0.9654,0.9736,0.0293,0.7768,0.993
+S1,Alternate Seed (Seed 42),Pseudorandom,cpsnr_crop4_db,"cPSNR (crop 4, dB)",higher,256,20.1872,4.1625,4.1544,0.2602,0.5123,19.6748,20.6995,19.2621,4.0075,9.5724,38.6298
+S1,Alternate Seed (Seed 42),Pseudorandom,psnr_raw_db,"PSNR (raw, dB)",higher,256,18.7367,3.8237,3.8162,0.239,0.4706,18.266,19.2073,18.4192,3.5809,6.4593,34.4597
+S1,Alternate Seed (Seed 42),Pseudorandom,ssim_crop4,SSIM (crop 4),higher,256,0.3904,0.1592,0.1589,0.01,0.0196,0.3708,0.41,0.3695,0.1909,0.0519,0.9139
+S1,Alternate Seed (Seed 42),Pseudorandom,lpips_vgg,LPIPS (VGG),lower,256,0.3466,0.0811,0.0809,0.0051,0.01,0.3366,0.3566,0.3378,0.0798,0.1237,0.7328
+S1,Alternate Seed (Seed 42),Pseudorandom,clipscore,CLIPScore,higher,256,0.962,0.0296,0.0295,0.0018,0.0036,0.9583,0.9656,0.9733,0.0318,0.8375,0.995
+S2,Sorted Baseline (Permutation Isolation),Content-Matched,cpsnr_crop4_db,"cPSNR (crop 4, dB)",higher,256,20.1965,4.1172,4.1091,0.2573,0.5067,19.6898,20.7033,19.5104,3.3884,9.6453,39.6643
+S2,Sorted Baseline (Permutation Isolation),Content-Matched,psnr_raw_db,"PSNR (raw, dB)",higher,256,18.7981,3.8085,3.801,0.238,0.4688,18.3293,19.2669,18.3712,3.5033,5.9484,35.3921
+S2,Sorted Baseline (Permutation Isolation),Content-Matched,ssim_crop4,SSIM (crop 4),higher,256,0.3906,0.1568,0.1565,0.0098,0.0193,0.3713,0.4099,0.3766,0.1756,0.0483,0.917
+S2,Sorted Baseline (Permutation Isolation),Content-Matched,lpips_vgg,LPIPS (VGG),lower,256,0.3471,0.0811,0.081,0.0051,0.01,0.3371,0.3571,0.3416,0.0821,0.1406,0.7036
+S2,Sorted Baseline (Permutation Isolation),Content-Matched,clipscore,CLIPScore,higher,256,0.9606,0.0345,0.0344,0.0022,0.0042,0.9564,0.9649,0.9732,0.0292,0.7504,0.9938
+S3,Uniform Strided Grid,Deterministic,cpsnr_crop4_db,"cPSNR (crop 4, dB)",higher,256,20.2062,4.1177,4.1097,0.2574,0.5068,19.6994,20.713,19.6866,3.6666,9.3902,38.8249
+S3,Uniform Strided Grid,Deterministic,psnr_raw_db,"PSNR (raw, dB)",higher,256,18.7812,3.8368,3.8293,0.2398,0.4722,18.309,19.2534,18.5222,3.5892,5.8241,31.6616
+S3,Uniform Strided Grid,Deterministic,ssim_crop4,SSIM (crop 4),higher,256,0.393,0.1575,0.1572,0.0098,0.0194,0.3736,0.4124,0.3737,0.1741,0.0477,0.9144
+S3,Uniform Strided Grid,Deterministic,lpips_vgg,LPIPS (VGG),lower,256,0.3452,0.0804,0.0803,0.005,0.0099,0.3353,0.3551,0.3328,0.0798,0.1433,0.7309
+S3,Uniform Strided Grid,Deterministic,clipscore,CLIPScore,higher,256,0.9615,0.0322,0.0321,0.002,0.004,0.9575,0.9655,0.9733,0.0308,0.826,0.9933
+S4,Early Window,Deterministic,cpsnr_crop4_db,"cPSNR (crop 4, dB)",higher,256,20.2305,4.1295,4.1214,0.2581,0.5083,19.7222,20.7388,19.4505,3.8906,9.4036,38.8316
+S4,Early Window,Deterministic,psnr_raw_db,"PSNR (raw, dB)",higher,256,18.7957,3.8759,3.8684,0.2422,0.4771,18.3187,19.2728,18.3225,3.6331,6.441,34.6599
+S4,Early Window,Deterministic,ssim_crop4,SSIM (crop 4),higher,256,0.3909,0.1557,0.1554,0.0097,0.0192,0.3717,0.4101,0.3706,0.175,0.0441,0.9069
+S4,Early Window,Deterministic,lpips_vgg,LPIPS (VGG),lower,256,0.347,0.0781,0.0779,0.0049,0.0096,0.3373,0.3566,0.3362,0.072,0.1373,0.7471
+S4,Early Window,Deterministic,clipscore,CLIPScore,higher,256,0.9617,0.0317,0.0316,0.002,0.0039,0.9578,0.9656,0.9726,0.0279,0.8306,0.9951
+S5,Late Window,Deterministic,cpsnr_crop4_db,"cPSNR (crop 4, dB)",higher,256,20.1899,4.1882,4.18,0.2618,0.5155,19.6744,20.7053,19.4282,3.9002,9.3649,39.1345
+S5,Late Window,Deterministic,psnr_raw_db,"PSNR (raw, dB)",higher,256,18.7416,3.773,3.7656,0.2358,0.4644,18.2772,19.206,18.5594,3.5789,6.4599,35.1943
+S5,Late Window,Deterministic,ssim_crop4,SSIM (crop 4),higher,256,0.3875,0.1593,0.159,0.01,0.0196,0.3679,0.4071,0.3682,0.1899,0.0532,0.9088
+S5,Late Window,Deterministic,lpips_vgg,LPIPS (VGG),lower,256,0.3466,0.0805,0.0803,0.005,0.0099,0.3367,0.3565,0.3358,0.0746,0.1724,0.679
+S5,Late Window,Deterministic,clipscore,CLIPScore,higher,256,0.9614,0.0331,0.033,0.0021,0.0041,0.9573,0.9655,0.9735,0.0306,0.7961,0.9943
+S6,Low-Brightness Heuristic,Content-Heuristic,cpsnr_crop4_db,"cPSNR (crop 4, dB)",higher,256,20.2324,4.0905,4.0825,0.2557,0.5035,19.7289,20.7358,19.5005,3.4684,9.7772,38.8807
+S6,Low-Brightness Heuristic,Content-Heuristic,psnr_raw_db,"PSNR (raw, dB)",higher,256,18.5344,3.6281,3.621,0.2268,0.4466,18.0879,18.981,18.3368,3.7883,7.7782,32.4177
+S6,Low-Brightness Heuristic,Content-Heuristic,ssim_crop4,SSIM (crop 4),higher,256,0.386,0.1555,0.1552,0.0097,0.0191,0.3668,0.4051,0.3582,0.1853,0.0408,0.904
+S6,Low-Brightness Heuristic,Content-Heuristic,lpips_vgg,LPIPS (VGG),lower,256,0.3454,0.0795,0.0794,0.005,0.0098,0.3357,0.3552,0.334,0.0802,0.1513,0.6401
+S6,Low-Brightness Heuristic,Content-Heuristic,clipscore,CLIPScore,higher,256,0.9629,0.0304,0.0304,0.0019,0.0037,0.9591,0.9666,0.9733,0.0278,0.8141,0.9962

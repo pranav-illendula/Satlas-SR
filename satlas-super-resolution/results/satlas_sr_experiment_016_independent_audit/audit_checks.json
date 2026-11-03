@@ -1,0 +1,79 @@
+{
+  "experiment_id": "EXP-016",
+  "title": "Independent Statistical and Leakage Audit of EXP-015",
+  "timestamp": "2026-10-23T16:45:00+05:30",
+  "audit_verdict": "READY_FOR_LOCKED_HOLDOUT",
+  "summary": "All reported numerical results, cross-validation boundaries, leakage controls, and statistical hypothesis tests in EXP-015 were verified to full floating-point precision from the raw per-tile OOF data. Input sensitivity and the hybrid estimator demonstrate a massive, statistically significant out-of-fold advantage over the Sobel gradient baseline (p < 10^-10). A crucial nuance is that the hybrid's advantage is overwhelmingly driven by input sensitivity (alpha=0.19), with hybrid outperforming input sensitivity alone by a modest delta of +0.00665 (Wilcoxon p = 0.0042).",
+  "checks": [
+    {
+      "check_id": "CHK-01",
+      "category": "sample_integrity",
+      "description": "Verify exactly 107 development tiles evaluated without missing, duplicate, or non-finite values.",
+      "status": "PASS",
+      "details": "Total rows=107, unique tiles=107, non-finite values=0."
+    },
+    {
+      "check_id": "CHK-02",
+      "category": "leakage_isolation",
+      "description": "Verify zero overlap with locked holdout (107 tiles) and quarantined set (42 tiles).",
+      "status": "PASS",
+      "details": "Holdout overlap=0, Quarantine overlap=0."
+    },
+    {
+      "check_id": "CHK-03",
+      "category": "numerical_recomputation",
+      "description": "Verify exact numerical agreement between summary JSON and raw CSV derivations for all methods.",
+      "status": "PASS",
+      "details": "All means, standard deviations, confidence intervals, and medians match to full precision (<1e-5 absolute diff)."
+    },
+    {
+      "check_id": "CHK-04",
+      "category": "paired_tests_verification",
+      "description": "Verify paired hypothesis tests (Student's t, Wilcoxon signed-rank) for all method pairs.",
+      "status": "PASS",
+      "details": "Hybrid vs Sobel t=6.3481 (p=5.52e-09), Wilcoxon W=507.0 (p=1.33e-13). Verified exactly."
+    },
+    {
+      "check_id": "CHK-05",
+      "category": "relative_gain_denominators",
+      "description": "Verify that reported relative gain percentages use explicit, scientifically valid denominators.",
+      "status": "PASS",
+      "details": "Hybrid vs Sobel relative gain is +37.0% using mean(Sobel)=0.222005 as denominator: (0.304210 - 0.222005)/0.222005 = +37.03%."
+    },
+    {
+      "check_id": "CHK-06",
+      "category": "spatial_cv_leakage",
+      "description": "Verify that spatial clusters (Chebyshev distance <= 10 tiles, ~3.3km) are never split across folds.",
+      "status": "PASS",
+      "details": "All 4 multi-tile clusters in the dev set are 100% contained within individual folds. Cross-fold pairs <= 10 tiles = 0."
+    },
+    {
+      "check_id": "CHK-07",
+      "category": "training_fold_isolation",
+      "description": "Verify standardization and weight selection (alpha) depend strictly on training folds.",
+      "status": "PASS",
+      "details": "Verified in run_exp015_cv.py: mu and std computed across train_tiles only; alpha tuned on train_tiles only; validation fold strictly out-of-fold."
+    },
+    {
+      "check_id": "CHK-08",
+      "category": "component_contribution_audit",
+      "description": "Audit whether the hybrid adds value beyond Input Sensitivity alone.",
+      "status": "PASS",
+      "details": "Input sensitivity alone achieves mean rho=0.297557 (+34.0% over Sobel). Hybrid achieves rho=0.304210 (+37.0% over Sobel). Hybrid vs Input delta is +0.006653 (paired t p=0.0039, Wilcoxon p=0.0042). Hybrid wins on 62/107 tiles (57.9%)."
+    },
+    {
+      "check_id": "CHK-09",
+      "category": "metric_definitions_and_synthetic_tests",
+      "description": "Verify mathematical distinction between AUSE and AURG and validation on synthetic unit tests.",
+      "status": "PASS",
+      "details": "All 5 synthetic unit tests in metric_unit_tests.txt passed. Mathematical definitions strictly documented."
+    },
+    {
+      "check_id": "CHK-10",
+      "category": "scientific_claim_boundaries",
+      "description": "Verify that no claims of calibration, geodetic accuracy, or building-level accuracy are made.",
+      "status": "PASS",
+      "details": "EXP-015 explicitly caveats that results represent uncalibrated error-ranking heuristics and building evaluation is impossible locally."
+    }
+  ]
+}

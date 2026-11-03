@@ -1,0 +1,106 @@
+{
+  "dataset_root": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\data\\small_val_set",
+  "inference_manifest": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_full_validation\\inference_manifest.csv",
+  "sentinel2_tile_directories_discovered": 256,
+  "naip_reference_pngs_discovered": 256,
+  "matched_tile_pairs": 256,
+  "inference_manifest_rows": 256,
+  "duplicate_manifest_tile_ids": [],
+  "duplicate_or_ambiguous_naip_tile_ids": [],
+  "inference_status_counts": {
+    "OK": 256
+  },
+  "missing_or_malformed_file_counts": {
+    "s2_input": 0,
+    "lr_preview": 0,
+    "prediction": 0,
+    "reference": 0
+  },
+  "evaluation_status_counts": {
+    "METRICS_COMPUTED_EXPLORATORY": 256
+  },
+  "excluded_tile_count": 0,
+  "metric_assumptions": {
+    "array_compatibility": "RGB PNG, matching 128x128 dimensions, uint8 range 0-255 required; checked per tile",
+    "spatial_registration": "UNVERIFIED; all computed values are exploratory raw aligned-array comparisons",
+    "temporal_comparability": "source pairing window documented, but individual S2 frame timestamps/cloud status unavailable in this archive",
+    "data_range": 255,
+    "psnr": "skimage.metrics.peak_signal_noise_ratio(reference, prediction, data_range=255)",
+    "ssim": "skimage.metrics.structural_similarity(reference, prediction, data_range=255, channel_axis=-1, win_size=7, gaussian_weights=False, use_sample_covariance=True)"
+  },
+  "aggregate_exploratory_metrics": {
+    "n_tiles": 256,
+    "psnr_db_mean": 18.81224829175781,
+    "psnr_db_sample_std": 3.8138185460326985,
+    "ssim_mean": 0.3949644300390625,
+    "ssim_sample_std": 0.14953924099388005
+  },
+  "image_value_ranges_uint8": {
+    "prediction": [
+      0,
+      255
+    ],
+    "reference": [
+      0,
+      255
+    ],
+    "lr_preview": [
+      20,
+      255
+    ]
+  },
+  "per_tile_errors": [],
+  "pilot_exact_comparison": [
+    {
+      "tile_id": "20771_46525",
+      "full_selected_indices": "24 31 28 13 1 8 16 15",
+      "reconstructed_indices_match": true,
+      "sr_byte_identical": true,
+      "lr_byte_identical": true
+    },
+    {
+      "tile_id": "20890_46801",
+      "full_selected_indices": "25 29 31 26 9 15 11 18",
+      "reconstructed_indices_match": true,
+      "sr_byte_identical": true,
+      "lr_byte_identical": true
+    },
+    {
+      "tile_id": "20926_46045",
+      "full_selected_indices": "13 16 4 9 29 24 3 19",
+      "reconstructed_indices_match": true,
+      "sr_byte_identical": true,
+      "lr_byte_identical": true
+    },
+    {
+      "tile_id": "21068_45692",
+      "full_selected_indices": "16 29 17 22 25 19 4 9",
+      "reconstructed_indices_match": true,
+      "sr_byte_identical": true,
+      "lr_byte_identical": true
+    },
+    {
+      "tile_id": "21856_49804",
+      "full_selected_indices": "6 23 2 28 27 21 10 15",
+      "reconstructed_indices_match": true,
+      "sr_byte_identical": true,
+      "lr_byte_identical": true
+    }
+  ],
+  "evaluation_elapsed_seconds": 3.161,
+  "warning": "metrics are not evidence of validated pixel accuracy because pixel registration is not verified",
+  "contact_sheet_tiles": [
+    "20771_46525",
+    "20890_46801",
+    "20926_46045",
+    "21068_45692",
+    "21856_49804",
+    "21948_50040",
+    "25531_46101",
+    "31466_53021",
+    "32926_49699",
+    "35052_52238",
+    "36470_52258",
+    "38719_48115"
+  ]
+}

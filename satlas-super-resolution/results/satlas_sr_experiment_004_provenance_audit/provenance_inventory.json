@@ -1,0 +1,98 @@
+{
+  "experiment_id": "EXP-004",
+  "title": "Authoritative Metric Provenance and Model Availability Audit",
+  "timestamp": "2026-10-22T09:37:00Z",
+  "investigation_scope": {
+    "target_paper": "Zooming Out on Zooming In: Advancing Super-Resolution for Remote Sensing (arXiv:2311.18082v1)",
+    "official_repository": "https://github.com/allenai/satlas-super-resolution.git",
+    "active_branch": "experiments (commit 3e67973f6746bedbd91cc032b4888574980e1daf)",
+    "inspected_remote_branches": [
+      "origin/main",
+      "origin/experiments",
+      "origin/favyen/20260322-update-links-from-r2-to-gcs (commit 7ccf8d1)"
+    ]
+  },
+  "task1_lpips_agreement_procedure": {
+    "status": "AUTHORITATIVE_SOURCE_DISCOVERED_BUT_UNPROCESSED",
+    "paper_claim": "The reported LPIPS scores are converted to an accuracy, so with each of these metrics, higher is better (Table 2 caption, page 5).",
+    "manuscript_findings": {
+      "main_text_equation": null,
+      "main_text_calibration_constants": null,
+      "reference_section": "Supplementary Section A.1 (referenced in Section 3.1)"
+    },
+    "supplementary_url_audit": {
+      "original_url_in_paper": "https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/Zooming_Out_On_Zooming_In_Supplementary.pdf",
+      "original_url_status": "HTTP 401 Unauthorized (Private Cloudflare R2 bucket)",
+      "updated_url_discovered": "https://storage.googleapis.com/satlas-satellite-super-resolution/Zooming_Out_On_Zooming_In_Supplementary.pdf",
+      "discovered_in_commit": "7ccf8d1 (branch origin/favyen/20260322-update-links-from-r2-to-gcs)",
+      "updated_url_status": "HTTP 200 OK (Content-Length: 1748394 bytes, 1.74 MB, verified via HTTP HEAD request)",
+      "download_status": "NOT_DOWNLOADED (observed strict constraint against downloading external assets)"
+    },
+    "repository_code_audit": {
+      "evaluation_script": "ssr/test.py",
+      "model_validation_loop": "ssr/models/ssr_esrgan_model.py (lines 339-354)",
+      "metric_function": "ssr/metrics/lpips.py (calculate_lpips)",
+      "finding": "The repository codebase only calculates raw VGG LPIPS distance and arithmetic mean; no LPIPS-to-accuracy post-processing conversion script was integrated into the repo."
+    }
+  },
+  "task2_medium_esrgan_checkpoint_audit": {
+    "status": "CHECKPOINT_UNRELEASED_BY_AUTHORS",
+    "target_model": "ESRGAN Medium (~87M parameters, used in Table 2 method comparison)",
+    "architecture_specification": {
+      "generator_class": "SSR_RRDBNet",
+      "config_file": "ssr/options/experiments/esrgan_larger1.yml",
+      "num_in_ch": 24,
+      "num_out_ch": 3,
+      "scale": 4,
+      "num_feat": 128,
+      "num_block": 23,
+      "num_grow_ch": 64,
+      "generator_parameters": 66782083,
+      "discriminator_class": "SSR_UNetDiscriminatorSN (num_feat=128)",
+      "discriminator_parameters": 17530497,
+      "total_training_parameters": 84312580
+    },
+    "availability_audit": {
+      "released_checkpoints_in_readme": [
+        {"name": "esrgan_1S2.pth", "variant": "Small (16.71M)", "config": "esrgan_baseline_1S2.yml"},
+        {"name": "esrgan_2S2.pth", "variant": "Small (16.71M)", "config": "esrgan_baseline_2S2.yml"},
+        {"name": "esrgan_4S2.pth", "variant": "Small (16.71M)", "config": "esrgan_baseline_4S2.yml"},
+        {"name": "esrgan_8S2.pth", "variant": "Small (16.71M)", "config": "esrgan_baseline.yml"},
+        {"name": "esrgan_16S2.pth", "variant": "Small (16.71M)", "config": "esrgan_baseline_16S2.yml"},
+        {"name": "srcnn_s2naip.pth", "variant": "SRCNN", "config": "srcnn_s2naip_urban.yml"},
+        {"name": "highresnet_s2naip.pth", "variant": "HighResNet", "config": "highresnet_s2naip_urban.yml"}
+      ],
+      "medium_checkpoint_released": false,
+      "public_url_exists": false,
+      "documented_checksum_exists": false,
+      "conclusion": "The authors published the training configuration (esrgan_larger1.yml) but never publicly released the pretrained weights for the 87M medium ESRGAN. The local 16.71M small checkpoint (experiments/esrgan_8S2.pth) is authentic but represents an independent small-scale baseline."
+    }
+  },
+  "task3_full_benchmark_reproducibility": {
+    "validation_split_definition": {
+      "official_val_set_tiles": 8192,
+      "official_val_set_archive": "super_resolution_val_set_2024-01-09.tar (approx 40 GB)",
+      "small_val_set_tiles": 256,
+      "small_val_set_status": "Officially curated urban regression subset; authentic but geographically biased towards high-density cities (population >= 50k within 5km radius)."
+    },
+    "preprocessing_and_metrics_protocol": {
+      "frame_count": 8,
+      "spatial_dimensions": "Input: 24x32x32 -> Output: 3x128x128 (scale factor 4)",
+      "normalization": "RGB / 255.0 to [0.0, 1.0]",
+      "border_crop": "crop_border = 4 pixels",
+      "cpsnr_search": "[-8, +8] window, stride 2 (81 candidate offsets), per-channel brightness bias compensation",
+      "temporal_metadata": "UNAVAILABLE (tile stacks lack acquisition dates and cloud percentages)"
+    },
+    "official_evaluation_code": {
+      "status": "PUBLICLY_AVAILABLE",
+      "source_files": [
+        "ssr/test.py",
+        "ssr/models/ssr_esrgan_model.py",
+        "ssr/metrics/cpsnr.py",
+        "ssr/metrics/clipscore.py",
+        "ssr/metrics/lpips.py"
+      ]
+    }
+  },
+  "conclusive_recommendation": "DOCUMENT_REPRODUCTION_LIMITATION_AND_MAINTAIN_SMALL_BASELINE"
+}

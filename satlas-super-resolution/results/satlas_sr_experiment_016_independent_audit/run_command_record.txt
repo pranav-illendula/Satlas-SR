@@ -1,0 +1,23 @@
+# EXP-016: Execution and Audit Command Record
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Timestamp: 2026-10-23T16:45:00+05:30
+
+## Command 1: Create Output Directory
+Command:
+powershell -ExecutionPolicy Bypass -Command "New-Item -ItemType Directory -Force -Path 'results/satlas_sr_experiment_016_independent_audit'"
+Exit Code: 0
+Outcome: Created results/satlas_sr_experiment_016_independent_audit.
+
+## Command 2: Independent Statistical, Leakage, and Spatial CV Audit
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\audit_exp015.py'
+Exit Code: 0
+Outcome:
+- Recomputed all distribution statistics (mean, SD, SEM, 95% CI, median, IQR, min, max) for all 5 methods.
+- Recomputed all paired differences, relative gains with explicit denominators, Cohen's d, paired t-tests, and Wilcoxon signed-rank tests.
+- Audited spatial cross-validation fold manifest: verified minimum Chebyshev distance between tiles in different folds is 12 tiles (>3.6 km), with 0 pairs <= 10 tiles split across folds.
+- Audited data leakage: verified 0 overlap with holdout or quarantine sets, and verified training-fold isolation of standardization parameters and alpha selection.
+- Generated results/satlas_sr_experiment_016_independent_audit/recomputed_metrics.csv.
+- Generated results/satlas_sr_experiment_016_independent_audit/recomputed_paired_tests.csv.
+- Generated results/satlas_sr_experiment_016_independent_audit/audit_checks.json.

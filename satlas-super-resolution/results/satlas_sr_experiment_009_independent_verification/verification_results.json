@@ -1,0 +1,517 @@
+{
+  "verification_meta": {
+    "experiment_id": "EXP-009",
+    "title": "Independent Numerical Verification of Satlas-SR Final Report",
+    "date": "2026-10-22T15:53:00+05:30",
+    "auditor": "Antigravity Autonomous Verification System",
+    "status": "COMPLETED",
+    "summary": {
+      "total_checks": 50,
+      "passed_checks": 49,
+      "failed_checks": 1,
+      "unverified_checks": 0
+    }
+  },
+  "checks": [
+    {
+      "check_id": "CHK-01",
+      "category": "Dataset & Rows",
+      "description": "per_tile_metrics.csv valid rows count",
+      "computed_value": 256,
+      "expected_value": 256,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Counted 256 rows in C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_paper_metrics\\per_tile_metrics.csv"
+    },
+    {
+      "check_id": "CHK-02",
+      "category": "Data Integrity",
+      "description": "Missing/NaN values across 8 primary metric columns",
+      "computed_value": 0,
+      "expected_value": 0,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Total missing count: 0"
+    },
+    {
+      "check_id": "CHK-STAT-cpsnr_crop4_db-mean",
+      "category": "Numerical Tolerance",
+      "description": "cpsnr_crop4_db mean",
+      "computed_value": 20.214439,
+      "expected_value": 20.214439,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=6.250000e-08"
+    },
+    {
+      "check_id": "CHK-STAT-cpsnr_crop4_db-std",
+      "category": "Numerical Tolerance",
+      "description": "cpsnr_crop4_db std",
+      "computed_value": 4.147816,
+      "expected_value": 4.147816,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=2.062053e-07"
+    },
+    {
+      "check_id": "CHK-STAT-cpsnr_crop4_db-min",
+      "category": "Numerical Tolerance",
+      "description": "cpsnr_crop4_db min",
+      "computed_value": 9.5912,
+      "expected_value": 9.5912,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-cpsnr_crop4_db-max",
+      "category": "Numerical Tolerance",
+      "description": "cpsnr_crop4_db max",
+      "computed_value": 39.5373,
+      "expected_value": 39.5373,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_raw_fullframe_db-mean",
+      "category": "Numerical Tolerance",
+      "description": "psnr_raw_fullframe_db mean",
+      "computed_value": 18.812246,
+      "expected_value": 18.812246,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=4.843750e-07"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_raw_fullframe_db-std",
+      "category": "Numerical Tolerance",
+      "description": "psnr_raw_fullframe_db std",
+      "computed_value": 3.81382,
+      "expected_value": 3.81382,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=4.244392e-07"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_raw_fullframe_db-min",
+      "category": "Numerical Tolerance",
+      "description": "psnr_raw_fullframe_db min",
+      "computed_value": 5.726,
+      "expected_value": 5.726,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_raw_fullframe_db-max",
+      "category": "Numerical Tolerance",
+      "description": "psnr_raw_fullframe_db max",
+      "computed_value": 33.8205,
+      "expected_value": 33.8205,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_crop4_db-mean",
+      "category": "Numerical Tolerance",
+      "description": "psnr_crop4_db mean",
+      "computed_value": 18.886987,
+      "expected_value": 18.886987,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=1.093750e-07"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_crop4_db-std",
+      "category": "Numerical Tolerance",
+      "description": "psnr_crop4_db std",
+      "computed_value": 3.859972,
+      "expected_value": 3.859972,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=4.218422e-07"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_crop4_db-min",
+      "category": "Numerical Tolerance",
+      "description": "psnr_crop4_db min",
+      "computed_value": 5.5999,
+      "expected_value": 5.5999,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-psnr_crop4_db-max",
+      "category": "Numerical Tolerance",
+      "description": "psnr_crop4_db max",
+      "computed_value": 34.7798,
+      "expected_value": 34.7798,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_raw_fullframe-mean",
+      "category": "Numerical Tolerance",
+      "description": "ssim_raw_fullframe mean",
+      "computed_value": 0.394964,
+      "expected_value": 0.394964,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=1.796875e-07"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_raw_fullframe-std",
+      "category": "Numerical Tolerance",
+      "description": "ssim_raw_fullframe std",
+      "computed_value": 0.149539,
+      "expected_value": 0.149539,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=5.581898e-08"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_raw_fullframe-min",
+      "category": "Numerical Tolerance",
+      "description": "ssim_raw_fullframe min",
+      "computed_value": 0.05701,
+      "expected_value": 0.05701,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_raw_fullframe-max",
+      "category": "Numerical Tolerance",
+      "description": "ssim_raw_fullframe max",
+      "computed_value": 0.90593,
+      "expected_value": 0.90593,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_crop4-mean",
+      "category": "Numerical Tolerance",
+      "description": "ssim_crop4 mean",
+      "computed_value": 0.391208,
+      "expected_value": 0.391208,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=8.593750e-08"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_crop4-std",
+      "category": "Numerical Tolerance",
+      "description": "ssim_crop4 std",
+      "computed_value": 0.156356,
+      "expected_value": 0.156356,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=4.563095e-07"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_crop4-min",
+      "category": "Numerical Tolerance",
+      "description": "ssim_crop4 min",
+      "computed_value": 0.05012,
+      "expected_value": 0.05012,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-ssim_crop4-max",
+      "category": "Numerical Tolerance",
+      "description": "ssim_crop4 max",
+      "computed_value": 0.91287,
+      "expected_value": 0.91287,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-lpips_vgg_distance-mean",
+      "category": "Numerical Tolerance",
+      "description": "lpips_vgg_distance mean",
+      "computed_value": 0.346965,
+      "expected_value": 0.346965,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=1.171875e-07"
+    },
+    {
+      "check_id": "CHK-STAT-lpips_vgg_distance-std",
+      "category": "Numerical Tolerance",
+      "description": "lpips_vgg_distance std",
+      "computed_value": 0.080876,
+      "expected_value": 0.080876,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=1.697663e-07"
+    },
+    {
+      "check_id": "CHK-STAT-lpips_vgg_distance-min",
+      "category": "Numerical Tolerance",
+      "description": "lpips_vgg_distance min",
+      "computed_value": 0.14425,
+      "expected_value": 0.14425,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-lpips_vgg_distance-max",
+      "category": "Numerical Tolerance",
+      "description": "lpips_vgg_distance max",
+      "computed_value": 0.71959,
+      "expected_value": 0.71959,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-clipscore_cosine_similarity-mean",
+      "category": "Numerical Tolerance",
+      "description": "clipscore_cosine_similarity mean",
+      "computed_value": 0.961174,
+      "expected_value": 0.961174,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=1.015625e-07"
+    },
+    {
+      "check_id": "CHK-STAT-clipscore_cosine_similarity-std",
+      "category": "Numerical Tolerance",
+      "description": "clipscore_cosine_similarity std",
+      "computed_value": 0.034389,
+      "expected_value": 0.034389,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=2.413720e-07"
+    },
+    {
+      "check_id": "CHK-STAT-clipscore_cosine_similarity-min",
+      "category": "Numerical Tolerance",
+      "description": "clipscore_cosine_similarity min",
+      "computed_value": 0.77681,
+      "expected_value": 0.77681,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-STAT-clipscore_cosine_similarity-max",
+      "category": "Numerical Tolerance",
+      "description": "clipscore_cosine_similarity max",
+      "computed_value": 0.99297,
+      "expected_value": 0.99297,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "diff=0.000000e+00"
+    },
+    {
+      "check_id": "CHK-DENSE-01",
+      "category": "Row Count",
+      "description": "dense_cpsnr_per_tile.csv rows",
+      "computed_value": 256,
+      "expected_value": 256,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Counted 256 rows in C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_experiment_001\\dense_cpsnr_per_tile.csv"
+    },
+    {
+      "check_id": "CHK-DENSE-02",
+      "category": "Mathematical Invariant",
+      "description": "Dense search gain monotonic non-negative property",
+      "computed_value": 0,
+      "expected_value": 0,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Violations (g < 0): 0"
+    },
+    {
+      "check_id": "CHK-DENSE-mean",
+      "category": "EXP-001 Verification",
+      "description": "Dense gain mean",
+      "computed_value": 0.1232,
+      "expected_value": 0.1232,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "Computed: 0.123233, Summary: 0.1232"
+    },
+    {
+      "check_id": "CHK-DENSE-std",
+      "category": "EXP-001 Verification",
+      "description": "Dense gain std",
+      "computed_value": 0.1848,
+      "expected_value": 0.1848,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "Computed: 0.184779, Summary: 0.1848"
+    },
+    {
+      "check_id": "CHK-DENSE-max",
+      "category": "EXP-001 Verification",
+      "description": "Dense gain max",
+      "computed_value": 1.0044,
+      "expected_value": 1.0044,
+      "tolerance": 0.0001,
+      "status": "PASS",
+      "evidence": "Computed: 1.004400, Summary: 1.0044"
+    },
+    {
+      "check_id": "CHK-DENSE-pos-count",
+      "category": "EXP-001 Verification",
+      "description": "Tiles with gain > 0 dB",
+      "computed_value": 176,
+      "expected_value": 176,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Computed: 176, Summary: 176"
+    },
+    {
+      "check_id": "CHK-CKPT-size",
+      "category": "Checkpoint Provenance",
+      "description": "Physical checkpoint exact byte size",
+      "computed_value": 134157518,
+      "expected_value": 134157518,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Actual: 134157518, Expected: 134157518"
+    },
+    {
+      "check_id": "CHK-CKPT-hash",
+      "category": "Checkpoint Provenance",
+      "description": "Physical checkpoint SHA-256 hash",
+      "computed_value": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+      "expected_value": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Actual: 167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07, Expected: 167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07"
+    },
+    {
+      "check_id": "CHK-CKPT-manifest-size",
+      "category": "Baseline Manifest Alignment",
+      "description": "Frozen manifest recorded checkpoint size",
+      "computed_value": 134157518,
+      "expected_value": 134157518,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "baseline_manifest.json line 47"
+    },
+    {
+      "check_id": "CHK-CKPT-manifest-hash",
+      "category": "Baseline Manifest Alignment",
+      "description": "Frozen manifest recorded checkpoint hash",
+      "computed_value": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+      "expected_value": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "baseline_manifest.json line 48"
+    },
+    {
+      "check_id": "CHK-GIT-branch",
+      "category": "Repository State",
+      "description": "Active git branch matches frozen baseline manifest",
+      "computed_value": "experiments",
+      "expected_value": "experiments",
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Active: experiments, Manifest: experiments"
+    },
+    {
+      "check_id": "CHK-GIT-head",
+      "category": "Repository State",
+      "description": "Active git HEAD commit matches frozen baseline manifest",
+      "computed_value": "3e67973f6746bedbd91cc032b4888574980e1daf",
+      "expected_value": "3e67973f6746bedbd91cc032b4888574980e1daf",
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "Active HEAD: 3e67973f6746bedbd91cc032b4888574980e1daf, Manifest: 3e67973f6746bedbd91cc032b4888574980e1daf"
+    },
+    {
+      "check_id": "CHK-GIT-exp008-meta",
+      "category": "Report Provenance Erratum Tracking",
+      "description": "EXP-008 metadata commit string matches active/manifest HEAD",
+      "computed_value": "eb3dcae4cae4492652b04c86cb31d167f8b9d997",
+      "expected_value": "3e67973f6746bedbd91cc032b4888574980e1daf",
+      "tolerance": 0,
+      "status": "FAIL",
+      "evidence": "EXP-008 metadata header cited 'eb3dcae4cae4492652b04c86cb31d167f8b9d997', which is an erratum carried over from EXP-006; the true active & manifest commit is '3e67973f6746bedbd91cc032b4888574980e1daf'"
+    },
+    {
+      "check_id": "CHK-SVG-fig1_cpsnr_distribution.svg",
+      "category": "SVG Figure Audit",
+      "description": "Figure fig1_cpsnr_distribution.svg XML validity & plotted value alignment",
+      "computed_value": "size=7997, valid_svg=True, plotted_val_present=True",
+      "expected_value": "Valid XML SVG with exact plotted values",
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/results/satlas_sr_experiment_008_final_research_report/fig1_cpsnr_distribution.svg"
+    },
+    {
+      "check_id": "CHK-SVG-fig2_dense_cpsnr_gain.svg",
+      "category": "SVG Figure Audit",
+      "description": "Figure fig2_dense_cpsnr_gain.svg XML validity & plotted value alignment",
+      "computed_value": "size=7110, valid_svg=True, plotted_val_present=True",
+      "expected_value": "Valid XML SVG with exact plotted values",
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/results/satlas_sr_experiment_008_final_research_report/fig2_dense_cpsnr_gain.svg"
+    },
+    {
+      "check_id": "CHK-SVG-fig3_metric_profiles.svg",
+      "category": "SVG Figure Audit",
+      "description": "Figure fig3_metric_profiles.svg XML validity & plotted value alignment",
+      "computed_value": "size=2668, valid_svg=True, plotted_val_present=True",
+      "expected_value": "Valid XML SVG with exact plotted values",
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/results/satlas_sr_experiment_008_final_research_report/fig3_metric_profiles.svg"
+    },
+    {
+      "check_id": "CHK-CLAIM-scope",
+      "category": "Scientific Integrity",
+      "description": "Declares Level 3 paper reproduction blocked due to unreleased medium model and benchmark size",
+      "computed_value": true,
+      "expected_value": true,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "FINAL_RESEARCH_REPORT.md Section 2 & 10"
+    },
+    {
+      "check_id": "CHK-CLAIM-lpips",
+      "category": "Scientific Integrity",
+      "description": "Refutes 1 - LPIPS inversion and clarifies raw VGG distance",
+      "computed_value": true,
+      "expected_value": true,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "FINAL_RESEARCH_REPORT.md Section 5 & 9"
+    },
+    {
+      "check_id": "CHK-CLAIM-clip",
+      "category": "Scientific Integrity",
+      "description": "Clarifies CLIP similarity as continuous cosine vector metric, not accuracy",
+      "computed_value": true,
+      "expected_value": true,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "FINAL_RESEARCH_REPORT.md Section 5"
+    },
+    {
+      "check_id": "CHK-CLAIM-safety",
+      "category": "Execution Safety",
+      "description": "Runbook targets safe test directory and warns against overwriting frozen results",
+      "computed_value": true,
+      "expected_value": true,
+      "tolerance": 0,
+      "status": "PASS",
+      "evidence": "FINAL_RESEARCH_REPORT.md Section 12"
+    }
+  ]
+}

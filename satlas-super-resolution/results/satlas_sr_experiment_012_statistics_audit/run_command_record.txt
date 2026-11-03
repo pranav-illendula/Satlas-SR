@@ -1,0 +1,54 @@
+================================================================================
+EXP-012: INDEPENDENT AUDIT OF EXP-011 STATISTICS RUN COMMAND RECORD
+================================================================================
+Timestamp: 2026-10-22T23:36:37+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Execution Mode: Strict Read-Only Audit of EXP-011 Statistical Artifacts vs. Frozen Baseline
+
+--------------------------------------------------------------------------------
+1. AUDITED SOURCE ARTIFACTS
+--------------------------------------------------------------------------------
+Primary Data Inputs:
+  - results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/full_per_tile_metrics.csv (1,792 rows)
+  - results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/full_strategy_summary.json
+  - results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/paired_statistical_tests.csv (30 test rows)
+  - results/satlas_sr_paper_metrics/per_tile_metrics.csv (256 baseline rows)
+  - results/satlas_sr_paper_metrics/summary.json (frozen baseline summary)
+  - results/satlas_sr_full_validation/inference_manifest.csv (baseline manifest)
+
+--------------------------------------------------------------------------------
+2. EXECUTED COMMANDS
+--------------------------------------------------------------------------------
+Command 1: Execution of Statistical Audit Script
+  Script: results/satlas_sr_experiment_012_statistics_audit/run_audit.py
+  Command:
+    & "C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe" results/satlas_sr_experiment_012_statistics_audit/run_audit.py
+  Exit Code: 0
+  Calculations Performed:
+    - S0 vs. Frozen Baseline tile-by-tile matching (256 tiles x 5 metrics = 1,280 comparisons)
+    - Recomputed strategy summary stats for 7 strategies x 5 metrics: mean, sample SD (ddof=1), population SD (ddof=0), SEM, 95% CI, median, IQR, min, max
+    - Recomputed paired hypothesis tests for 6 alternative strategies x 5 metrics: mean delta, median delta, sample SD delta, SEM delta, 95% CI, Win/Loss/Tie counts, paired t-stat, t-pval, Wilcoxon stat, Wilcoxon pval, Bonferroni correction, Benjamini-Hochberg FDR correction
+    - Detailed diagnosis of the standard deviation discrepancy between EXP-011 report table and baseline report
+
+--------------------------------------------------------------------------------
+3. GENERATED AUDIT ARTIFACTS
+--------------------------------------------------------------------------------
+Output Directory:
+  results/satlas_sr_experiment_012_statistics_audit/
+Files Created:
+  - recomputed_strategy_summary.csv (Full recomputed distribution statistics across all 7 strategies and 5 metrics)
+  - recomputed_paired_tests.csv (Full recomputed paired difference tests with both Bonferroni and FDR corrections)
+  - audit_results.json (Machine-readable audit findings, discrepancy diagnosis, and per-metric verification results)
+  - run_command_record.txt (Record of executed audit commands and parameters)
+  - STATISTICS_AUDIT_REPORT.md (Executive audit report detailing verified facts, discrepancy root cause, and recommendations)
+
+--------------------------------------------------------------------------------
+4. VERIFICATION OF STRICT SAFETY CONSTRAINTS
+--------------------------------------------------------------------------------
+- Inference rerun: NO (0 new model forward passes executed)
+- Training or fine-tuning executed: NO
+- Historical baseline files modified or overwritten: NO
+- EXP-011 files modified or overwritten: NO
+- Metric evaluation re-run: NO (computed purely from recorded CSV values)

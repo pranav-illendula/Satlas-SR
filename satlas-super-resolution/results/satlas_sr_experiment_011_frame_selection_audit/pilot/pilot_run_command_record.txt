@@ -1,0 +1,50 @@
+================================================================================
+EXP-011: SENTINEL-2 FRAME-SELECTION SENSITIVITY PILOT RUN COMMAND RECORD
+================================================================================
+Timestamp: 2026-10-22T21:43:47+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Execution Mode: Option A Pilot Only (5 Canonical Tiles, 7 Candidate Strategies, 35 Inferences)
+
+--------------------------------------------------------------------------------
+1. EXECUTED COMMANDS
+--------------------------------------------------------------------------------
+Command 1: Pilot Frame-Selection Sensitivity Runner Creation
+  Script: results/satlas_sr_experiment_011_frame_selection_audit/pilot/run_pilot_frame_selection.py
+  Outcome: Created dedicated experiment runner that isolates all predictions and metrics to pilot/ subdirectory.
+
+Command 2: Execution of Pilot Inference and Metric Suite
+  Command:
+    & "C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe" results/satlas_sr_experiment_011_frame_selection_audit/pilot/run_pilot_frame_selection.py
+  Process ID: Task task-1342
+  Exit Code: 0
+  Total Elapsed Time: 55.69 seconds
+  Inferences Executed: 35 (5 tiles x 7 strategies)
+  Predictions Verified: 35 images, all confirmed (128, 128, 3) 24-bit PNG
+  Metric Evaluations: 35 evaluations against NAIP reference (128, 128, 3)
+
+--------------------------------------------------------------------------------
+2. RECORD OF GENERATED ARTIFACTS
+--------------------------------------------------------------------------------
+- Predictions Directory:
+    results/satlas_sr_experiment_011_frame_selection_audit/pilot/predictions/ (7 subdirectories: S0..S6)
+- Frame Selection Records:
+    results/satlas_sr_experiment_011_frame_selection_audit/pilot/pilot_frame_selections.csv
+- Per-Tile Metrics:
+    results/satlas_sr_experiment_011_frame_selection_audit/pilot/pilot_per_tile_metrics.csv
+- Consolidated Statistical Summary:
+    results/satlas_sr_experiment_011_frame_selection_audit/pilot/pilot_summary.json
+- Executive Report:
+    results/satlas_sr_experiment_011_frame_selection_audit/pilot/PILOT_RESULTS.md
+- Command Execution Record:
+    results/satlas_sr_experiment_011_frame_selection_audit/pilot/pilot_run_command_record.txt
+
+--------------------------------------------------------------------------------
+3. EXECUTION SAFETY VERIFICATION
+--------------------------------------------------------------------------------
+- Full 256-tile dataset touched: NO (strictly limited to the 5 canonical tiles)
+- Frozen baseline overwritten: NO (results/satlas_sr_baseline_freeze_v1/ remains untouched)
+- Checkpoint modified: NO (experiments/esrgan_8S2.pth SHA-256 intact: 167d6b9d...)
+- Training or fine-tuning executed: NO
+- Model weights or network architecture modified: NO

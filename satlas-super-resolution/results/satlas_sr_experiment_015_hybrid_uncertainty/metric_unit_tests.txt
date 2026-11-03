@@ -1,0 +1,46 @@
+================================================================================
+EXP-015: METRIC IMPLEMENTATION UNIT TESTS ON SYNTHETIC BENCHMARKS
+================================================================================
+Definitions and Sign Conventions:
+  - Spearman Rank Correlation (rho): in [-1, +1]. Higher is better. +1 = perfect ranking.
+  - AUSE (Area Under Sparsification Error): >= 0. Lower is better. 0 = oracle perfect.
+  - AUSE_random (Random Chance Baseline Area): >= 0.
+  - AURG (Area Under Random Gain) = AUSE_random - AUSE: Higher is better. 0 = random chance.
+================================================================================
+
+[TEST CASE 1: Perfect Error Ranking (U = E)]
+  Spearman rho: 1.000000 (Expected: 1.000000)
+  AUSE: 0.000000 (Expected: 0.000000)
+  AURG: 0.021272 (Expected: > 0, exactly equal to AUSE_random)
+  MAE Reduction at 20%: 19.96%
+  Result: PASS
+
+[TEST CASE 2: Reverse Error Ranking (U = -E)]
+  Spearman rho: -1.000000 (Expected: -1.000000)
+  AUSE: 0.043708 (Expected: > AUSE_random)
+  AURG: -0.022436 (Expected: < 0)
+  MAE Reduction at 20%: -18.23% (Expected: negative, error increases)
+  Result: PASS
+
+[TEST CASE 3: Constant Uncertainty (U = 0.5)]
+  Spearman rho: 0.000000 (Expected: 0.000000 by constant tie handling)
+  AUSE: 0.021272 (Expected: exactly equal to AUSE_random)
+  AURG: 0.000000 (Expected: 0.000000)
+  MAE Reduction at 20%: 0.00% (Expected: 0.00%)
+  Result: PASS
+
+[TEST CASE 4: Random Uncertainty (U ~ U(0, 1))]
+  Spearman rho: -0.010936 (Expected: close to 0, |rho| < 0.02)
+  AUSE: 0.021561 (Expected: close to AUSE_random: 0.021272)
+  AURG: -0.000289 (Expected: close to 0, |AURG| < 0.001)
+  MAE Reduction at 20%: -0.21% (Expected: close to 0%)
+  Result: PASS
+
+[TEST CASE 5: Edge-Correlated Uncertainty with Independent Error]
+  Spearman rho: 0.001064 (Expected: ~0, proving metric is not fooled by edges alone)
+  AURG: -0.000110 (Expected: ~0)
+  Result: PASS
+
+================================================================================
+ALL 5 SYNTHETIC METRIC UNIT TESTS PASSED WITH 100% MATHEMATICAL INTEGRITY!
+================================================================================

@@ -1,0 +1,4 @@
+replacement_budget_pct,pixels_replaced_per_tile,hybrid_mean_mae,hybrid_std_mae,sobel_mean_mae,random_mean_mae,s0_baseline_mae,full_ensemble_mae,paired_diff_hyb_vs_rnd,p_val_hyb_vs_rnd,win_rate_hyb_vs_rnd,paired_diff_hyb_vs_sobel,p_val_hyb_vs_sobel,paired_diff_hyb_vs_s0,p_val_hyb_vs_s0,hybrid_mean_grad_mag,grad_mag_retention_vs_s0_pct,grad_mag_advantage_vs_ens_pct
+10%,1440,0.08151,0.03484,0.08244,0.08303,0.08396,0.07477,-0.00152,7.598e-21,92.52%,-0.00094,1.577e-11,-0.00245,3.326e-25,0.3283,-7.32%,27.32%
+20%,2880,0.07989,0.03466,0.08108,0.08212,0.08396,0.07477,-0.00222,9.856e-22,91.59%,-0.00118,1.925e-08,-0.00406,6.586e-24,0.3121,-11.91%,21.02%
+30%,4320,0.07867,0.03454,0.07990,0.08120,0.08396,0.07477,-0.00253,1.011e-20,91.59%,-0.00123,5.499e-07,-0.00528,2.809e-22,0.2994,-15.49%,16.10%

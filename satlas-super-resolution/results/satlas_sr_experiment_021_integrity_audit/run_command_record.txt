@@ -1,0 +1,24 @@
+=== EXP-021 Integrity Audit Execution Record ===
+Date: 2026-10-23
+Execution Mode: Read-Only Independent Audit
+Hardware: Workstation CPU (AMD64, Windows, Python 3.11 .venv)
+
+Audited Artifacts:
+- results/satlas_sr_experiment_020A_reconstruction_improvement/phase2_evaluation/
+- results/satlas_sr_experiment_017_locked_holdout/
+- results/satlas_sr_experiment_018_holdout_consistency_audit/
+- results/satlas_sr_experiment_019_research_report/
+
+Audit Execution Commands:
+1. Verification of split manifest alignment and partition isolation (dev vs holdout vs quarantine).
+2. Independent recomputation of Section 3 audit targets (Hybrid vs Random, Hybrid vs Sobel, Hybrid vs S0 at 20% budget).
+3. Independent recalculation of all 37 comparisons in aggregate_statistics.csv from raw per_tile_metrics.csv.
+4. Forensic code inspection of run_phase2_evaluation.py (tie handling, replacement operations, zero reference leakage).
+5. Cross-experiment reconciliation of holdout statistics across EXP-017, EXP-018, and EXP-019.
+
+Safeguards Confirmation:
+- ZERO model forward passes or training passes were executed.
+- The 107-tile locked holdout partition was NOT accessed, inspected, or evaluated for new analysis.
+- The 42 quarantined tiles were NOT included in primary calculations.
+- NO existing experiment artifacts were modified, overwritten, or deleted.
+- All verification steps operated in strict read-only mode on previously saved files.

@@ -1,0 +1,17 @@
+=== EXP-023 Execution Record ===
+Date: 2026-10-24
+Execution Script: results/satlas_sr_experiment_023_soft_blending/run_soft_blending_experiment.py
+Python: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Duration: 4.85 seconds
+Tiles Evaluated: Exactly 107 development tiles
+Holdout Access: ZERO (Strictly locked)
+Quarantined Access: ZERO (Strictly excluded)
+
+Operations Executed:
+1. Reproduction of hard top-10%, 20%, 30% hybrid replacement and S0/Ensemble baselines.
+2. 1D root-finding (Brent's method) to solve for threshold tau matching nominal blending budgets B in [0.10, 0.20, 0.30] at primary beta = 0.20.
+3. Continuous soft blending: P_soft = (1 - w)*P0 + w*Pe.
+4. Beta sensitivity analysis across grid [0.05, 0.10, 0.20, 0.40] at 20% budget.
+5. Morphological boundary band construction (dilation & ~erosion) to evaluate seam gradient discontinuity.
+6. Evaluation of visual failure and improvement case studies from EXP-022.
+7. Generation of 2 publication-quality vector SVG diagnostic figures.

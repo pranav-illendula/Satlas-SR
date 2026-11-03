@@ -1,0 +1,39 @@
+EXP-018 RUN RECORD
+================================================================================
+Timestamp: 2026-10-23T17:00:30+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Git Commit Hash: 3e67973f6746bedbd91cc032b4888574980e1daf
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Python Version: 3.10.11 (tags/v3.10.11:7d4cc5a, Apr 5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]
+Host OS: Windows 10/11 (win32)
+
+Command Executed:
+C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe results/satlas_sr_experiment_018_holdout_consistency_audit/run_audit.py
+
+Audited Artifacts:
+- results/satlas_sr_experiment_015_hybrid_uncertainty/per_tile_oof_metrics.csv
+- results/satlas_sr_experiment_015_hybrid_uncertainty/method_feasibility.json
+- results/satlas_sr_experiment_015_hybrid_uncertainty/EXP015_HYBRID_UNCERTAINTY_REPORT.md
+- results/satlas_sr_experiment_016_independent_audit/EXP016_INDEPENDENT_AUDIT_REPORT.md
+- results/satlas_sr_experiment_016_independent_audit/recomputed_metrics.csv
+- results/satlas_sr_experiment_016_independent_audit/recomputed_paired_tests.csv
+- results/satlas_sr_experiment_017_locked_holdout/preflight_protocol.json
+- results/satlas_sr_experiment_017_locked_holdout/run_holdout_evaluation.py (SHA256: 62c720245276b57d80eb4ce182a1938560ca91642363343d3ec8cb823de46943)
+- results/satlas_sr_experiment_017_locked_holdout/per_tile_holdout_metrics.csv
+- results/satlas_sr_experiment_017_locked_holdout/summary.json
+- results/satlas_sr_experiment_017_locked_holdout/run_command_record.txt
+- results/satlas_sr_experiment_017_locked_holdout/EXP017_LOCKED_HOLDOUT_REPORT.md
+
+Outputs Created:
+- results/satlas_sr_experiment_018_holdout_consistency_audit/audit_checks.json
+- results/satlas_sr_experiment_018_holdout_consistency_audit/recomputed_holdout_statistics.csv
+- results/satlas_sr_experiment_018_holdout_consistency_audit/reconciled_development_statistics.csv
+- results/satlas_sr_experiment_018_holdout_consistency_audit/run_command_record.txt
+- results/satlas_sr_experiment_018_holdout_consistency_audit/EXP018_CONSISTENCY_AUDIT_REPORT.md
+
+Execution Summary:
+- Total Checks Performed: 9
+- Checks Passed: 9
+- Checks Failed: 0
+- Checks Not Verifiable: 0
+================================================================================

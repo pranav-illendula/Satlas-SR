@@ -1,0 +1,253 @@
+{
+  "experiment_id": "EXP-015",
+  "title": "Hybrid Uncertainty Feasibility and Development-Only Out-of-Fold Evaluation",
+  "timestamp": "2026-10-23T16:30:00+05:30",
+  "total_development_tiles": 107,
+  "holdout_status": "LOCKED_UNTOUCHED",
+  "cross_validation": {
+    "num_folds": 5,
+    "grouping": "Spatially grouped clusters (Chebyshev dist <= 10 tiles)",
+    "fold_details": {
+      "fold_0": {
+        "validation_tiles_count": 21,
+        "selected_alpha": 0.2,
+        "train_best_rho": 0.30374,
+        "train_mu_tta": 0.08518,
+        "train_std_tta": 0.05186,
+        "train_mu_input": 0.05776,
+        "train_std_input": 0.04201
+      },
+      "fold_1": {
+        "validation_tiles_count": 21,
+        "selected_alpha": 0.2,
+        "train_best_rho": 0.3018,
+        "train_mu_tta": 0.08293,
+        "train_std_tta": 0.05164,
+        "train_mu_input": 0.0578,
+        "train_std_input": 0.04159
+      },
+      "fold_2": {
+        "validation_tiles_count": 21,
+        "selected_alpha": 0.2,
+        "train_best_rho": 0.3072,
+        "train_mu_tta": 0.08191,
+        "train_std_tta": 0.05146,
+        "train_mu_input": 0.05671,
+        "train_std_input": 0.04114
+      },
+      "fold_3": {
+        "validation_tiles_count": 22,
+        "selected_alpha": 0.15000000000000002,
+        "train_best_rho": 0.29388,
+        "train_mu_tta": 0.0825,
+        "train_std_tta": 0.04999,
+        "train_mu_input": 0.05731,
+        "train_std_input": 0.0399
+      },
+      "fold_4": {
+        "validation_tiles_count": 22,
+        "selected_alpha": 0.2,
+        "train_best_rho": 0.3155,
+        "train_mu_tta": 0.0831,
+        "train_std_tta": 0.0519,
+        "train_mu_input": 0.05684,
+        "train_std_input": 0.04149
+      }
+    },
+    "mean_selected_alpha": 0.19
+  },
+  "spearman_rho_compensated": {
+    "constant_baseline": 0.0,
+    "tta_uncertainty": {
+      "mean": 0.190989,
+      "std": 0.165065,
+      "sem": 0.015957,
+      "ci95": [
+        0.159352,
+        0.222626
+      ],
+      "median": 0.18955,
+      "iqr": 0.178158,
+      "min": -0.442099,
+      "max": 0.588919
+    },
+    "input_selection_sensitivity": {
+      "mean": 0.297557,
+      "std": 0.15168,
+      "sem": 0.014663,
+      "ci95": [
+        0.268486,
+        0.326629
+      ],
+      "median": 0.309489,
+      "iqr": 0.16445,
+      "min": -0.226145,
+      "max": 0.704414
+    },
+    "sobel_gradient_baseline": {
+      "mean": 0.222005,
+      "std": 0.163761,
+      "sem": 0.015831,
+      "ci95": [
+        0.190618,
+        0.253393
+      ],
+      "median": 0.23238,
+      "iqr": 0.176341,
+      "min": -0.412509,
+      "max": 0.579667
+    },
+    "hybrid_uncertainty_oof": {
+      "mean": 0.30421,
+      "std": 0.15385,
+      "sem": 0.014873,
+      "ci95": [
+        0.274722,
+        0.333698
+      ],
+      "median": 0.308066,
+      "iqr": 0.163697,
+      "min": -0.270662,
+      "max": 0.653581
+    }
+  },
+  "area_under_random_gain_aurg": {
+    "constant_baseline": 0.0,
+    "tta_uncertainty": {
+      "mean": 0.012466,
+      "std": 0.010726,
+      "sem": 0.001037,
+      "ci95": [
+        0.010411,
+        0.014522
+      ],
+      "median": 0.011549,
+      "iqr": 0.01019,
+      "min": -0.016444,
+      "max": 0.076447
+    },
+    "input_selection_sensitivity": {
+      "mean": 0.016134,
+      "std": 0.008873,
+      "sem": 0.000858,
+      "ci95": [
+        0.014433,
+        0.017835
+      ],
+      "median": 0.015902,
+      "iqr": 0.01181,
+      "min": -0.009785,
+      "max": 0.039123
+    },
+    "sobel_gradient_baseline": {
+      "mean": 0.012194,
+      "std": 0.009397,
+      "sem": 0.000908,
+      "ci95": [
+        0.010393,
+        0.013995
+      ],
+      "median": 0.012133,
+      "iqr": 0.011914,
+      "min": -0.017818,
+      "max": 0.039952
+    },
+    "hybrid_uncertainty_oof": {
+      "mean": 0.017007,
+      "std": 0.00926,
+      "sem": 0.000895,
+      "ci95": [
+        0.015232,
+        0.018782
+      ],
+      "median": 0.016953,
+      "iqr": 0.012202,
+      "min": -0.012113,
+      "max": 0.039329
+    }
+  },
+  "pct_mae_reduction_at_20pct": {
+    "constant_baseline": 0.0,
+    "tta_uncertainty": {
+      "mean": 8.476664,
+      "std": 6.63299,
+      "sem": 0.641235,
+      "ci95": [
+        7.20535,
+        9.747977
+      ],
+      "median": 7.582,
+      "iqr": 5.6705,
+      "min": -13.129,
+      "max": 35.598
+    },
+    "input_selection_sensitivity": {
+      "mean": 12.563757,
+      "std": 6.242296,
+      "sem": 0.603466,
+      "ci95": [
+        11.367326,
+        13.760188
+      ],
+      "median": 11.961,
+      "iqr": 7.6975,
+      "min": -0.445,
+      "max": 33.38
+    },
+    "sobel_gradient_baseline": {
+      "mean": 9.952318,
+      "std": 6.710269,
+      "sem": 0.648706,
+      "ci95": [
+        8.666193,
+        11.238443
+      ],
+      "median": 9.937,
+      "iqr": 7.8335,
+      "min": -13.12,
+      "max": 34.58
+    },
+    "hybrid_uncertainty_oof": {
+      "mean": 12.983841,
+      "std": 6.323841,
+      "sem": 0.611349,
+      "ci95": [
+        11.771781,
+        14.195901
+      ],
+      "median": 12.314,
+      "iqr": 7.6875,
+      "min": -2.416,
+      "max": 35.378
+    }
+  },
+  "paired_hypothesis_tests": {
+    "hybrid_vs_sobel_gradient": {
+      "mean_difference": 0.082205,
+      "paired_t_statistic": 7.4107,
+      "paired_t_p_value": 3.2014789891336786e-11,
+      "wilcoxon_statistic": 336.0,
+      "wilcoxon_p_value": 2.109138178577712e-15,
+      "aurg_wilcoxon_p_value": 3.3051551659692887e-15,
+      "superior_to_sobel": true
+    },
+    "hybrid_vs_tta": {
+      "mean_difference": 0.113221,
+      "paired_t_statistic": 8.7191,
+      "paired_t_p_value": 4.235629031816551e-14,
+      "wilcoxon_statistic": 459.0,
+      "wilcoxon_p_value": 4.2708636854199636e-14,
+      "aurg_wilcoxon_p_value": 5.57112701335034e-13,
+      "superior_to_tta": true
+    },
+    "input_vs_sobel_gradient": {
+      "mean_difference": 0.075552,
+      "paired_t_statistic": 6.3481,
+      "paired_t_p_value": 5.516314488110144e-09,
+      "wilcoxon_statistic": 507.0,
+      "wilcoxon_p_value": 1.32857672479681e-13,
+      "superior_to_sobel": true
+    }
+  },
+  "runtime_seconds": 35.98
+}

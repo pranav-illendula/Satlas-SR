@@ -1,0 +1,166 @@
+{
+  "experiment_id": "EXP-013",
+  "title": "Geospatial Alignment, Reference Validity, and Uncertainty Research Readiness Audit",
+  "timestamp": "2026-10-23T00:38:00+05:30",
+  "audit_mode": "strict_read_only",
+  "environment": {
+    "repository": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution",
+    "python_interpreter": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\.venv\\Scripts\\python.exe",
+    "target_directory": "results\\satlas_sr_experiment_013_geospatial_readiness_audit"
+  },
+  "dataset_inventory": {
+    "sentinel2_tile_count": 256,
+    "naip_tile_count": 256,
+    "matching_tile_ids": 256,
+    "missing_pairs": 0,
+    "duplicate_tiles": 0,
+    "unreadable_or_corrupted_pngs": 0,
+    "total_png_files": 2816,
+    "total_non_png_files": 0,
+    "sentinel2_bands_per_tile": 10,
+    "sentinel2_frames_per_png": 32,
+    "sentinel2_image_shape": [32, 1024],
+    "naip_image_shape": [128, 128, 3],
+    "image_data_types": "uint8"
+  },
+  "geospatial_metadata_classification": {
+    "tile_identifier": {
+      "status": "verified_and_available",
+      "value_type": "string (X_Y)",
+      "notes": "Matches Slippy Map grid index."
+    },
+    "coordinate_reference_system": {
+      "status": "verified_and_available",
+      "value": "EPSG:3857 (Web Mercator)",
+      "notes": "Standard web map tile projection."
+    },
+    "slippy_map_zoom_level": {
+      "status": "verified_and_available",
+      "value": 17,
+      "notes": "Confirmed by coordinate index ranges."
+    },
+    "bounding_box_corners": {
+      "status": "verified_and_available",
+      "derivation": "analytical_from_slippy_zoom17",
+      "notes": "Calculable directly from tile X and Y indices."
+    },
+    "ground_sampling_distance_gsd": {
+      "status": "partially_available_or_uncertain",
+      "nominal_values": {
+        "naip_resampled_gsd_meters": 2.39,
+        "sentinel2_resampled_gsd_meters": 9.55
+      },
+      "notes": "Nominal Web Mercator pixel spacing. Native airborne NAIP was 0.6m or 1.0m prior to resampling."
+    },
+    "naip_acquisition_dates": {
+      "status": "partially_available_or_uncertain",
+      "date_range": "2019-04-12 to 2019-12-15",
+      "unique_quadrangles": 239,
+      "notes": "Recovered from USGS quadrangle filenames. Exact flight time and solar angles absent."
+    },
+    "sentinel2_acquisition_dates": {
+      "status": "not_found_locally",
+      "available_timestamps_count": 0,
+      "notes": "Zero timestamps exist for the 32 Sentinel-2 frames."
+    },
+    "sentinel2_solar_geometry": {
+      "status": "not_found_locally",
+      "notes": "Sun azimuth and zenith angles completely absent."
+    },
+    "cloud_masks_qa60": {
+      "status": "not_found_locally",
+      "notes": "No QA60 or SCL probability masks found in dataset."
+    },
+    "affine_transform_matrices": {
+      "status": "not_found_locally",
+      "notes": "No .tfw, .pgw, or GeoTIFF header tags exist locally."
+    },
+    "building_footprints_and_masks": {
+      "status": "not_found_locally",
+      "available_masks_count": 0,
+      "notes": "Zero vector or raster building annotations exist locally."
+    }
+  },
+  "spatial_registration_audit_summary": {
+    "total_evaluated_tiles": 256,
+    "reliable_subset_count": 214,
+    "reliable_subset_percentage": 83.59,
+    "reliable_displacement_median_px": 1.736,
+    "reliable_displacement_mean_px": 3.863,
+    "reliable_displacement_std_px": 5.741,
+    "reliable_displacement_le_8px_pct": 86.9,
+    "quarantined_flagged_tiles_count": 42,
+    "low_correlation_ncc_lt_025_count": 37,
+    "severe_spatial_outliers_gt_15px_count": 5,
+    "cpsnr_search_window_px": [-8, 8],
+    "cpsnr_coverage_of_reliable_tiles_pct": 95.3,
+    "registration_claim_limit": "Cross-correlation establishes relative spatial texture alignment only; it does not verify absolute geodetic accuracy."
+  },
+  "building_evaluation_readiness": {
+    "can_support_building_accuracy_claims": false,
+    "has_building_labels": false,
+    "reconstruction_metric_limitation": "cPSNR, SSIM, and LPIPS evaluate whole-image RGB radiance and are dominated by background landscape (>99.9% of pixels). They cannot detect building omissions or boundary errors.",
+    "prerequisites_for_building_claims": [
+      "Co-registered authoritative vector building footprints (e.g. MS Building Footprints or OSM)",
+      "High-resolution binary raster masks aligned to NAIP grid",
+      "Temporal synchronization with 2019 NAIP aerial flights",
+      "Sub-pixel geodetic control points"
+    ]
+  },
+  "uncertainty_method_feasibility": {
+    "method_1_input_selection_sensitivity": {
+      "locally_implementable": true,
+      "evaluable_with_existing_data": true,
+      "requires_new_training": false,
+      "computational_overhead": "5x forward passes (~60s GPU)",
+      "measures": "Sensitivity to temporal observation draw (s_delta ~ 0.89 dB)",
+      "scientific_limitation": "Measures input sampling variance; not calibrated uncertainty on its own."
+    },
+    "method_2_test_time_augmentation_tta": {
+      "locally_implementable": true,
+      "evaluable_with_existing_data": true,
+      "requires_new_training": false,
+      "transformation_group": "Discrete dihedral D4 (8 transforms: 4 rotations x 2 flips)",
+      "interpolation_error": 0.0,
+      "computational_overhead": "8x forward passes (~96s GPU)",
+      "measures": "Model rotational equivariance variance and high-frequency structural stability.",
+      "scientific_limitation": "Measures geometric sensitivity; does not reflect missing sensor information."
+    },
+    "method_3_model_ensemble": {
+      "locally_implementable": false,
+      "evaluable_with_existing_data": false,
+      "requires_new_training": true,
+      "available_checkpoints_count": 1,
+      "scientific_limitation": "Only 1 checkpoint exists locally. Deterministic re-inference produces zero variance. Cannot be evaluated without external model training."
+    },
+    "method_4_error_calibration": {
+      "locally_implementable": true,
+      "evaluable_with_existing_data": true,
+      "requires_new_training": false,
+      "evaluation_metrics": ["AUSE", "AURG", "Spearman_rho", "ECE_R"],
+      "mandatory_prerequisite": "Must be evaluated on translation-compensated residuals within the 214 reliable tiles; highly vulnerable to temporal land-cover changes."
+    }
+  },
+  "proposed_next_experiment": {
+    "protocol_id": "EXP-014-PROTOCOL",
+    "status": "proposed_protocol_only_no_execution",
+    "stages": [
+      "Stage 1: Reference Validation (Filter 214 reliable tiles, apply cPSNR translation offset)",
+      "Stage 2: Uncertainty Map Generation (D4 TTA and 5-strategy Input Sensitivity)",
+      "Stage 3: Reliability & Error Calibration (AUSE, AURG, Spearman rank correlation)",
+      "Stage 4: Structural Edge-Proxy Analysis (Sobel gradient edge residuals)",
+      "Stage 5: Independent Split Validation (107 development / 107 locked holdout)"
+    ],
+    "split_design": {
+      "total_reliable_tiles": 214,
+      "development_tuning_tiles": 107,
+      "locked_holdout_evaluation_tiles": 107,
+      "quarantined_unreliable_tiles": 42
+    },
+    "success_criteria": {
+      "aurg_superior_to_random": "p < 0.001 (Wilcoxon signed-rank)",
+      "spearman_rank_correlation_median": ">= 0.30",
+      "sparsification_mae_reduction_at_20pct": ">= 15%"
+    }
+  }
+}

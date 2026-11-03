@@ -1,0 +1,38 @@
+EXP-017 RUN RECORD
+================================================================================
+Timestamp: 2026-10-23T16:50:46+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Git Commit Hash: 3e67973f6746bedbd91cc032b4888574980e1daf
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Hardware Device: NVIDIA RTX 2000 Ada Generation (CUDA)
+Host OS: Windows 10/11 (win32)
+
+Command Executed:
+C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe results/satlas_sr_experiment_017_locked_holdout/run_holdout_evaluation.py
+
+Input Manifests & Artifacts:
+- Preflight Protocol: results/satlas_sr_experiment_017_locked_holdout/preflight_protocol.json
+- Split Manifest: results/satlas_sr_experiment_014_tta_uncertainty/split_manifest.json
+- Model Checkpoint: experiments/esrgan_8S2.pth (state_dict key: params_ema)
+- Inference Manifest: results/satlas_sr_full_validation/inference_manifest.csv
+- EXP-011 Predictions: results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/predictions/
+
+Execution Parameters:
+- Total Holdout Tiles: 107
+- Frozen Alpha: 0.1900
+- Frozen One-Minus-Alpha: 0.8100
+- Frozen TTA Normalization: mu = 0.083126, std = 0.051388
+- Frozen Input Normalization: mu = 0.057286, std = 0.041238
+- Spatial Crop: Interior 120x120 pixels (border = 4 excluded)
+- Registration Policy: Integer shift (dx, dy) in [-8, 8] minimizing MSE on interior crop
+
+Outputs Generated:
+- results/satlas_sr_experiment_017_locked_holdout/per_tile_holdout_metrics.csv
+- results/satlas_sr_experiment_017_locked_holdout/summary.json
+- results/satlas_sr_experiment_017_locked_holdout/maps/ (107 compressed .npz map archives)
+- results/satlas_sr_experiment_017_locked_holdout/EXP017_LOCKED_HOLDOUT_REPORT.md
+
+Runtime:
+- Total Evaluation Time: 42.54 seconds
+- Average Latency: 0.40 seconds/tile
+================================================================================

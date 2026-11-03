@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSat-SR: Multi-Temporal Satellite Super-Resolution</title>
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- KaTeX for crisp mathematical formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: rgba(18, 26, 43, 0.75);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.25);
+            --accent: #818cf8;
+            --accent-green: #34d399;
+            --accent-amber: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(129, 140, 248, 0.08) 0%, transparent 40%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        /* Presentation Container */
+        .deck-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Slide Element */
+        .slide {
+            position: absolute;
+            width: 90vw;
+            max-width: 1400px;
+            height: 84vh;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 45px 60px;
+            backdrop-filter: blur(24px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px var(--primary-glow);
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transform: scale(0.97) translateY(15px);
+            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Slide Header */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 15px;
+        }
+
+        .slide-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            background: rgba(56, 189, 248, 0.12);
+            padding: 4px 12px;
+            border-radius: 100px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .slide-title {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .slide-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Slide Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            flex: 1;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* Cards & Panels */
+        .panel {
+            background: rgba(11, 17, 30, 0.6);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 22px 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel.highlight {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(14, 25, 45, 0.7);
+        }
+
+        .panel-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-desc {
+            font-size: 0.93rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        ul.styled-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        ul.styled-list li {
+            position: relative;
+            padding-left: 20px;
+            font-size: 0.93rem;
+            line-height: 1.55;
+            color: #cbd5e1;
+        }
+
+        ul.styled-list li strong {
+            color: #ffffff;
+        }
+
+        ul.styled-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        /* Formulas & Math Blocks */
+        .math-card {
+            background: rgba(8, 12, 22, 0.85);
+            border-left: 3px solid var(--primary);
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            margin: 6px 0;
+            overflow-x: auto;
+        }
+
+        /* Image Display */
+        .diagram-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            padding: 12px;
+        }
+
+        .diagram-container img {
+            max-width: 100%;
+            max-height: 480px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .img-caption {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-family: var(--font-mono);
+            text-align: center;
+        }
+
+        /* Badges & Metrics */
+        .metric-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+        .pill-blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .pill-green { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+        .pill-amber { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+
+        /* Navigation Controls */
+        .controls {
+            position: fixed;
+            bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-glass);
+            padding: 8px 18px;
+            border-radius: 100px;
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+
+        .btn-nav {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 7px 16px;
+            border-radius: 100px;
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .slide-counter {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Title Slide Unique Styling */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .title-slide h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #ffffff 30%, var(--primary) 70%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+            max-width: 1000px;
+        }
+
+        .title-slide p.subtitle {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            max-width: 800px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .feature-tags {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="deck-container">
+
+    <!-- SLIDE 1: Title & Executive Identity -->
+    <div class="slide title-slide active" data-slide="1">
+        <span class="slide-tag">PROJECT PRESENTATION</span>
+        <h1>DeepSat-SR</h1>
+        <p class="subtitle">Multi-Temporal Satellite Super-Resolution with Calibrated Spatial-Temporal Uncertainty and Guided Reconstruction</p>
+        <div class="feature-tags">
+            <span class="metric-pill pill-blue">4x Spatial Upscaling (10m → 2.5m)</span>
+            <span class="metric-pill pill-green">23-Block RRDBNet + RaGAN</span>
+            <span class="metric-pill pill-amber">Active Uncertainty Soft-Blending</span>
+            <span class="metric-pill pill-blue">Sentinel-2 to NAIP</span>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: Problem Statement -->
+    <div class="slide" data-slide="2">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">01 // THE CHALLENGE</span>
+                <h2 class="slide-title">The Remote Sensing Resolution Bottleneck</h2>
+                <p class="slide-subtitle">High revisit frequency vs. spatial fidelity trade-off in Earth observation</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-amber">Ground Sample Distance Gap</span>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="panel">
+                <div class="panel-title">🛰️ The Operational Dilemma</div>
+                <ul class="styled-list">
+                    <li><strong>Global Constellations (Sentinel-2):</strong> Open-access, high revisit cadence (2–5 days worldwide), but coarse resolution (<strong>10m per pixel</strong>). Individual buildings, vehicles, and road lanes are indistinguishable blobs.</li>
+                    <li><strong>Airborne Sensors (USDA NAIP):</strong> High spatial resolution (<strong>1m–2.5m GSD</strong>), but exorbitantly expensive, geographically limited, and updated only every 2–3 years.</li>
+                    <li><strong>Atmospheric Degradation:</strong> Sub-pixel cloud haze, shadow variations, and sensor point-spread function (PSF) blur distort surface features.</li>
+                </ul>
+            </div>
+            <div class="panel highlight">
+                <div class="panel-title">⚠️ Core Technical Failure Modes</div>
+                <ul class="styled-list">
+                    <li><strong>Blind Neural Hallucination:</strong> Standard single-image super-resolution models (ESRGAN, Diffusion) invent plausible textures out of thin air (ghost cars on empty highways, fake structures in water) with zero confidence awareness.</li>
+                    <li><strong>The Perception-Distortion Dilemma:</strong> Single-frame predictions retain atmospheric noise. Conversely, naive multi-temporal averaging reduces noise but causes severe <strong>low-pass blurring</strong>, destroying real high-frequency edges.</li>
+                    <li><strong>Sub-Pixel Shift Misalignment:</strong> Orbital orbital jitter introduces sub-pixel registration noise between observation epochs.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: The Proposed Idea -->
+    <div class="slide" data-slide="3">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">02 // THE CORE INNOVATION</span>
+                <h2 class="slide-title">Multi-Temporal Fusion & Active Uncertainty</h2>
+                <p class="slide-subtitle">Converting uncertainty from a passive diagnostic into an active correction operator</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-green">Novel Strategy</span>
+            </div>
+        </div>
+        <div class="content-grid grid-3">
+            <div class="panel">
+                <div class="panel-title">1. Multi-Temporal Stacking</div>
+                <p class="panel-desc">Instead of guessing high-frequency details from a single blurry snapshot, stack <strong>8 temporal Sentinel-2 acquisitions</strong> over the same region (24 input channels). Sub-pixel shifts across passes provide complementary phase information.</p>
+                <div class="math-card">Input: \([B, 24, 32, 32]\)</div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">2. Spatial-Temporal Uncertainty</div>
+                <p class="panel-desc">Formulate a dual uncertainty field: (a) <strong>Spatial Dihedral \(D_4\) Symmetry</strong> (8 geometric transformations) + (b) <strong>Temporal Permutation Sensitivity</strong> (6 frame subsets). Produces a calibrated heatmap pinpointing true model ambiguities.</p>
+                <div class="math-card">\(U_{\text{hybrid}} = 0.19 Z(U_{\text{tta}}) + 0.81 Z(U_{\text{input}})\)</div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">3. Sigmoid Soft Blending</div>
+                <p class="panel-desc">Use a continuous sigmoid weight field to dynamically blend sharp single-frame predictions with multi-temporal consensus. Eliminates artificial border seam step-discontinuities while preserving sharp boundaries.</p>
+                <div class="math-card">\(P_{\text{soft}} = (1 - w) P_0 + w P_e\)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: Architecture Design (Generator & Discriminator) -->
+    <div class="slide" data-slide="4">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">03 // ARCHITECTURE DESIGN</span>
+                <h2 class="slide-title">23-Block RRDBNet Generator & Relativistic U-Net</h2>
+                <p class="slide-subtitle">Multi-scale feature extraction with Residual-in-Residual Dense Blocks</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-blue">16.7M Parameters</span>
+            </div>
+        </div>
+        <div class="content-grid" style="grid-template-columns: 1.2fr 0.8fr;">
+            <div class="diagram-container">
+                <img src="figures/model_architecture_diagram.jpg" alt="Model Architecture Diagram">
+                <div class="img-caption">Figure 1: DeepSat-SR End-to-End Architecture: 23-Block RRDBNet Generator and Spectral-Norm U-Net Discriminator</div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">Structural Specifications</div>
+                <ul class="styled-list">
+                    <li><strong>Shallow Feature Extraction:</strong> \(3 \times 3\) Conv expanding 24 multi-temporal channels to 64 intermediate feature maps.</li>
+                    <li><strong>23 RRDB Trunk:</strong> Each RRDB contains 3 Residual Dense Blocks (RDBs) with 5 dense convolutions, growth rate \(G=32\), and residual scaling \(\alpha = 0.2\).</li>
+                    <li><strong>Long Skip Connection:</strong> Bypasses the 23-block trunk to preserve low-frequency spatial structure.</li>
+                    <li><strong>Dual-Stage Upsampling (\(4\times\)):</strong> Two sequential \(2\times\) nearest-neighbor interpolations with \(3 \times 3\) convolutions and LeakyReLU, scaling \(32 \times 32 \to 64 \times 64 \to 128 \times 128\).</li>
+                    <li><strong>Spectral-Norm U-Net Discriminator:</strong> Provides dense pixel-wise adversarial feedback rather than a single scalar judgment.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: Active Uncertainty Pipeline -->
+    <div class="slide" data-slide="5">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">04 // UNCERTAINTY PIPELINE</span>
+                <h2 class="slide-title">Calibration & Guided Soft-Blending Pipeline</h2>
+                <p class="slide-subtitle">From geometric equivariance to continuous reconstruction operator</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-amber">Test-Time Operation</span>
+            </div>
+        </div>
+        <div class="content-grid" style="grid-template-columns: 1.25fr 0.75fr;">
+            <div class="diagram-container">
+                <img src="figures/uncertainty_pipeline_diagram.jpg" alt="Uncertainty Pipeline Diagram">
+                <div class="img-caption">Figure 2: Hybrid Uncertainty Fusion & Continuous Sigmoid Soft-Blending Pipeline</div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">Workflow Stages</div>
+                <ul class="styled-list">
+                    <li><strong>\(D_4\) Test-Time Augmentation:</strong> Evaluates the image under 8 spatial dihedral transforms (\(0^\circ, 90^\circ, 180^\circ, 270^\circ\), flips). Disagreement flags structural orientation ambiguity.</li>
+                    <li><strong>Temporal Sensitivity:</strong> Measures output variance across 6 input subsets (\(S_0 \dots S_6\)). Pinpoints atmospheric cloud shadows and moving transients.</li>
+                    <li><strong>Brent's Root-Finding Solver:</strong> Finds the threshold \(\tau^*\) per scene satisfying target replacement budget \(B = 0.20\).</li>
+                    <li><strong>Seam Discontinuity Suppression:</strong> Sigmoid temperature \(\beta = 0.20\) creates smooth transitions without hard cutting edges.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: Mathematical Foundations - Loss Functions -->
+    <div class="slide" data-slide="6">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">05 // MATHEMATICAL FOUNDATIONS</span>
+                <h2 class="slide-title">Training Loss Functions</h2>
+                <p class="slide-subtitle">Balancing pixel fidelity, perceptual realism, and high-frequency textures</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-blue">Multi-Task Objective</span>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="panel">
+                <div class="panel-title">1. Pixel Reconstruction Loss (\(\mathcal{L}_1\))</div>
+                <p class="panel-desc">Measures mean absolute pixel error over the target high-resolution NAIP image \(Y\). Robust against outlier brightness shifts compared to MSE.</p>
+                <div class="math-card">
+                    $$\mathcal{L}_1 = \frac{1}{H \cdot W \cdot C} \sum_{i,j,c} \left| \hat{Y}_{i,j,c} - Y_{i,j,c} \right|$$
+                </div>
+                <div class="panel-title" style="margin-top: 10px;">2. VGG16 Perceptual Loss (\(\mathcal{L}_{\text{percep}}\))</div>
+                <p class="panel-desc">Computes Euclidean distance between deep feature representations extracted at layer <code>conv3_4</code> of a pretrained VGG-16 network.</p>
+                <div class="math-card">
+                    $$\mathcal{L}_{\text{percep}} = \frac{1}{C_l H_l W_l} \| \phi_l(\hat{Y}) - \phi_l(Y) \|_2^2$$
+                </div>
+            </div>
+            <div class="panel highlight">
+                <div class="panel-title">3. Relativistic Average GAN Loss (\(\mathcal{L}_{\text{RaGAN}}\))</div>
+                <p class="panel-desc">Forces the generator to produce outputs that are more realistic than average real images, preventing mode collapse and over-smoothed surfaces:</p>
+                <div class="math-card">
+                    $$D_{\text{Ra}}(x_r, x_f) = \sigma\left( C(x_r) - \mathbb{E}[C(x_f)] \right)$$
+                    $$\mathcal{L}_{\text{adv}}^G = - \mathbb{E}_{x_r}[\log(1 - D_{\text{Ra}}(x_r, \hat{Y}))] - \mathbb{E}_{\hat{Y}}[\log(D_{\text{Ra}}(\hat{Y}, x_r))]$$
+                </div>
+                <div class="panel-title" style="margin-top: 10px;">Total Combined Generator Objective</div>
+                <div class="math-card" style="border-left-color: var(--accent-green);">
+                    $$\mathcal{L}_{\text{total}} = \mathcal{L}_1 + \lambda_{\text{percep}} \mathcal{L}_{\text{percep}} + \lambda_{\text{adv}} \mathcal{L}_{\text{adv}}^G$$
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Default weights: \(\lambda_{\text{percep}} = 1.0, \lambda_{\text{adv}} = 0.005\)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: Mathematical Foundations - Uncertainty & Reconstruction Operators -->
+    <div class="slide" data-slide="7">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">06 // MATHEMATICAL FOUNDATIONS</span>
+                <h2 class="slide-title">Uncertainty & Guided Reconstruction Formulations</h2>
+                <p class="slide-subtitle">Analytical equations for spatial-temporal variance and dynamic soft-blending</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-green">Inference Mathematics</span>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="panel">
+                <div class="panel-title">Spatial & Temporal Estimators</div>
+                <p class="panel-desc">Variance across 8 dihedral transformations \(D_4\):</p>
+                <div class="math-card">
+                    $$U_{\text{tta}}(x, y) = \sqrt{\frac{1}{7} \sum_{k=1}^8 \left( T_k^{-1}(\hat{Y}_k(x, y)) - \bar{Y}_{\text{tta}}(x, y) \right)^2}$$
+                </div>
+                <p class="panel-desc">Variance across 6 temporal permutations \(\mathcal{S}\):</p>
+                <div class="math-card">
+                    $$U_{\text{input}}(x, y) = \sqrt{\frac{1}{5} \sum_{s \in \mathcal{S}} \left( \hat{Y}_s(x, y) - \bar{Y}_{\text{input}}(x, y) \right)^2}$$
+                </div>
+                <p class="panel-desc">Calibrated Hybrid Z-score Fusion:</p>
+                <div class="math-card">
+                    $$U_{\text{hybrid}} = 0.19 \cdot \frac{U_{\text{tta}} - 0.0831}{0.0514} + 0.81 \cdot \frac{U_{\text{input}} - 0.0573}{0.0412}$$
+                </div>
+            </div>
+            <div class="panel highlight">
+                <div class="panel-title">Continuous Sigmoid Blending Operator</div>
+                <p class="panel-desc">Dynamic blending weighting field \(w(x, y) \in [0, 1]\):</p>
+                <div class="math-card">
+                    $$w(x, y) = \sigma\left( \frac{U_{\text{hybrid}}(x, y) - \tau^*}{\beta} \right) = \frac{1}{1 + \exp\left(-\frac{U_{\text{hybrid}}(x, y) - \tau^*}{\beta}\right)}$$
+                </div>
+                <p class="panel-desc">Adaptive budget constraint solved by Brent's 1D root finder:</p>
+                <div class="math-card">
+                    $$F(\tau^*) = \frac{1}{N} \sum_{x=1}^{120} \sum_{y=1}^{120} w(x, y) - B = 0 \quad (\text{Budget } B = 0.20)$$
+                </div>
+                <p class="panel-desc">Final Guided Reconstructed Pixel Matrix:</p>
+                <div class="math-card" style="border-left-color: var(--primary);">
+                    $$P_{\text{soft}}(x, y) = (1 - w(x, y)) P_0(x, y) + w(x, y) P_e(x, y)$$
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: Evaluation Metrics -->
+    <div class="slide" data-slide="8">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">07 // VALIDATION & BENCHMARKS</span>
+                <h2 class="slide-title">Evaluation Metrics & Spatial Alignment Protocol</h2>
+                <p class="slide-subtitle">Decoupling sensor registration jitter from algorithmic super-resolution quality</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-amber">Rigorous Evaluation</span>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="panel">
+                <div class="panel-title">1. Cyclic PSNR (cPSNR)</div>
+                <p class="panel-desc">Decouples satellite orbital drift and atmospheric illumination bias via an 81-point grid search (\(\pm 8\,\text{px}\) with stride 2) and additive brightness compensation:</p>
+                <div class="math-card">
+                    $$\text{cPSNR} = 10 \log_{10} \left( \frac{255^2}{\min_{(\Delta x, \Delta y, \mathbf{b})} \frac{1}{HW} \sum \| I_1^{(\Delta x, \Delta y)} - \mathbf{b} - I_2 \|^2} \right)$$
+                </div>
+                <div class="panel-title" style="margin-top: 10px;">2. Structural Similarity Index (SSIM)</div>
+                <p class="panel-desc">Evaluates luminance, contrast, and structural correlation using an \(11 \times 11\) Gaussian window (\(\sigma=1.5\)) on central \(120 \times 120\) interior pixels:</p>
+                <div class="math-card">
+                    $$\text{SSIM}(x, y) = \frac{(2\mu_x\mu_y + c_1)(2\sigma_{xy} + c_2)}{(\mu_x^2 + \mu_y^2 + c_1)(\sigma_x^2 + \sigma_y^2 + c_2)}$$
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">3. Perceptual & Semantic Metrics</div>
+                <ul class="styled-list">
+                    <li><strong>LPIPS (VGG16):</strong> Deep feature distance in perceptual space. Lower values indicate closer perceptual texture match.</li>
+                    <li><strong>CLIPScore:</strong> Cosine similarity between latent image embeddings of OpenCLIP <code>ViT-bigG-14-CLIPA-336</code>:
+                        <div class="math-card">$$\text{CLIPScore} = \frac{\mathbf{v}_{\hat{Y}} \cdot \mathbf{v}_Y}{\|\mathbf{v}_{\hat{Y}}\| \|\mathbf{v}_Y\|}$$</div>
+                    </li>
+                    <li><strong>Boundary Seam Discontinuity:</strong> Measures gradient magnitude inflation across the 3-pixel transition ribbon to guarantee zero artificial edges.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: Empirical Results & Performance -->
+    <div class="slide" data-slide="9">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">08 // EXPERIMENTAL RESULTS</span>
+                <h2 class="slide-title">System Performance & Benchmarks</h2>
+                <p class="slide-subtitle">Confirmed results across independent test scenes</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-green">Statistically Verified</span>
+            </div>
+        </div>
+        <div class="content-grid grid-3">
+            <div class="panel highlight">
+                <div class="panel-title">📈 Reconstruction Gain</div>
+                <p class="panel-desc">Continuous soft-blending boosts PSNR by <strong>+0.571 dB</strong> over the single-frame baseline (\(p = 9.46 \times 10^{-14}\)) with a <strong>96.26% scene win rate</strong>.</p>
+                <span class="metric-pill pill-blue">Mean cPSNR: 20.21 dB</span>
+            </div>
+            <div class="panel highlight">
+                <div class="panel-title">🔍 Artifact Suppression</div>
+                <p class="panel-desc">Boundary seam discontinuity drops by <strong>-0.00142</strong> (\(p < 10^{-3}\)). The spatial gradient of the weighting field \(\|\nabla w\|\) drops by <strong>-20.2%</strong>, eliminating hard edge cuts.</p>
+                <span class="metric-pill pill-green">Zero Seam Discontinuities</span>
+            </div>
+            <div class="panel highlight">
+                <div class="panel-title">⚡ Sharpness Retention</div>
+                <p class="panel-desc">Soft-blending preserves <strong>+19.8% higher edge sharpness</strong> than uniform temporal ensembling (\(100\%\) win rate across all test scenes), resolving the blur trade-off.</p>
+                <span class="metric-pill pill-amber">100% Sharpness Win Rate</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: Real-World Applications & Impact -->
+    <div class="slide" data-slide="10">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">09 // REAL-WORLD IMPACT</span>
+                <h2 class="slide-title">Applications & Downstream Deployment</h2>
+                <p class="slide-subtitle">Bridging the gap for automated computer vision in Earth observation</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-blue">Global Deployment</span>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="panel">
+                <div class="panel-title">🌱 Climate & Agriculture</div>
+                <ul class="styled-list">
+                    <li><strong>Crop Health & Field Boundaries:</strong> Delineating sub-acre smallholder agricultural plots indistinguishable at 10m.</li>
+                    <li><strong>Deforestation & Illegal Logging:</strong> Tracking narrow logging roads and small canopy gaps in protected rainforests.</li>
+                    <li><strong>Water Resource Monitoring:</strong> High-precision coastline erosion and inland reservoir boundary tracking.</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <div class="panel-title">⚡ Infrastructure & Disaster Relief</div>
+                <ul class="styled-list">
+                    <li><strong>Renewable Asset Verification:</strong> Automated counting and localization of solar photovoltaic arrays and wind turbines.</li>
+                    <li><strong>Rapid Disaster Response:</strong> Instantaneous post-flood inundation mapping and wildfire structural damage assessment before airborne planes can fly.</li>
+                    <li><strong>Cadastral Mapping:</strong> Automated validation and updating of OpenStreetMap building footprints and transport corridors.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 11: Summary & Conclusion -->
+    <div class="slide" data-slide="11">
+        <div class="slide-header">
+            <div>
+                <span class="slide-tag">10 // CONCLUSION</span>
+                <h2 class="slide-title">Summary & Future Horizons</h2>
+                <p class="slide-subtitle">Key architectural takeaways and engineering roadmap</p>
+            </div>
+            <div>
+                <span class="metric-pill pill-green">Project Complete</span>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="panel highlight">
+                <div class="panel-title">Key Contributions</div>
+                <ul class="styled-list">
+                    <li><strong>End-to-End Multi-Temporal SR:</strong> Built a high-performance 23-Block RRDBNet capable of scaling Sentinel-2 \(10\,\text{m}\) imagery to \(2.5\,\text{m}\) GSD.</li>
+                    <li><strong>Active Uncertainty Calibration:</strong> Proved that combining spatial dihedral symmetry and temporal sensitivity yields a reliable pixel-confidence map without retraining.</li>
+                    <li><strong>Seam-Free Guided Reconstruction:</strong> Solved the perception-distortion dilemma via continuous sigmoid soft blending, securing \(+0.57\,\text{dB}\) PSNR gain and \(+19.8\%\) sharpness.</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <div class="panel-title">Next Horizons</div>
+                <ul class="styled-list">
+                    <li><strong>Multimodal Radar Fusion:</strong> Fusing Synthetic Aperture Radar (Sentinel-1 SAR) to penetrate cloud cover in tropical and monsoon regions.</li>
+                    <li><strong>Learned Sub-Pixel Optical Flow:</strong> Replacing rigid grid shifts with deformable convolutional alignment for moving water and dynamic scenes.</li>
+                    <li><strong>Edge Model Distillation:</strong> Pruning the 23-block trunk to lightweight 6-block backbones for near-real-time satellite onboard processing.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Presentation Floating Controls -->
+<div class="controls">
+    <button class="btn-nav" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+    <span class="slide-counter" id="slideCounter">Slide 1 / 11</span>
+    <button class="btn-nav" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = document.querySelectorAll('.slide').length;
+
+    function showSlide(index) {
+        document.querySelectorAll('.slide').forEach((slide, i) => {
+            slide.classList.remove('active');
+            if (i === index - 1) {
+                slide.classList.add('active');
+            }
+        });
+        document.getElementById('slideCounter').textContent = `Slide ${index} / ${totalSlides}`;
+        
+        // Auto trigger KaTeX render if needed
+        if (window.renderMathInElement) {
+            renderMathInElement(document.body);
+        }
+    }
+
+    function changeSlide(direction) {
+        currentSlide += direction;
+        if (currentSlide < 1) currentSlide = 1;
+        if (currentSlide > totalSlides) currentSlide = totalSlides;
+        showSlide(currentSlide);
+    }
+
+    // Keyboard arrow navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            changeSlide(1);
+        } else if (e.key === 'ArrowLeft') {
+            changeSlide(-1);
+        } else if (e.key === 'Home') {
+            currentSlide = 1;
+            showSlide(currentSlide);
+        } else if (e.key === 'End') {
+            currentSlide = totalSlides;
+            showSlide(currentSlide);
+        }
+    });
+</script>
+
+</body>
+</html>

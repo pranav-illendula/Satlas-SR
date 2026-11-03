@@ -1,0 +1,47 @@
+{
+  "experiment_id": "EXP-003",
+  "title": "Paper Metric Standardization (LPIPS Agreement Audit)",
+  "timestamp": "2026-10-22T09:27:41.595280+00:00",
+  "total_tiles_evaluated": 256,
+  "input_validation": {
+    "total_records": 256,
+    "valid_records": 256,
+    "invalid_records": 0,
+    "missing_or_nan_records": 0,
+    "validation_status": "100% PASS"
+  },
+  "raw_lpips_vgg_statistics": {
+    "mean": 0.34697,
+    "std": 0.08088,
+    "median": 0.33959,
+    "iqr": [
+      0.29843,
+      0.38182
+    ],
+    "min": 0.14425,
+    "max": 0.71959,
+    "direction": "lower_is_better",
+    "units": "perceptual_distance_units"
+  },
+  "lpips_to_agreement_status": {
+    "status": "BLOCKED_BY_MISSING_EVIDENCE",
+    "target_table": "Table 2 (arXiv:2311.18082v1)",
+    "published_table_2_caption": "Table 2: Results for four methods on four datasets. The reported LPIPS scores are converted to an accuracy, so with each of these metrics, higher is better. ESRGAN achieves the best CLIPScore for all datasets, and that is the metric we are prioritizing for this study.",
+    "published_table_2_values_s2naip": {
+      "SRCNN": 0.3517,
+      "HighResNet": 0.199,
+      "ESRGAN_medium_87M": 0.8406,
+      "SR3_diffusion_97M": 0.6292
+    },
+    "supplementary_section_reference": "Supplementary Section A.1",
+    "supplementary_url": "https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/Zooming_Out_On_Zooming_In_Supplementary.pdf",
+    "url_access_result": "HTTP Error 401: Unauthorized",
+    "prohibited_actions": [
+      "Fabricating an ad-hoc formula",
+      "Assuming agreement = 1 - LPIPS",
+      "Fitting arbitrary logistic/sigmoid transforms to match 0.8406"
+    ],
+    "scientific_rationale": "Without authoritative access to Supplementary Section A.1, any mathematical conversion function would be arbitrary conjecture and violates scientific reproduction integrity."
+  },
+  "runtime_seconds": 0.02
+}

@@ -1,0 +1,44 @@
+{
+  "experiment": "EXP-020A Phase 2",
+  "timestamp": "2026-10-23T21:26:43+0530",
+  "total_tiles": 107,
+  "execution_duration_sec": 7.41,
+  "checks": [
+    {
+      "check_id": "CHK-01",
+      "name": "Partition Isolation (Development Only)",
+      "details": "Evaluated exactly 107 development tiles. Holdout partition (107 tiles) remained strictly unopened and unaccessed.",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-02",
+      "name": "No Reference Error Leakage",
+      "details": "Pixel replacement masks were formed strictly by ranking uncertainty maps (or Sobel / random seeds). NAIP reference was used solely for final evaluation.",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-03",
+      "name": "Deterministic Masking & Tie Breaking",
+      "details": "Replacement masks use exact pixel counts (1440, 2880, 4320 pixels for 10%, 20%, 30%). Lexicographical sorting ensures deterministic tie handling.",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-04",
+      "name": "Random Mask Control Multi-Seed Distribution",
+      "details": "Random replacement was evaluated across 5 recorded seeds per tile. Both mean and dispersion across seeds were recorded.",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-05",
+      "name": "Primary Scientific Comparison (Hybrid vs Random)",
+      "details": "At 20% budget: Hybrid MAE (0.07989) vs Random MAE (0.08212), paired delta = -0.00222, p = 9.86e-22.",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-06",
+      "name": "Gradient Magnitude & Sharpness Accounting",
+      "details": "Evaluated gradient magnitude and gradient MAE vs reference across all arms to monitor resolution preservation.",
+      "status": "PASS"
+    }
+  ]
+}

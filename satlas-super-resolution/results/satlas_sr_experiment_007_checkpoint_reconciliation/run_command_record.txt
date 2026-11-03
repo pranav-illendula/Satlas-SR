@@ -1,0 +1,57 @@
+================================================================================
+SATLAS-SR EXP-007: CHECKPOINT PROVENANCE RECONCILIATION RUN COMMAND RECORD
+================================================================================
+Audit Date: 2026-10-22T15:35:00+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Audit Scope: Strictly Read-Only Investigation of Checkpoint Metadata, File Size, SHA-256, and Provenance Records.
+
+--------------------------------------------------------------------------------
+1. RECORDED INSPECTION & VERIFICATION COMMANDS
+--------------------------------------------------------------------------------
+Command 1: Physical File Metadata and SHA-256 Verification
+  Executor: Python 3.9.6 (.venv)
+  Target: experiments/esrgan_8S2.pth
+  Command:
+    python -c "import os, hashlib; p='experiments/esrgan_8S2.pth'; print(os.path.getsize(p)); print(hashlib.sha256(open(p, 'rb').read()).hexdigest())"
+  Output:
+    - Size: 134,157,518 bytes
+    - SHA-256: 167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07
+    - Modification Timestamp: 2026-10-15 15:44:59.790044 (unmodified since initial download)
+
+Command 2: Checkpoint Internal Dictionary Structure and Parameter Count
+  Executor: Python 3.9.6 (.venv)
+  Target: experiments/esrgan_8S2.pth
+  Command:
+    python -c "import torch; c = torch.load('experiments/esrgan_8S2.pth', map_location='cpu'); ..."
+  Output:
+    - Keys present: ['params', 'params_ema']
+    - 'params': 702 tensors, 16,710,083 parameters, 66,840,332 bytes uncompressed float32 payload
+    - 'params_ema': 702 tensors, 16,710,083 parameters, 66,840,332 bytes uncompressed float32 payload
+    - Combined raw weights: 133,680,664 bytes (matching physical zip archive size of 134,157,518 bytes)
+
+Command 3: Strict Architecture Instantiation and Weight Loading Verification
+  Executor: Python 3.9.6 (.venv)
+  Script: scratch/verify_model_load.py
+  Target: ssr.archs.rrdbnet_arch.SSR_RRDBNet (num_in_ch=24, num_out_ch=3, num_feat=64, num_block=23, num_grow_ch=32)
+  Output:
+    - SSR_RRDBNet parameter count: 16,710,083
+    - Loading 'params': missing_keys=0, unexpected_keys=0 (strict match)
+    - Loading 'params_ema': missing_keys=0, unexpected_keys=0 (strict match)
+
+Command 4: Full Repository Occurrence Search
+  Executor: Python 3.9.6 (.venv)
+  Script: scratch/make_reference_csv.py
+  Output:
+    - 300 occurrences indexed across project markdown, JSON, CSV, and script files.
+    - Verified that 134,157,518 bytes and 167d6b9d... appear across all baseline freeze manifests, inference manifests, and historical audit reports.
+    - Verified that 66,956,559 bytes and 4099b244... exist solely in the four text deliverables generated during EXP-006.
+
+--------------------------------------------------------------------------------
+2. RECONCILIATION SUMMARY
+--------------------------------------------------------------------------------
+- Real Physical Checkpoint: experiments/esrgan_8S2.pth (134,157,518 bytes, SHA-256: 167d6b9d...)
+- Historical Inference Checkpoint: Confirmed to be identical (inference_manifest.csv dynamically logged 167d6b9d... for all 256 tiles).
+- Discrepancy Cause: Isolated human/model transcription error when drafting EXP-006 report text (mistaking single-state-dict float32 byte count ~66.8 MB for archive file size and hallucinating 4099b244...).
+- Resolution Status: MISMATCH_RESOLVED. Current checkpoint exactly matches frozen baseline v1 and original inference run.

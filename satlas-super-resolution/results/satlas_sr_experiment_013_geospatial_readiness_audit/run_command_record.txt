@@ -1,0 +1,41 @@
+# EXP-013: Execution and Inspection Command Record
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Timestamp: 2026-10-23T00:35:00+05:30
+
+## Command 1: Dataset Inventory & Integrity Verification
+Command:
+powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' inspect_data.py"
+Exit Code: 0
+Outcome:
+- Dataset root verified: ..\data\small_val_set
+- PNG files total: 2,816
+- Sentinel-2 PNGs: 2,560 (256 sample folders * 10 PNGs per folder)
+- Sentinel-2 bands per folder: 9 single-channel (32x1024, mode L) + 1 RGB composite (tci.png, 32x1024, mode RGB)
+- NAIP PNGs: 256 (rgb.png, 128x128, mode RGB)
+- Matching tile IDs: 256 / 256 (0 missing, 0 unreadable)
+- Unreadable/corrupted PNGs: 0
+
+## Command 2: Geospatial Metadata & Auxiliary File Search
+Command:
+powershell -ExecutionPolicy Bypass -Command "Get-ChildItem -Path '..\data\small_val_set' -Recurse -File | Where-Object { $_.Extension -ne '.png' }"
+Exit Code: 0
+Outcome:
+- Found 0 non-PNG files.
+- No GeoTIFF (.tif, .tiff), World files (.tfw, .pgw), Shapefiles (.shp), GeoJSON (.geojson), or XML metadata files exist in the dataset directory.
+
+## Command 3: PIL Image Metadata Header Check
+Command:
+powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' -c 'from PIL import Image; im=Image.open(r\"..\data\small_val_set\\sentinel2\\20771_46525\\tci.png\"); print(\"S2 info:\", im.info); im2=Image.open(r\"..\data\small_val_set\\naip\\20771_46525\\rgb.png\"); print(\"NAIP info:\", im2.info)'"
+Exit Code: 0
+Outcome:
+- S2 info: {} (empty dict, no EXIF, XML, or geospatial tags)
+- NAIP info: {} (empty dict, no EXIF, XML, or geospatial tags)
+
+## Command 4: Checkpoint and Building Annotation Inventory
+Command:
+powershell -ExecutionPolicy Bypass -Command "Get-ChildItem -Path '.' -Recurse -Include '*.pth', '*building*', '*mask*', '*osm*' -File | Select-Object FullName, Length"
+Exit Code: 0
+Outcome:
+- Local model checkpoints: 1 file only (`experiments/esrgan_8S2.pth`, 66,745,293 bytes). No independent model ensemble exists locally.
+- Building annotations: 0 local vector or raster building masks exist. Only references to remote paths in training configs (`osm_chips_to_masks.json`).

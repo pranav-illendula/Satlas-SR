@@ -1,0 +1,173 @@
+{
+  "experiment_id": "EXP-011",
+  "experiment_name": "Sentinel-2 Frame-Selection Sensitivity Audit",
+  "timestamp": "2026-10-22T21:28:00+05:30",
+  "status": "AUDIT_COMPLETE_AWAITING_APPROVAL",
+  "repository": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution",
+  "python_environment": "C:/Users/CSE-SDPL/Desktop/DL_image/.venv/Scripts/python.exe",
+  "gpu_device": "NVIDIA RTX 2000 Ada Generation",
+  "inspected_files": [
+    {
+      "relative_path": "ssr/utils/infer_utils.py",
+      "inspected_lines": "1-62",
+      "key_functions": [
+        "format_s2naip_data",
+        "stitch"
+      ],
+      "role": "S2 frame reshaping, black pixel filtering, 8-frame random sampling, channel stacking, and normalization."
+    },
+    {
+      "relative_path": "run_full_validation_inference.py",
+      "inspected_lines": "1-263",
+      "key_functions": [
+        "main",
+        "recording_sample",
+        "image_is_valid"
+      ],
+      "role": "Sequential validation loop over 256 tiles with seed=0 and output validation."
+    },
+    {
+      "relative_path": "run_five_tile_inference.py",
+      "inspected_lines": "1-111",
+      "key_functions": [
+        "main"
+      ],
+      "role": "Five-tile pilot inference script."
+    },
+    {
+      "relative_path": "ssr/data/s2-naip_dataset.py",
+      "inspected_lines": "200-248",
+      "key_functions": [
+        "__getitem__"
+      ],
+      "role": "Training dataset frame selection and augmentation pipeline."
+    },
+    {
+      "relative_path": "ssr/utils/data_utils.py",
+      "inspected_lines": "1-11",
+      "key_functions": [
+        "has_black_pixels"
+      ],
+      "role": "Nodata detection predicate testing for [0, 0, 0] pixels."
+    },
+    {
+      "relative_path": "evaluate_satlas_sr_paper_metrics.py",
+      "inspected_lines": "40-120",
+      "key_functions": [
+        "load_image_rgb",
+        "discover_pairs",
+        "main"
+      ],
+      "role": "Evaluation pipeline for cPSNR, SSIM, LPIPS (VGG), and CLIPScore."
+    },
+    {
+      "relative_path": "ssr/options/infer_satlas_full_validation.yml",
+      "inspected_lines": "1-25",
+      "key_parameters": {
+        "model_type": "SSRESRGANModel",
+        "scale": 4,
+        "n_lr_images": 8,
+        "network_g.type": "SSR_RRDBNet",
+        "network_g.num_in_ch": 24,
+        "network_g.num_out_ch": 3
+      },
+      "role": "Full validation inference configuration."
+    },
+    {
+      "relative_path": "ssr/options/infer_satlas_five_tiles.yml",
+      "inspected_lines": "1-25",
+      "key_parameters": {
+        "scale": 4,
+        "n_lr_images": 8
+      },
+      "role": "Five-tile pilot inference configuration."
+    }
+  ],
+  "dataset_inventory": {
+    "root_path": "C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set",
+    "total_matching_tiles": 256,
+    "sentinel2_files_count": 2560,
+    "naip_files_count": 256,
+    "frames_per_s2_tile": 32,
+    "total_s2_observations_checked": 8192,
+    "valid_frames_count_distribution": {
+      "32_valid_frames": 256
+    },
+    "invalid_frames_count_distribution": {
+      "0_invalid_frames": 256
+    },
+    "non_png_metadata_files": 0,
+    "dates_available_locally": false,
+    "quality_metadata_available_locally": false,
+    "notes": "All 256 validation tiles have exactly 32 valid frames with 0 black pixels. Zero external metadata files exist."
+  },
+  "output_dimensions": {
+    "s2_input_raw_shape": [1024, 32, 3],
+    "s2_input_tensor_shape": [1, 24, 32, 32],
+    "model_scale_factor": 4,
+    "model_output_tensor_shape": [1, 3, 128, 128],
+    "saved_sr_image_shape": [128, 128, 3],
+    "saved_lr_image_shape": [32, 32, 3],
+    "naip_target_image_shape": [128, 128, 3],
+    "reconciliation_status": "RESOLVED_128x128_CONFIRMED",
+    "notes": "Input is 32x32, scale factor 4x produces 128x128, matching NAIP ground truth 128x128. 512x512 was an unrelated scene tiling convention."
+  },
+  "selection_behavior": {
+    "selection_method": "random.sample(goods, 8)",
+    "selection_determinism": "GLOBAL_SEQUENTIAL_DETERMINISTIC_ORDER_DEPENDENT",
+    "initial_seed": 0,
+    "permutation_invariant": false,
+    "notes": "conv_first has shape [64, 24, 3, 3]; channel ordering directly affects extracted features."
+  },
+  "candidate_strategies": [
+    {
+      "id": "S0",
+      "name": "Baseline Frozen (Seed 0)",
+      "type": "Pseudorandom",
+      "rule": "random.seed(0) global stream with random.sample(goods, 8)"
+    },
+    {
+      "id": "S1",
+      "name": "Alternate Seed (Seed 42)",
+      "type": "Pseudorandom",
+      "rule": "random.seed(42) global stream with random.sample(goods, 8)"
+    },
+    {
+      "id": "S2",
+      "name": "Sorted Baseline (Permutation Isolation)",
+      "type": "Content-Matched",
+      "rule": "sorted(S0_indices) to isolate channel permutation from content"
+    },
+    {
+      "id": "S3",
+      "name": "Uniform Strided Grid",
+      "type": "Deterministic",
+      "rule": "[0, 4, 8, 12, 16, 20, 24, 28]"
+    },
+    {
+      "id": "S4",
+      "name": "Early Window",
+      "type": "Deterministic",
+      "rule": "[0, 1, 2, 3, 4, 5, 6, 7]"
+    },
+    {
+      "id": "S5",
+      "name": "Late Window",
+      "type": "Deterministic",
+      "rule": "[24, 25, 26, 27, 28, 29, 30, 31]"
+    },
+    {
+      "id": "S6",
+      "name": "Low-Brightness Heuristic (Cloud Avoidance)",
+      "type": "Content-Heuristic",
+      "rule": "Lowest 8 frames by mean RGB intensity, sorted ascending"
+    }
+  ],
+  "experiment_readiness": {
+    "audit_completed": true,
+    "all_deliverables_created": true,
+    "inference_executed": false,
+    "validation_metrics_computed": false,
+    "awaiting_user_approval": true
+  }
+}

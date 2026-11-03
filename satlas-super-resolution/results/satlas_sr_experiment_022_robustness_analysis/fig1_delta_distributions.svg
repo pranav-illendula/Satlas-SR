@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" style="background-color:#ffffff; font-family:sans-serif;">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="32" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">EXP-022: Distribution of Paired Differences (N = 107 Development Tiles)</text>
+  <text x="400" y="52" font-size="12" text-anchor="middle" fill="#64748b">Primary 20% Budget Replacement Arms (Negative Values = Hybrid Outperforms)</text>
+  
+  <!-- Zero Axis -->
+  <line x1="120" y1="240" x2="740" y2="240" stroke="#94a3b8" stroke-dasharray="4,4" stroke-width="1.5"/>
+  <text x="745" y="244" font-size="11" fill="#64748b">Δ = 0.0</text>
+  
+  <!-- Column 1: Hybrid vs S0 -->
+  <g transform="translate(180, 0)">
+    <text x="0" y="85" font-size="13" font-weight="bold" text-anchor="middle" fill="#0f172a">Hybrid vs S0</text>
+    <text x="0" y="102" font-size="11" text-anchor="middle" fill="#2563eb">Mean Δ: -0.00406</text>
+    <text x="0" y="118" font-size="11" text-anchor="middle" fill="#059669">92.5% Wins (99/107)</text>
+    <!-- Box Plot -->
+    <line x1="0" y1="140" x2="0" y2="380" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="-35" y="200" width="70" height="90" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="4"/>
+    <line x1="-35" y1="248" x2="35" y2="248" stroke="#1d4ed8" stroke-width="3"/>
+    <!-- Whiskers -->
+    <line x1="-20" y1="140" x2="20" y2="140" stroke="#2563eb" stroke-width="2"/>
+    <line x1="-20" y1="380" x2="20" y2="380" stroke="#2563eb" stroke-width="2"/>
+    <text x="0" y="410" font-size="11" text-anchor="middle" fill="#475569">t = -13.10 (p &lt; 10⁻²³)</text>
+  </g>
+
+  <!-- Column 2: Hybrid vs Random -->
+  <g transform="translate(400, 0)">
+    <text x="0" y="85" font-size="13" font-weight="bold" text-anchor="middle" fill="#0f172a">Hybrid vs Random</text>
+    <text x="0" y="102" font-size="11" text-anchor="middle" fill="#0284c7">Mean Δ: -0.00222</text>
+    <text x="0" y="118" font-size="11" text-anchor="middle" fill="#059669">91.6% Wins (98/107)</text>
+    <!-- Box Plot -->
+    <line x1="0" y1="160" x2="0" y2="340" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="-35" y="215" width="70" height="70" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" rx="4"/>
+    <line x1="-35" y1="245" x2="35" y2="245" stroke="#0369a1" stroke-width="3"/>
+    <!-- Whiskers -->
+    <line x1="-20" y1="160" x2="20" y2="160" stroke="#0284c7" stroke-width="2"/>
+    <line x1="-20" y1="340" x2="20" y2="340" stroke="#0284c7" stroke-width="2"/>
+    <text x="0" y="410" font-size="11" text-anchor="middle" fill="#475569">t = -12.12 (p &lt; 10⁻²¹)</text>
+  </g>
+
+  <!-- Column 3: Hybrid vs Sobel -->
+  <g transform="translate(620, 0)">
+    <text x="0" y="85" font-size="13" font-weight="bold" text-anchor="middle" fill="#0f172a">Hybrid vs Sobel</text>
+    <text x="0" y="102" font-size="11" text-anchor="middle" fill="#4f46e5">Mean Δ: -0.00118</text>
+    <text x="0" y="118" font-size="11" text-anchor="middle" fill="#059669">88.8% Wins (95/107)</text>
+    <!-- Box Plot -->
+    <line x1="0" y1="180" x2="0" y2="320" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="-35" y="222" width="70" height="50" fill="#ede9fe" stroke="#4f46e5" stroke-width="2" rx="4"/>
+    <line x1="-35" y1="242" x2="35" y2="242" stroke="#3730a3" stroke-width="3"/>
+    <!-- Whiskers -->
+    <line x1="-20" y1="180" x2="20" y2="180" stroke="#4f46e5" stroke-width="2"/>
+    <line x1="-20" y1="320" x2="20" y2="320" stroke="#4f46e5" stroke-width="2"/>
+    <text x="0" y="410" font-size="11" text-anchor="middle" fill="#475569">t = -6.08 (p = 1.9e-8)</text>
+  </g>
+</svg>

@@ -1,0 +1,127 @@
+{
+  "project": "Satlas-SR Hybrid Uncertainty Evaluation",
+  "deliverable": "EXP-019 Research Report and Erratum Package",
+  "timestamp": "2026-10-23T17:05:00+05:30",
+  "total_checks": 9,
+  "verified_claims_count": 7,
+  "unverified_prohibited_claims_count": 2,
+  "validation_checks": [
+    {
+      "check_id": "VAL-01",
+      "category": "Reconciled Development Statistics",
+      "claim": "Development Hybrid Mean Spearman rho = 0.304210, Sobel Mean = 0.222005, Paired Mean Delta = +0.082205",
+      "verified_against": "results/satlas_sr_experiment_015_hybrid_uncertainty/per_tile_oof_metrics.csv",
+      "verified_value": {
+        "hybrid_mean": 0.30421,
+        "sobel_mean": 0.222005,
+        "paired_delta": 0.082205
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "check_id": "VAL-02",
+      "category": "Reconciled Development Win Count",
+      "claim": "Development Hybrid vs Sobel Win Count is 96 wins and 11 losses (89.72%)",
+      "verified_against": "results/satlas_sr_experiment_015_hybrid_uncertainty/per_tile_oof_metrics.csv",
+      "verified_value": {
+        "wins": 96,
+        "losses": 11,
+        "ties": 0,
+        "win_rate_pct": 89.72
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "check_id": "VAL-03",
+      "category": "Holdout Primary Endpoint",
+      "claim": "Holdout Hybrid Mean Spearman rho = 0.279966, Sobel Mean = 0.200649, Paired Mean Delta = +0.079316",
+      "verified_against": "results/satlas_sr_experiment_017_locked_holdout/per_tile_holdout_metrics.csv",
+      "verified_value": {
+        "hybrid_mean": 0.279966,
+        "sobel_mean": 0.200649,
+        "paired_delta": 0.079316
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "check_id": "VAL-04",
+      "category": "Holdout Paired Inference & Effect Size",
+      "claim": "Holdout Hybrid vs Sobel: 95% CI = [0.061084, 0.097548], Paired t p = 6.87e-14, Wilcoxon p = 4.17e-14, Cohen's d = 0.8338, Wins = 93/14",
+      "verified_against": "results/satlas_sr_experiment_018_holdout_consistency_audit/recomputed_holdout_statistics.csv",
+      "verified_value": {
+        "ci95_lower": 0.061084,
+        "ci95_upper": 0.097548,
+        "t_statistic": 8.625119,
+        "t_p_value": 6.8653e-14,
+        "wilcoxon_stat": 458.0,
+        "wilcoxon_p_value": 4.1701e-14,
+        "cohens_d": 0.8338,
+        "wins": 93,
+        "losses": 14,
+        "ties": 0
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "check_id": "VAL-05",
+      "category": "Holdout Sparsification MAE Reduction",
+      "claim": "20% Sparsification MAE Reduction: Hybrid = 11.27%, Sobel = 8.43%, Paired Delta = +2.84% (t = 9.69, p = 2.75e-16)",
+      "verified_against": "results/satlas_sr_experiment_017_locked_holdout/summary.json",
+      "verified_value": {
+        "hybrid_p20": 11.265,
+        "sobel_p20": 8.4278,
+        "delta_p20": 2.8372,
+        "t_stat": 9.6933,
+        "p_val": 2.7479e-16
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "check_id": "VAL-06",
+      "category": "Hybrid vs Input Sensitivity Statistical Caution",
+      "claim": "Holdout Hybrid vs Input Sensitivity: Paired t p = 0.174703, Wilcoxon p = 0.000587, Wins = 71/36, Skewness = -4.6405, Outlier = -0.2691",
+      "verified_against": "results/satlas_sr_experiment_018_holdout_consistency_audit/audit_checks.json",
+      "verified_value": {
+        "mean_diff": 0.004538,
+        "median_diff": 0.007191,
+        "t_p_val": 0.174703,
+        "wilcoxon_p_val": 0.000587,
+        "skewness": -4.6405,
+        "kurtosis": 36.1496,
+        "min_outlier": -0.269097,
+        "wins": 71,
+        "losses": 36
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "check_id": "VAL-07",
+      "category": "Holdout Sample Size & Partition Disjointness",
+      "claim": "Holdout Partition contains exactly 107 eligible tiles, with zero overlap with 107 development tiles or 42 quarantined tiles",
+      "verified_against": "results/satlas_sr_experiment_014_tta_uncertainty/split_manifest.json",
+      "verified_value": {
+        "holdout_n": 107,
+        "dev_n": 107,
+        "quarantine_n": 42,
+        "overlap": 0
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "check_id": "VAL-08",
+      "category": "External Building-Level Segmentation Claim",
+      "claim": "Uncertainty maps guarantee calibrated polygon boundaries or building-level classification accuracy",
+      "verified_against": "N/A (Explicitly non-evaluated)",
+      "verified_value": null,
+      "status": "UNVERIFIED_AND_PROHIBITED"
+    },
+    {
+      "check_id": "VAL-09",
+      "category": "Geodetic Ground Truth Alignment Claim",
+      "claim": "Integer translation shift constitutes geodetic orthorectification or terrain displacement correction",
+      "verified_against": "N/A (Explicitly non-evaluated)",
+      "verified_value": null,
+      "status": "UNVERIFIED_AND_PROHIBITED"
+    }
+  ]
+}

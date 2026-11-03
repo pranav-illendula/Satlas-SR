@@ -1,0 +1,5 @@
+Experiment: EXP-001 (Dense vs Stride-2 cPSNR Search)
+Timestamp: 2026-10-22T09:07:44.345952+00:00
+Command: python scripts/experiment_001_dense_cpsnr.py
+Python: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Arguments: crop_border=4, max_offset=8, stride2=81 offsets, stride1=289 offsets

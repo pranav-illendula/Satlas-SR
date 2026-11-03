@@ -1,0 +1,18 @@
+=== EXP-001 Synthetic Test Suite Validation ===
+Timestamp: 2026-10-22T09:07:43.356410+00:00
+[Test 1: Identical Images] Stride-2 off=(0, 0), Stride-1 off=(0, 0) -> PASS
+[Test 2: Horizontal shift +1px] Dense off=(0, 1) (MSE=0.0000) | Stride-2 off=(0, 0) (MSE=81.7239) -> PASS
+[Test 2: Horizontal shift +2px] Dense off=(0, 2) (MSE=0.0000) | Stride-2 off=(0, 2) (MSE=0.0000) -> PASS
+[Test 2: Horizontal shift +3px] Dense off=(0, 3) (MSE=0.0000) | Stride-2 off=(0, 2) (MSE=81.6926) -> PASS
+[Test 3: Vertical shift +1px] Dense off=(1, 0) (MSE=0.0000) | Stride-2 off=(0, 0) (MSE=52.9875) -> PASS
+[Test 3: Vertical shift +2px] Dense off=(2, 0) (MSE=0.0000) | Stride-2 off=(2, 0) (MSE=0.0000) -> PASS
+[Test 3: Vertical shift +3px] Dense off=(3, 0) (MSE=0.0000) | Stride-2 off=(2, 0) (MSE=53.3561) -> PASS
+[Test 4: Diagonal shift (+1, +1)] Dense off=(1, 1) (MSE=0.0000) | Stride-2 off=(2, 0) (MSE=132.7304) -> PASS
+[Test 4: Diagonal shift (+2, +2)] Dense off=(2, 2) (MSE=0.0000) | Stride-2 off=(2, 2) (MSE=0.0000) -> PASS
+[Test 4: Diagonal shift (+3, +2)] Dense off=(3, 2) (MSE=0.0000) | Stride-2 off=(2, 2) (MSE=53.9278) -> PASS
+[Test 4: Diagonal shift (-2, -1)] Dense off=(-2, -1) (MSE=0.0000) | Stride-2 off=(-2, -2) (MSE=81.7779) -> PASS
+[Test 5: Brightness Bias +25 DN] Dense off=(0, 0) (MSE=0.0000) | Stride-2 off=(0, 0) (MSE=0.0000) -> PASS
+[Test 6: Shift beyond search window +12px] Dense off=(0, 8) (Score=17.46dB) | Stride-2 off=(0, 8) -> PASS
+[Test 7: Low-texture flat image] MSE=0.0000 (Ambiguous offset resolved gracefully) -> PASS
+
+Overall Synthetic Test Suite Result: ALL TESTS PASSED

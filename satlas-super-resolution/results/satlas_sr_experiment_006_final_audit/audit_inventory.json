@@ -1,0 +1,156 @@
+{
+  "audit_metadata": {
+    "audit_id": "EXP-006",
+    "audit_title": "Final Baseline Reproducibility and Reporting Audit",
+    "date": "2026-10-22T15:20:00+05:30",
+    "repository": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution",
+    "git_branch": "master",
+    "git_commit": "eb3dcae4cae4492652b04c86cb31d167f8b9d997",
+    "python_version": "3.9.6",
+    "pytorch_version": "2.1.0+cu121",
+    "cuda_version": "12.1",
+    "gpu_device": "NVIDIA RTX 2000 Ada Generation (16 GB VRAM)",
+    "audit_type": "read_only_evidence_synthesis"
+  },
+  "inspected_artifacts": {
+    "frozen_baseline_manifest": "results/satlas_sr_baseline_freeze_v1/baseline_manifest.json",
+    "frozen_runbook": "results/satlas_sr_baseline_freeze_v1/REPRODUCTION_RUNBOOK.md",
+    "frozen_freeze_report": "results/satlas_sr_baseline_freeze_v1/BASELINE_FREEZE_REPORT.md",
+    "checkpoint_weights": "experiments/esrgan_8S2.pth",
+    "dataset_directory": "data/small_val_set",
+    "validation_predictions": "results/satlas_sr_full_validation/predictions",
+    "per_tile_metrics_csv": "results/satlas_sr_revalidation/per_tile_metrics.csv",
+    "metrics_summary_json": "results/satlas_sr_baseline_freeze_v1/metrics_summary.json",
+    "exp001_report": "results/satlas_sr_experiment_001/EXPERIMENT_001_REPORT.md",
+    "exp002_report": "results/satlas_sr_experiment_002_paper_gap_analysis/GAP_ANALYSIS_REPORT.md",
+    "exp003_report": "results/satlas_sr_experiment_003_metric_standardization/METRIC_STANDARDIZATION_REPORT.md",
+    "exp004_report": "results/satlas_sr_experiment_004_provenance_audit/PROVENANCE_AUDIT_REPORT.md",
+    "exp005_report": "results/satlas_sr_experiment_005_supplementary_verification/SUPPLEMENTARY_VERIFICATION_REPORT.md"
+  },
+  "checkpoint_provenance": {
+    "filename": "experiments/esrgan_8S2.pth",
+    "file_size_bytes": 66956559,
+    "sha256": "4099b244799c9ef89679fe26a71cb0a8ce885bb3c3dbff061bc4a7ffaa2d59ac",
+    "model_architecture": "RRDBNet (Real-ESRGAN / BasicSR variant)",
+    "scale_factor": 4,
+    "num_input_channels": 72,
+    "num_features": 64,
+    "num_rrdb_blocks": 23,
+    "growth_channels": 32,
+    "parameter_count": 16710083,
+    "model_size_tier": "Small (16.71M)",
+    "paper_table_model_size_tier": "Medium (~87M total generator/discriminator parameters)"
+  },
+  "dataset_provenance": {
+    "directory": "data/small_val_set",
+    "tile_count": 256,
+    "biome": "Urban (representative subset)",
+    "input_channels": 72,
+    "input_bands": 9,
+    "input_timesteps": 8,
+    "input_spatial_dimensions": [128, 128],
+    "target_spatial_dimensions": [512, 512],
+    "target_bands": 3,
+    "pairing_integrity": "100% (256/256 complete, aligned, and verified)"
+  },
+  "reproduced_baseline_metrics": {
+    "evaluated_tiles": 256,
+    "cpsnr_crop4_db": {
+      "mean": 20.214436,
+      "std": 4.147781,
+      "min": 11.2330,
+      "max": 33.1592,
+      "definition": "PROBA-V style stride-2 spatial offset search with brightness bias correction (crop border 4)"
+    },
+    "psnr_raw_fullframe_db": {
+      "mean": 18.812166,
+      "std": 3.813824,
+      "min": 10.9832,
+      "max": 31.0543,
+      "definition": "Standard full-frame Peak Signal-to-Noise Ratio (no alignment or bias compensation)"
+    },
+    "psnr_crop4_db": {
+      "mean": 18.887019,
+      "std": 3.859966,
+      "min": 10.9912,
+      "max": 31.1340,
+      "definition": "Full-frame PSNR evaluated with a 4-pixel border crop"
+    },
+    "ssim_raw_fullframe": {
+      "mean": 0.395015,
+      "std": 0.149539,
+      "min": 0.0821,
+      "max": 0.8124,
+      "definition": "Structural Similarity Index evaluated across the full uncropped frame"
+    },
+    "ssim_crop4": {
+      "mean": 0.391219,
+      "std": 0.156434,
+      "min": 0.0811,
+      "max": 0.8105,
+      "definition": "Structural Similarity Index evaluated with a 4-pixel border crop"
+    },
+    "lpips_vgg_distance": {
+      "mean": 0.347035,
+      "std": 0.080918,
+      "min": 0.1502,
+      "max": 0.6120,
+      "definition": "VGG-based Learned Perceptual Image Patch Similarity distance (raw perceptual distance)"
+    },
+    "clip_similarity": {
+      "mean": 0.961176,
+      "std": 0.034371,
+      "min": 0.8241,
+      "max": 0.9932,
+      "definition": "CLIPA-ViT-bigG-14 datacomp1b normalized image-image feature cosine similarity"
+    }
+  },
+  "experiment_summaries": {
+    "exp001_cpsnr_sensitivity": {
+      "focus": "Dense stride-1 vs official stride-2 cPSNR search",
+      "verified_finding": "Dense search produces a slight mean increase of +0.1232 dB (95% CI: [0.1018, 0.1477] dB). Official stride-2 implementation remains the authoritative baseline standard."
+    },
+    "exp002_gap_analysis": {
+      "focus": "Paper-level reproduction gap identification across 10 dimensions",
+      "verified_finding": "Identified that local baseline uses the 16.71M Small model on 256 urban tiles, while published Table 2 evaluates an 87M Medium model on 8,192 nationwide multi-biome tiles."
+    },
+    "exp003_metric_standardization": {
+      "focus": "LPIPS distance vs paper human preference score standardization",
+      "verified_finding": "Refuted the naive 1 - LPIPS transformation. Verified that raw LPIPS distance is 0.3470 and cannot be mechanically mapped to the paper's 63.8% human-agreement score."
+    },
+    "exp004_provenance_audit": {
+      "focus": "Source code commit history, remote storage buckets, and model availability",
+      "verified_finding": "Discovered author commit 7ccf8d1 updating Cloudflare R2 links to Google Cloud Storage. Confirmed that the 87M Medium checkpoint was not distributed in the public release."
+    },
+    "exp005_supplementary_verification": {
+      "focus": "Direct inspection of the official supplementary PDF (Zooming_Out_On_Zooming_In_Supplementary.pdf)",
+      "verified_finding": "Supplementary Section A.1 confirms that LPIPS in Table 2 was measured as 2AFC human-preference agreement accuracy across 11,524 Amazon Mechanical Turk judgments. The document does not contain a deterministic scalar conversion formula."
+    }
+  },
+  "reproduction_scope_classification": {
+    "level_1_completed_local_baseline": {
+      "status": "FULLY REPRODUCED AND VERIFIED",
+      "scope": "16.71M Small ESRGAN checkpoint evaluated on 256 urban validation tiles with full metrics verified."
+    },
+    "level_2_evaluation_pipeline_reproduction": {
+      "status": "FULLY VALIDATED",
+      "scope": "Local implementation of cPSNR (PROBA-V stride-2), raw PSNR/SSIM, VGG LPIPS, and CLIPScore."
+    },
+    "level_3_exact_paper_table_2_reproduction": {
+      "status": "NOT REPRODUCED (BLOCKED BY UPSTREAM DATA & CHECKPOINT AVAILABILITY)",
+      "reasons": [
+        "Medium ESRGAN model (~87M parameters) checkpoint is not publicly released.",
+        "Full 8,192-tile nationwide validation set labels are not present locally.",
+        "Amazon Mechanical Turk 11,524 pairwise human preference records are not in public repository."
+      ]
+    }
+  },
+  "recommendations": {
+    "immediate_action": "Freeze evaluation pipeline at EXP-006 as the final baseline reference.",
+    "future_options": [
+      "Option A: Train or fine-tune ESRGAN or Satlas models locally if computational budget permits.",
+      "Option B: Scale validation to the full 8,192-tile dataset if download bandwidth and storage are provisioned.",
+      "Option C: Contact authors for unreleased 87M checkpoint and MTurk comparison annotations if exact Table 2 replication is formally required."
+    ]
+  }
+}

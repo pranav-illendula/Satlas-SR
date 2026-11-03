@@ -1,0 +1,51 @@
+{
+  "experiment_id": "EXP-024",
+  "timestamp": "2026-10-27T19:05:27+0530",
+  "evaluation_partition": "locked_holdout",
+  "n_holdout_tiles": 107,
+  "all_gates_passed": true,
+  "gates": [
+    {
+      "gate_id": 1,
+      "name": "Partition Isolation & Sample Count",
+      "passed": true,
+      "details": "N = 107 tiles. Overlap with dev: 0, overlap with quar: 0."
+    },
+    {
+      "gate_id": 2,
+      "name": "Primary Endpoint: Soft 20% vs Hard 20% MAE",
+      "passed": true,
+      "details": "Mean diff = -0.000720, t = -11.3024, p = 6.5170e-20, win rate = 93.46%."
+    },
+    {
+      "gate_id": 3,
+      "name": "Soft 20% vs Baseline S0 MAE Reduction",
+      "passed": true,
+      "details": "Mean diff = -0.003810, t = -6.9013, p = 3.9113e-10, win rate = 93.46%."
+    },
+    {
+      "gate_id": 4,
+      "name": "Hard 20% vs Baseline S0 MAE Reduction",
+      "passed": true,
+      "details": "Mean diff = -0.003090, t = -5.2569, p = 7.6499e-07, win rate = 89.72%."
+    },
+    {
+      "gate_id": 5,
+      "name": "Boundary Seam Gradient Discontinuity Reduction",
+      "passed": true,
+      "details": "Mean diff = -0.001423, t = -3.4102, p = 9.1942e-04, win rate = 88.79%."
+    },
+    {
+      "gate_id": 6,
+      "name": "Weight Map Spatial Smoothness Gain",
+      "passed": true,
+      "details": "Soft 0.11451 vs Hard 0.14354, diff = -0.029032, p = 6.5504e-23."
+    },
+    {
+      "gate_id": 7,
+      "name": "Sharpness Retention vs Full Ensemble",
+      "passed": true,
+      "details": "Soft/Hard sharpness ratio = 0.9760 (>= 0.95), Soft vs Ens sharpness gain p = 1.0101e-38."
+    }
+  ]
+}

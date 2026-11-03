@@ -1,0 +1,86 @@
+{
+  "experiment": "EXP-021",
+  "verdict": "VERIFIED WITH ERRATA",
+  "checks": [
+    {
+      "check_id": "CHK-01",
+      "name": "Tile ID Exact Match",
+      "requirement": "Evaluated tile IDs match exactly the 107 development IDs from the split manifest.",
+      "evidence": "Set of 107 tile IDs in per_tile_metrics.csv matches development_tiles in split_manifest.json with 0 differences.",
+      "calculation_method": "set(per_tile_metrics[\"tile_id\"]) == set(split_manifest[\"development_tiles\"])",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-02",
+      "name": "Holdout and Quarantine Isolation",
+      "requirement": "No holdout or quarantined tile appears in the evaluation.",
+      "evidence": "Intersection with holdout partition (107 tiles) is empty (0 tiles). Intersection with quarantined partition (42 tiles) is empty (0 tiles).",
+      "calculation_method": "len(eval_tiles.intersection(holdout_tiles)) == 0 and len(eval_tiles.intersection(quarantine_tiles)) == 0",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-03",
+      "name": "Consistent Preprocessing and Registration Shifts",
+      "requirement": "Each method uses the same reference image, evaluation crop, channel order, pixel scaling, and fixed per-tile registration shift.",
+      "evidence": "Inspection of run_phase2_evaluation.py (L130-L171) shows naip_img normalized /255.0, integer shifts (dx, dy) loaded from EXP-014 npz, and identical ref_crop applied to all arms.",
+      "calculation_method": "Code inspection of evaluation loop in run_phase2_evaluation.py",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-04",
+      "name": "Six-Prediction Ensemble Construction Consistency",
+      "requirement": "Six-prediction ensemble constructed consistently from S0, S1, S3, S4, S5, and S6.",
+      "evidence": "Confirmed strategies = [\"S0\", \"S1\", \"S3\", \"S4\", \"S5\", \"S6\"] loaded, stacked as (6, 128, 128, 3), and averaged via np.mean(stack_preds, axis=0) (L143-L151).",
+      "calculation_method": "Code inspection of ensemble aggregation in run_phase2_evaluation.py",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-05",
+      "name": "Deterministic Ranking and Tie Handling",
+      "requirement": "Hybrid and Sobel masks select specified top 10%, 20%, 30% using deterministic tie handling.",
+      "evidence": "np.lexsort((np.arange(total_pixels), -u_hyb_flat)) explicitly resolves identical scores via unique ascending pixel index order. Pixel replacement budgets (1440, 2880, 4320) are exact.",
+      "calculation_method": "Verification of np.lexsort implementation in run_phase2_evaluation.py (L200-L203)",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-06",
+      "name": "Random Mask Seed Recording and Multi-Seed Aggregation",
+      "requirement": "Random masks use recorded seeds, and results from all five seeds are aggregated correctly.",
+      "evidence": "Random seeds [101, 202, 303, 404, 505] evaluated per tile with deterministic seed formula (r_seed + idx * 1000). Mean, std, min, and max across 5 seeds recorded in CSV.",
+      "calculation_method": "Verification of random seed loop in run_phase2_evaluation.py (L236-L260)",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-07",
+      "name": "Mask Selectivity and Unchanged Exterior Pixels",
+      "requirement": "Replacement masks affect only intended pixels, and original S0 pixels remain unchanged elsewhere.",
+      "evidence": "img_hyb = s0_crop.copy(); img_hyb[hyb_mask_2d] = ens_crop[hyb_mask_2d] guarantees pixels where mask is False retain exact S0 values without modification.",
+      "calculation_method": "Code inspection of array assignment logic (L213-L214, L227-L228, L245-L246)",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-08",
+      "name": "Statistical Metric Reproducibility from Saved Results",
+      "requirement": "MAE, PSNR, paired differences, confidence intervals, p-values, effect sizes, and win/loss counts reproduced from saved per-tile results.",
+      "evidence": "Independent recomputation from per_tile_metrics.csv matched all reported metrics across all 37 comparisons in aggregate_statistics.csv to floating-point precision.",
+      "calculation_method": "Automated numerical verification using scipy.stats ttest_rel, wilcoxon, and numpy arrays",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-09",
+      "name": "Zero Ground-Truth Residual Leakage in Mask Construction",
+      "requirement": "Implementation did not use reference-image residuals to construct uncertainty maps or select pixels.",
+      "evidence": "Uncertainty maps are constructed from z_tta (TTA variance) and z_input (temporal variance) strictly prior to reference error computation. NAIP reference is accessed solely for evaluation.",
+      "calculation_method": "Code inspection of variable dependencies in run_phase2_evaluation.py (L134-L171)",
+      "status": "PASS"
+    },
+    {
+      "check_id": "CHK-10",
+      "name": "Gradient Sharpness Accounting and Non-Claim Compliance",
+      "requirement": "Reported edge-gradient statistics calculated consistently and not presented as proof of perceptual quality.",
+      "evidence": "Sobel gradient magnitude and gradient MAE vs reference evaluated across all arms. Report explicitly states lower MAE/higher PSNR represents variance reduction rather than enhanced super-resolution.",
+      "calculation_method": "Textual and code verification of EXP020A_PHASE2_REPORT.md and run_phase2_evaluation.py",
+      "status": "PASS"
+    }
+  ]
+}

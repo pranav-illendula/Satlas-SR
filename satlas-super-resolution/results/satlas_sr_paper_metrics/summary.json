@@ -1,0 +1,187 @@
+{
+  "evaluation_timestamp_utc": "2026-10-21T18:09:49.243269+00:00",
+  "total_tiles_discovered": 256,
+  "total_tiles_evaluated_ok": 256,
+  "missing_predictions": 0,
+  "missing_references": 0,
+  "evaluation_errors": 0,
+  "total_runtime_seconds": 264.16,
+  "mean_per_tile_runtime_seconds": 1.0319,
+  "device": "cuda",
+  "gpu_name": "NVIDIA RTX 2000 Ada Generation",
+  "metric_configurations": {
+    "cpsnr": {
+      "source": "ssr/metrics/cpsnr.py",
+      "max_offset": 8,
+      "crop_border": 4,
+      "description": "PROBA-V translation-invariant and brightness-bias optimized PSNR"
+    },
+    "lpips": {
+      "source": "ssr/metrics/lpips.py",
+      "model": "vgg",
+      "weights": "torchvision vgg16 pretrained / lpips vgg weights",
+      "description": "Learned Perceptual Image Patch Similarity distance (lower is more similar)"
+    },
+    "clipscore": {
+      "source": "ssr/metrics/clipscore.py",
+      "model": "clipa-ViT-bigG-14",
+      "status": "Computed",
+      "description": "Cosine similarity between encoded image features via OpenCLIP"
+    },
+    "psnr_supplementary": {
+      "source": "basicsr.metrics.calculate_psnr",
+      "crop_border": 4,
+      "test_y_channel": false
+    },
+    "ssim_supplementary": {
+      "source": "basicsr.metrics.calculate_ssim",
+      "crop_border": 4,
+      "test_y_channel": false
+    }
+  },
+  "aggregate_metrics": {
+    "cpsnr_crop4_db": {
+      "count": 256,
+      "mean": 20.2144,
+      "std": 4.1478,
+      "min": 9.5912,
+      "max": 39.5373
+    },
+    "cpsnr_crop0_db": {
+      "count": 256,
+      "mean": 20.1111,
+      "std": 4.1132,
+      "min": 9.7854,
+      "max": 39.5008
+    },
+    "lpips_vgg": {
+      "count": 256,
+      "mean": 0.347,
+      "std": 0.0809,
+      "min": 0.1442,
+      "max": 0.7196
+    },
+    "clipscore": {
+      "count": 256,
+      "mean": 0.9612,
+      "std": 0.0344,
+      "min": 0.7768,
+      "max": 0.993
+    },
+    "psnr_crop4_db": {
+      "count": 256,
+      "mean": 18.887,
+      "std": 3.86,
+      "min": 5.5999,
+      "max": 34.7798
+    },
+    "ssim_crop4": {
+      "count": 256,
+      "mean": 0.3912,
+      "std": 0.1564,
+      "min": 0.0501,
+      "max": 0.9129
+    },
+    "psnr_raw_db": {
+      "count": 256,
+      "mean": 18.8122,
+      "std": 3.8138,
+      "min": 5.726,
+      "max": 33.8205
+    },
+    "ssim_raw": {
+      "count": 256,
+      "mean": 0.395,
+      "std": 0.1495,
+      "min": 0.057,
+      "max": 0.9059
+    }
+  },
+  "pilot_tile_sample": [
+    {
+      "tile_id": "20771_46525",
+      "status": "OK",
+      "prediction_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_full_validation\\20771_46525\\sr.png",
+      "reference_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\data\\small_val_set\\naip\\m_4612249_nw_10_060_20191010\\20771_46525\\rgb.png",
+      "cpsnr_crop4_db": 20.1369,
+      "cpsnr_crop0_db": 19.8415,
+      "lpips_vgg": 0.35863,
+      "clipscore": 0.94874,
+      "clipscore_status": "OK",
+      "psnr_crop4_db": 19.7886,
+      "ssim_crop4": 0.28959,
+      "psnr_raw_db": 19.599,
+      "ssim_raw": 0.30724,
+      "error": "",
+      "runtime_seconds": 1.3878
+    },
+    {
+      "tile_id": "20890_46801",
+      "status": "OK",
+      "prediction_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_full_validation\\20890_46801\\sr.png",
+      "reference_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\data\\small_val_set\\naip\\m_4512220_sw_10_060_20190805\\20890_46801\\rgb.png",
+      "cpsnr_crop4_db": 20.1277,
+      "cpsnr_crop0_db": 20.0727,
+      "lpips_vgg": 0.32667,
+      "clipscore": 0.97549,
+      "clipscore_status": "OK",
+      "psnr_crop4_db": 19.9157,
+      "ssim_crop4": 0.41776,
+      "psnr_raw_db": 19.7629,
+      "ssim_raw": 0.4119,
+      "error": "",
+      "runtime_seconds": 0.9635
+    },
+    {
+      "tile_id": "20926_46045",
+      "status": "OK",
+      "prediction_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_full_validation\\20926_46045\\sr.png",
+      "reference_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\data\\small_val_set\\naip\\m_4712260_ne_10_060_20190826\\20926_46045\\rgb.png",
+      "cpsnr_crop4_db": 19.2413,
+      "cpsnr_crop0_db": 19.1852,
+      "lpips_vgg": 0.3948,
+      "clipscore": 0.96007,
+      "clipscore_status": "OK",
+      "psnr_crop4_db": 19.178,
+      "ssim_crop4": 0.31919,
+      "psnr_raw_db": 19.2156,
+      "ssim_raw": 0.32478,
+      "error": "",
+      "runtime_seconds": 0.9674
+    },
+    {
+      "tile_id": "21068_45692",
+      "status": "OK",
+      "prediction_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_full_validation\\21068_45692\\sr.png",
+      "reference_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\data\\small_val_set\\naip\\m_4712215_se_10_060_20191011\\21068_45692\\rgb.png",
+      "cpsnr_crop4_db": 21.0954,
+      "cpsnr_crop0_db": 20.9674,
+      "lpips_vgg": 0.38667,
+      "clipscore": 0.91549,
+      "clipscore_status": "OK",
+      "psnr_crop4_db": 20.8498,
+      "ssim_crop4": 0.30606,
+      "psnr_raw_db": 20.8481,
+      "ssim_raw": 0.30206,
+      "error": "",
+      "runtime_seconds": 0.9686
+    },
+    {
+      "tile_id": "21856_49804",
+      "status": "OK",
+      "prediction_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\results\\satlas_sr_full_validation\\21856_49804\\sr.png",
+      "reference_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\data\\small_val_set\\naip\\m_3911925_nw_11_060_20190812\\21856_49804\\rgb.png",
+      "cpsnr_crop4_db": 25.329,
+      "cpsnr_crop0_db": 25.3851,
+      "lpips_vgg": 0.31795,
+      "clipscore": 0.96705,
+      "clipscore_status": "OK",
+      "psnr_crop4_db": 17.3782,
+      "ssim_crop4": 0.40977,
+      "psnr_raw_db": 17.5323,
+      "ssim_raw": 0.4079,
+      "error": "",
+      "runtime_seconds": 0.9746
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+# EXP-015: Execution and Run Command Record
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Timestamp: 2026-10-23T16:30:00+05:30
+
+## Command 1: Audit of EXP-011 Strategy Predictions on Disk
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\audit_exp011_preds.py'
+Outcome:
+- Inspected results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/predictions/.
+- Verified presence of all 7 strategies (S0, S1, S2, S3, S4, S5, S6) on disk.
+- Confirmed all 107 development partition tiles have complete, uncorrupted predictions across all strategies.
+
+## Command 2: Inspection of Precomputed EXP-014 TTA Uncertainty Maps
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\inspect_map_npz.py'
+Outcome:
+- Verified results/satlas_sr_experiment_014_tta_uncertainty/maps/ contains u_tta, u_var, err_comp, err_uncomp, shift_dx, shift_dy.
+- Confirmed array dimensions (128x128 full, 120x120 interior evaluation window).
+
+## Command 3: Preliminary Input-Selection Sensitivity Check
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\test_input_sensitivity.py'
+Outcome:
+- Verified per-pixel standard deviation across 6 distinct frame draws (S0, S1, S3, S4, S5, S6).
+- Confirmed input sensitivity correlates strongly with reconstruction error (rho ~ 0.22 - 0.48) and has low mutual correlation with TTA (rho ~ 0.19 - 0.35), demonstrating complementarity.
+
+## Command 4: Metric Unit Testing on Synthetic Benchmarks
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\run_metric_unit_tests.py'
+Outcome:
+- Tested 5 synthetic benchmarks: Perfect ranking, Reverse ranking, Constant uncertainty, Random uncertainty, Edge-correlated with independent error.
+- Verified exact zero AUSE on perfect ranking, negative AURG on reverse, zero AURG on constant/random.
+- Saved output to results/satlas_sr_experiment_015_hybrid_uncertainty/metric_unit_tests.txt. All 5 tests passed.
+
+## Command 5: Build 5-Fold Spatially Grouped CV Manifest
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\build_fold_manifest.py'
+Outcome:
+- Partitioned 107 development tiles into 5 folds (21, 21, 21, 22, 22 tiles) with Chebyshev distance <= 10 tiles (~3.3 km) spatial grouping.
+- Guaranteed zero spatial leakage across folds.
+- Saved to results/satlas_sr_experiment_015_hybrid_uncertainty/fold_manifest.json.
+
+## Command 6: 5-Fold Out-of-Fold Cross-Validation Evaluation Runner
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\run_exp015_cv.py'
+Outcome:
+- Executed 5-fold CV across all 107 development tiles.
+- Grid-searched alpha in [0.0, 1.0] strictly on training folds (optimal alpha was 0.15 - 0.20 across all folds).
+- Generated results/satlas_sr_experiment_015_hybrid_uncertainty/per_tile_oof_metrics.csv.
+- Generated results/satlas_sr_experiment_015_hybrid_uncertainty/method_feasibility.json.
+- Runtime: 35.98 seconds.

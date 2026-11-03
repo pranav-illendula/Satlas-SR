@@ -1,0 +1,74 @@
+{
+  "experiment_id": "EXP-005",
+  "title": "Supplementary PDF Verification & LPIPS Agreement Resolution",
+  "timestamp": "2026-10-22T09:45:00Z",
+  "downloaded_supplementary_asset": {
+    "filename": "Zooming_Out_On_Zooming_In_Supplementary.pdf",
+    "local_path": "results/satlas_sr_experiment_005_supplementary_verification/Zooming_Out_On_Zooming_In_Supplementary.pdf",
+    "source_url": "https://storage.googleapis.com/satlas-satellite-super-resolution/Zooming_Out_On_Zooming_In_Supplementary.pdf",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "file_size_bytes": 1748394,
+    "sha256": "ebdf117d07337a0fd65f639fd85c12ac67e54d7ce0ed3e00b8859a81f2e7c51a",
+    "page_count": 7
+  },
+  "commit_provenance": {
+    "commit_hash": "7ccf8d118307cfc58062d488fd8b7c3ab27e2fa6",
+    "branch": "origin/favyen/20260322-update-links-from-r2-to-gcs",
+    "author": "Favyen Bastani <favyenb@allenai.org>",
+    "date": "2026-03-22T21:33:06-07:00",
+    "commit_message": "update links from r2 to gcs",
+    "verification_finding": "Author Favyen Bastani relocated all AllenAI Satlas-SR assets from defunct Cloudflare R2 endpoints to Google Cloud Storage (GCS). The supplementary PDF URL in README.md line 19 was updated accordingly."
+  },
+  "supplementary_sections_audited": {
+    "A.1": {
+      "title": "Human Judgement Dataset",
+      "summary": "Describes Amazon Mechanical Turk (AMT) worker qualification testing, worker agreement filtering, and model output pools (SRCNN, HighResNet, ESRGAN, SR3, and multiple ESRGAN checkpoints across S2-NAIP and WorldStrat).",
+      "contains_formula": false,
+      "contains_calibration_coefficients": false
+    },
+    "A.2": {
+      "title": "CLIP for Satellite Data",
+      "summary": "Describes training satellite-specific CLIP models on S2-NAIP pairs and multi-temporal NAIP, reporting 64.54% and 72.58% human correspondence.",
+      "contains_formula": false
+    },
+    "A.3": {
+      "title": "Experiment Details",
+      "summary": "Specifies Adam optimizer (lr=1e-4), RRDBNet architecture dimensions (Small: 64 feat/32 grow/23 blocks; Medium: 128 feat/64 grow/23 blocks; Large: 256 feat/128 grow/30 blocks), and dataset upsample factors.",
+      "contains_formula": false
+    },
+    "A.4": {
+      "title": "Diffusion Model Variations",
+      "summary": "Details DDIM (10x faster, 7-point drop in CLIPScore) and Classifier Free Guidance (CFG).",
+      "contains_formula": false
+    },
+    "A.5": {
+      "title": "ESRGAN Variations",
+      "summary": "Documents Object-Discriminator using OpenStreetMap (+6 CLIPScore gain), Multi-Temporal Discriminator using 2016-2018 NAIP (+2 gain), and SatlasPretrain initialization (+1 gain).",
+      "contains_formula": false
+    },
+    "A.6": {
+      "title": "OpenStreetMap Dataset",
+      "summary": "Documents 6,144 128x128 S2 images for 8-class segmentation.",
+      "contains_formula": false
+    },
+    "A.7": {
+      "title": "Qualitative Results",
+      "summary": "Visual figure comparisons (Figures 5-8) across S2-NAIP and WorldStrat.",
+      "contains_formula": false
+    }
+  },
+  "lpips_conversion_determination": {
+    "is_deterministic_formula_on_lpips_distance": false,
+    "requires_paired_outputs_and_human_labels": true,
+    "requires_calibration_model_or_additional_data": true,
+    "nature_of_table_2_lpips_metric": "Table 2's 'LPIPS converted to accuracy' is an empirical pairwise agreement score evaluated on the Amazon Mechanical Turk (AMT) 2AFC preference dataset (11,524 human comparisons), measuring the percentage of times LPIPS preference agreed with human annotators across model pairs. It is NOT a closed-form post-processing scalar transformation of single-model continuous LPIPS distance.",
+    "inputs_available_locally": false,
+    "missing_prerequisites": [
+      "11,524 pairwise human preference comparison labels from Amazon Mechanical Turk",
+      "Simultaneous model outputs for competing models (SRCNN, HighResNet, SR3, and multiple ESRGAN checkpoints)",
+      "Offline AMT evaluation evaluation script"
+    ]
+  },
+  "final_decision": "METRIC_CANNOT_BE_REPRODUCED_FROM_AVAILABLE_EVIDENCE"
+}

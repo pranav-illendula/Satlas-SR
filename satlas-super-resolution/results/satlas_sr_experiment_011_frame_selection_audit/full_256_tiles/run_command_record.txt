@@ -1,0 +1,74 @@
+================================================================================
+EXP-011 OPTION B: FULL 256-TILE FRAME-SELECTION EVALUATION RUN COMMAND RECORD
+================================================================================
+Timestamp: 2026-10-22T22:31:00+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Execution Mode: Full 256-Tile Evaluation across 7 Candidate Strategies (1,792 Inferences)
+
+--------------------------------------------------------------------------------
+1. MANDATORY PREFLIGHT VERIFICATION
+--------------------------------------------------------------------------------
+Preflight Check 1: S0 Frame Selection Reproduction Match against Frozen Baseline
+  Reference Manifest: results/satlas_sr_full_validation/inference_manifest.csv
+  Tiles Evaluated: 256
+  Exact Matches: 256 / 256 (100.0%)
+  Mismatches: 0
+  Outcome: PASS. S0 reproduces the baseline's exact frame selections and channel ordering.
+
+Preflight Check 2: Dataset and Reference Image Availability
+  Sentinel-2 Inputs: 256 TCI PNGs verified on disk (1024x32x3)
+  NAIP References: 256 RGB PNGs verified on disk (128x128x3)
+  Checkpoint Verified: experiments/esrgan_8S2.pth (SHA-256: 167d6b9d...)
+  Outcome: PASS.
+
+Preflight Check 3: Output Directory Isolation
+  Target Path: results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/
+  Baseline and Pilot Overwrites: NONE. Completely isolated.
+  Outcome: PASS.
+
+--------------------------------------------------------------------------------
+2. EXECUTED COMMANDS
+--------------------------------------------------------------------------------
+Command:
+  & "C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe" results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/run_full_evaluation.py
+Process ID: Task task-1403
+Exit Code: 0
+Total Elapsed Time: 1,044.0 seconds (17.40 minutes)
+
+Execution Breakdown:
+  1. S6 Low-Brightness Heuristic Computation: 256 tiles processed across 32 frames each.
+  2. Inference Across 7 Strategies:
+     - S0: 11.48s (256 tiles)
+     - S1: 10.82s (256 tiles)
+     - S2: 10.85s (256 tiles)
+     - S3: 11.03s (256 tiles)
+     - S4: 10.96s (256 tiles)
+     - S5: 10.89s (256 tiles)
+     - S6: 10.80s (256 tiles)
+     Total Inference Time: 76.83s (23.3 inferences/second on GPU)
+  3. Metric Evaluation:
+     - Precomputed 256 NAIP Reference Arrays and OpenCLIP ViT-bigG-14 embeddings.
+     - Evaluated all 1,792 predictions across cPSNR (crop 4), Raw PSNR, SSIM, LPIPS VGG, and CLIPScore.
+     Total Metric Evaluation Time: 843.24s.
+  4. Statistical Analysis:
+     - Paired Student's t-tests, Wilcoxon signed-rank tests, 95% CIs, Win/Loss/Tie distributions, and Bonferroni corrections.
+
+--------------------------------------------------------------------------------
+3. GENERATED DELIVERABLES
+--------------------------------------------------------------------------------
+- Predictions Directory:
+    results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/predictions/ (7 subdirectories: S0..S6, 1,792 PNGs)
+- Frame Selection Records:
+    results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/full_frame_selections.csv
+- Per-Tile Metric Records:
+    results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/full_per_tile_metrics.csv
+- Consolidated Strategy Summary JSON:
+    results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/full_strategy_summary.json
+- Paired Statistical Hypothesis Tests:
+    results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/paired_statistical_tests.csv
+- Consolidated Research Report:
+    results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/FULL_EVALUATION_REPORT.md
+- Run Record:
+    results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/run_command_record.txt

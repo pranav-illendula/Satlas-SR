@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" style="background:#ffffff; font-family:sans-serif;">
+  <rect x="0" y="0" width="800" height="450" fill="#f8fafc" />
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">EXP-024 Locked Holdout: Reconstruction Error (MAE) vs Replacement Budget</text>
+  <text x="400" y="50" text-anchor="middle" font-size="12" fill="#64748b">Comparison across N = 107 Unseen Holdout Tiles</text>
+
+  <!-- Left Chart: MAE -->
+  <g transform="translate(60, 80)">
+    <rect x="0" y="0" width="310" height="300" fill="#ffffff" stroke="#cbd5e1" rx="4" />
+    <text x="155" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Mean Absolute Error (Lower is Better)</text>
+    
+    <!-- Y-axis lines -->
+    <line x1="50" y1="50" x2="290" y2="50" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="54" text-anchor="end" font-size="10" fill="#94a3b8">0.086</text>
+    <line x1="50" y1="110" x2="290" y2="110" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="114" text-anchor="end" font-size="10" fill="#94a3b8">0.082</text>
+    <line x1="50" y1="170" x2="290" y2="170" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="174" text-anchor="end" font-size="10" fill="#94a3b8">0.078</text>
+    <line x1="50" y1="230" x2="290" y2="230" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="234" text-anchor="end" font-size="10" fill="#94a3b8">0.074</text>
+    <line x1="50" y1="250" x2="290" y2="250" stroke="#475569" stroke-width="1.5" />
+    
+    <!-- Reference S0 line -->
+    <line x1="50" y1="84" x2="290" y2="84" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" />
+    <text x="285" y="78" text-anchor="end" font-size="10" font-weight="bold" fill="#ef4444">S0 Baseline (0.08527)</text>
+
+    <!-- Full Ensemble line -->
+    <line x1="50" y1="220" x2="290" y2="220" stroke="#64748b" stroke-width="2" stroke-dasharray="2,2" />
+    <text x="285" y="214" text-anchor="end" font-size="10" font-weight="bold" fill="#64748b">Full Ensemble (0.07871)</text>
+
+    <!-- Hard Replacement curve: (10%: 100, 20%: 170, 30%: 240) -->
+    <polyline points="100,123 170,147 240,165" fill="none" stroke="#f59e0b" stroke-width="2.5" />
+    <circle cx="100" cy="123" r="4" fill="#f59e0b" />
+    <circle cx="170" cy="147" r="4" fill="#f59e0b" />
+    <circle cx="240" cy="165" r="4" fill="#f59e0b" />
+
+    <!-- Soft Blending curve -->
+    <polyline points="100,131 170,156 240,172" fill="none" stroke="#0ea5e9" stroke-width="3" />
+    <circle cx="100" cy="131" r="5" fill="#0ea5e9" />
+    <circle cx="170" cy="156" r="5" fill="#0ea5e9" />
+    <circle cx="240" cy="172" r="5" fill="#0ea5e9" />
+
+    <!-- X labels -->
+    <text x="100" y="268" text-anchor="middle" font-size="11" fill="#334155">10%</text>
+    <text x="170" y="268" text-anchor="middle" font-size="11" fill="#334155">20%</text>
+    <text x="240" y="268" text-anchor="middle" font-size="11" fill="#334155">30%</text>
+    <text x="170" y="288" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Replacement Budget</text>
+  </g>
+
+  <!-- Right Chart: PSNR -->
+  <g transform="translate(430, 80)">
+    <rect x="0" y="0" width="310" height="300" fill="#ffffff" stroke="#cbd5e1" rx="4" />
+    <text x="155" y="25" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Peak Signal-to-Noise Ratio (Higher is Better)</text>
+
+    <!-- Y-axis lines -->
+    <line x1="50" y1="60" x2="290" y2="60" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="64" text-anchor="end" font-size="10" fill="#94a3b8">20.5 dB</text>
+    <line x1="50" y1="120" x2="290" y2="120" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="124" text-anchor="end" font-size="10" fill="#94a3b8">20.0 dB</text>
+    <line x1="50" y1="180" x2="290" y2="180" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="184" text-anchor="end" font-size="10" fill="#94a3b8">19.5 dB</text>
+    <line x1="50" y1="240" x2="290" y2="240" stroke="#f1f5f9" stroke-width="1" />
+    <text x="45" y="244" text-anchor="end" font-size="10" fill="#94a3b8">19.0 dB</text>
+    <line x1="50" y1="250" x2="290" y2="250" stroke="#475569" stroke-width="1.5" />
+
+    <!-- S0 line -->
+    <line x1="50" y1="210" x2="290" y2="210" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4" />
+    <text x="285" y="204" text-anchor="end" font-size="10" font-weight="bold" fill="#ef4444">S0 Baseline (19.24 dB)</text>
+
+    <!-- Full Ensemble line -->
+    <line x1="50" y1="70" x2="290" y2="70" stroke="#64748b" stroke-width="2" stroke-dasharray="2,2" />
+    <text x="285" y="64" text-anchor="end" font-size="10" font-weight="bold" fill="#64748b">Full Ensemble (20.11 dB)</text>
+
+    <!-- Hard Replacement curve -->
+    <polyline points="100,165 170,132 240,110" fill="none" stroke="#f59e0b" stroke-width="2.5" />
+    <circle cx="100" cy="165" r="4" fill="#f59e0b" />
+    <circle cx="170" cy="132" r="4" fill="#f59e0b" />
+    <circle cx="240" cy="110" r="4" fill="#f59e0b" />
+
+    <!-- Soft Blending curve -->
+    <polyline points="100,157 170,123 240,102" fill="none" stroke="#0ea5e9" stroke-width="3" />
+    <circle cx="100" cy="157" r="5" fill="#0ea5e9" />
+    <circle cx="170" cy="123" r="5" fill="#0ea5e9" />
+    <circle cx="240" cy="102" r="5" fill="#0ea5e9" />
+
+    <!-- X labels -->
+    <text x="100" y="268" text-anchor="middle" font-size="11" fill="#334155">10%</text>
+    <text x="170" y="268" text-anchor="middle" font-size="11" fill="#334155">20%</text>
+    <text x="240" y="268" text-anchor="middle" font-size="11" fill="#334155">30%</text>
+    <text x="170" y="288" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Replacement Budget</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(230, 400)">
+    <line x1="0" y1="10" x2="30" y2="10" stroke="#f59e0b" stroke-width="2.5" />
+    <circle cx="15" cy="10" r="4" fill="#f59e0b" />
+    <text x="35" y="14" font-size="12" fill="#334155">Hard Top-K Replacement</text>
+
+    <line x1="200" y1="10" x2="230" y2="10" stroke="#0ea5e9" stroke-width="3" />
+    <circle cx="215" cy="10" r="5" fill="#0ea5e9" />
+    <text x="235" y="14" font-size="12" font-weight="bold" fill="#0ea5e9">Continuous Soft Blending (β = 0.20)</text>
+  </g>
+</svg>

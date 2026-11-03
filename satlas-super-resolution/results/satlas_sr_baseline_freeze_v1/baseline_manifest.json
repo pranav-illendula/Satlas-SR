@@ -1,0 +1,208 @@
+{
+  "manifest_version": "1.0.0",
+  "freeze_date_utc": "2026-10-22",
+  "freeze_status": "FROZEN_BASELINE_VERIFIED",
+  "scope_statement": "This package represents a frozen research reproduction baseline for the released small ESRGAN checkpoint on the 256-tile urban validation subset (small_val_set). It is NOT a direct reproduction of the paper's nationwide multi-biome benchmark (which evaluated an 87M medium ESRGAN across thousands of test tiles).",
+  "repository": {
+    "root": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution",
+    "git_branch": "experiments",
+    "git_head_commit": "3e67973f6746bedbd91cc032b4888574980e1daf",
+    "working_tree_state": "DIRTY_TRACKED_MODIFICATIONS_PRESERVED",
+    "tracked_modifications": [
+      {
+        "file": "ssr/data/s2-naip_dataset.py",
+        "rationale": "Replaced fragile POSIX .split('/') with cross-platform os.path.basename and os.path.dirname to allow dataset loading on Windows without crashing on backslashes."
+      },
+      {
+        "file": "ssr/infer.py",
+        "rationale": "Added deterministic random.seed(opt.get('manual_seed', 0)) to anchor RNG state for frame selection."
+      },
+      {
+        "file": "ssr/metrics/clipscore.py",
+        "rationale": "Added safe fallback try/except for openai-clip import to allow open_clip models (clipa-ViT-bigG-14) to run without the uninstalled git+https://github.com/openai/CLIP.git dependency."
+      }
+    ]
+  },
+  "environment": {
+    "os": "Windows 11 / Windows NT 10.0.22631 64-bit",
+    "python_executable": "C:/Users/CSE-SDPL/Desktop/DL_image/.venv/Scripts/python.exe",
+    "python_version": "3.9.6 (tags/v3.9.6:db3ff76, Jun 28 2021, 15:26:21) [MSC v.1929 64 bit (AMD64)]",
+    "pytorch_version": "2.1.0+cu121",
+    "torchvision_version": "0.16.0+cu121",
+    "cuda_version": "12.1",
+    "gpu_device": "NVIDIA RTX 2000 Ada Generation",
+    "vram_total_mib": 16376,
+    "key_packages": {
+      "open_clip": "3.3.0",
+      "lpips": "0.1.4",
+      "scikit-image": "0.24.0",
+      "scipy": "1.13.1",
+      "numpy": "1.26.4",
+      "basicsr": "1.4.2"
+    }
+  },
+  "checkpoint": {
+    "relative_path": "experiments/esrgan_8S2.pth",
+    "absolute_path": "C:/Users/CSE-SDPL/Desktop/DL_image/satlas-super-resolution/experiments/esrgan_8S2.pth",
+    "size_bytes": 134157518,
+    "sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+    "loaded_parameter_key": "params_ema",
+    "strict_load": true,
+    "verified_parameter_count": 16710083
+  },
+  "model_architecture": {
+    "name": "SSR_RRDBNet (Multi-Frame ESRGAN Generator)",
+    "scale_factor": 4,
+    "num_in_ch": 24,
+    "num_out_ch": 3,
+    "num_feat": 64,
+    "num_block": 23,
+    "num_grow_ch": 32,
+    "total_parameters": 16710083
+  },
+  "dataset": {
+    "name": "small_val_set",
+    "root": "C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set",
+    "sentinel2_dir": "C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set/sentinel2",
+    "naip_dir": "C:/Users/CSE-SDPL/Desktop/DL_image/data/small_val_set/naip",
+    "tile_count": 256,
+    "sentinel2_format": "Stacked RGB PNG of shape [32*32, 32, 3] = [1024, 32, 3] (32 temporal acquisitions)",
+    "naip_format": "High-resolution RGB PNG of shape [128, 128, 3] (approx. 0.5 - 1.0 m/px)",
+    "pairing_correspondence": "256 / 256 exact matching tile IDs (100% paired, zero missing or corrupt files)",
+    "limitations": "The 256 tiles represent primarily urban locations from the continental United States. Results cannot be assumed to generalize across agricultural, arid, or forested biomes without full benchmark evaluation."
+  },
+  "inference_protocol": {
+    "config_file": "ssr/options/infer_satlas_full_validation.yml",
+    "config_sha256": "946a3c79c8463cac506e1187cf0ebf9d6e7a12a210c0915dfb5a8999205a9904",
+    "manual_seed": 0,
+    "frame_selection_procedure": "Deterministic alphabetical sort of tile IDs; filter out invalid black chunks ([0, 0, 0] in chunk); random.sample of 8 frames with fixed seed 0",
+    "recorded_frame_manifest": "results/satlas_sr_full_validation/inference_manifest.csv",
+    "output_resolution": [128, 128, 3],
+    "output_format": "PNG (RGB uint8)",
+    "primary_predictions_dir": "results/satlas_sr_full_validation"
+  },
+  "metric_definitions_and_configurations": {
+    "cpsnr": {
+      "function": "calculate_cpsnr in ssr/metrics/cpsnr.py",
+      "description": "PROBA-V translation and brightness bias optimized PSNR",
+      "crop_border": 4,
+      "max_offset": 8,
+      "search_stride": 2,
+      "offsets_tested": 81,
+      "evaluated_offsets_y": [-8, -6, -4, -2, 0, 2, 4, 6, 8],
+      "evaluated_offsets_x": [-8, -6, -4, -2, 0, 2, 4, 6, 8],
+      "evaluation_crop_size": [120, 120]
+    },
+    "psnr": {
+      "function": "calculate_psnr in basicsr.metrics.psnr_ssim",
+      "crop_border": 4,
+      "evaluation_crop_size": [120, 120]
+    },
+    "ssim": {
+      "function": "calculate_ssim in basicsr.metrics.psnr_ssim",
+      "crop_border": 4,
+      "window_size": 11,
+      "gaussian_sigma": 1.5,
+      "evaluation_crop_size": [120, 120]
+    },
+    "lpips": {
+      "function": "calculate_lpips in ssr/metrics/lpips.py",
+      "backbone": "vgg16",
+      "weights": "official lpips/weights/v0.1/vgg.pth",
+      "input_scaling": "float() / 255 into [0, 1]; passed to internal scaling_layer"
+    },
+    "clipscore": {
+      "function": "calculate_clipscore in ssr/metrics/clipscore.py",
+      "model_tag": "ViT-bigG-14-CLIPA-336",
+      "pretrained_tag": "datacomp1b",
+      "input_interpolation": [336, 336],
+      "input_scaling": "float() / 255 into [0, 1] (unstandardized)",
+      "metric_type": "Cosine similarity of vision encoder feature embeddings",
+      "note": "NOT a percentage or accuracy metric; baseline non-degenerate images fall into [0.73, 1.00]"
+    }
+  },
+  "verified_baseline_metrics_summary": {
+    "tile_count": 256,
+    "cpsnr_crop4_db": {
+      "mean": 20.2144,
+      "std": 4.1478,
+      "median": 19.46,
+      "bootstrap_95ci": [19.6852, 20.7486],
+      "min": 12.9806,
+      "max": 38.2974
+    },
+    "psnr_crop4_db": {
+      "mean": 18.887,
+      "std": 3.86,
+      "median": 18.3366,
+      "bootstrap_95ci": [18.4129, 19.3646],
+      "min": 12.4411,
+      "max": 34.5049
+    },
+    "cpsnr_gain_db": {
+      "definition": "cpsnr_crop4_db - psnr_crop4_db",
+      "mean": 1.3274,
+      "std": 2.0991,
+      "median": 0.6076,
+      "bootstrap_95ci": [1.0887, 1.5859],
+      "min": -0.1372,
+      "max": 12.8842,
+      "max_tile_id": "38409_49923"
+    },
+    "ssim_crop4": {
+      "mean": 0.3912,
+      "std": 0.1564,
+      "median": 0.3784,
+      "bootstrap_95ci": [0.373, 0.4113],
+      "min": 0.0763,
+      "max": 0.8164
+    },
+    "lpips_vgg": {
+      "mean": 0.347,
+      "std": 0.0809,
+      "median": 0.3396,
+      "bootstrap_95ci": [0.3375, 0.3572],
+      "min": 0.1384,
+      "max": 0.6033
+    },
+    "clipscore": {
+      "mean": 0.9612,
+      "std": 0.0344,
+      "median": 0.9736,
+      "bootstrap_95ci": [0.9569, 0.965],
+      "min": 0.7066,
+      "max": 0.9953
+    }
+  },
+  "registration_audit_summary": {
+    "total_tiles": 256,
+    "categories": {
+      "RELIABLE": 200,
+      "SPECTRAL_WRAPAROUND_CORRECTED": 14,
+      "UNRELIABLE_LOW_CORRELATION": 37,
+      "UNRELIABLE_EXTREME_OUTLIER": 5
+    },
+    "category_sum_check": 256,
+    "reliable_subset_count": 214,
+    "reliable_subset_fraction_pct": 83.59,
+    "reliable_subset_displacement_px": {
+      "mean": 3.8631,
+      "std": 5.7413,
+      "median": 1.736,
+      "bootstrap_95ci": [3.1091, 4.6605],
+      "within_2px_pct": 55.6,
+      "within_8px_pct": 86.9
+    },
+    "interpretation_boundary": "Raster cross-correlation displacement is an empirical signal matching diagnostic, NOT proof of geodetic/geospatial alignment."
+  },
+  "primary_result_files": {
+    "inference_predictions": "results/satlas_sr_full_validation",
+    "inference_manifest": "results/satlas_sr_full_validation/inference_manifest.csv",
+    "paper_metrics_csv": "results/satlas_sr_paper_metrics/per_tile_metrics.csv",
+    "revalidation_metrics_csv": "results/satlas_sr_revalidation/per_tile_metrics.csv",
+    "metric_correlations_csv": "results/satlas_sr_revalidation/metric_correlations.csv",
+    "statistical_analysis_json": "results/satlas_sr_revalidation/statistical_analysis.json",
+    "registration_validation_csv": "results/satlas_sr_spatial_audit/registration_validation.csv",
+    "reconciliation_report": "results/satlas_sr_reproduction_audit/final_consistency_reconciliation.md"
+  }
+}

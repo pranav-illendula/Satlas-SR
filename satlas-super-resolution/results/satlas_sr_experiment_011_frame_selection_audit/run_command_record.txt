@@ -1,0 +1,56 @@
+================================================================================
+SATLAS-SR EXP-011: SENTINEL-2 FRAME-SELECTION SENSITIVITY AUDIT RUN RECORD
+================================================================================
+Audit Date: 2026-10-22T21:24:00+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Audit Scope: Pure Read-Only Inspection of Frame-Selection Implementation, Output Dimensions, Local Metadata, and Experiment Planning.
+
+--------------------------------------------------------------------------------
+1. RECORDED READ-ONLY INSPECTION COMMANDS
+--------------------------------------------------------------------------------
+Command 1: Source Implementation Inspection
+  Files Inspected:
+    - ssr/utils/infer_utils.py (lines 6-40: format_s2naip_data)
+    - ssr/data/s2-naip_dataset.py (lines 207-248: __getitem__ frame selection)
+    - ssr/utils/data_utils.py (lines 1-11: has_black_pixels)
+    - run_full_validation_inference.py (lines 155-226: frame recording and validation loop)
+    - run_five_tile_inference.py (lines 20-75: pilot execution)
+    - evaluate_satlas_sr_paper_metrics.py (lines 40-120: image loading and metric discover)
+    - ssr/options/infer_satlas_full_validation.yml
+    - ssr/options/infer_satlas_five_tiles.yml
+
+Command 2: Image Dimension Verification on Disk
+  Executor: Python 3.9.6 via PIL.Image
+  Targets:
+    - S2 Input (data/small_val_set/sentinel2/20771_46525/tci.png): 32 x 1024 px, mode RGB (32 frames of 32x32)
+    - NAIP Target (data/small_val_set/naip/.../20771_46525/rgb.png): 128 x 128 px, mode RGB
+    - Saved Baseline SR (results/satlas_sr_full_validation/20771_46525/sr.png): 128 x 128 px, mode RGB
+    - Saved Baseline LR (results/satlas_sr_full_validation/20771_46525/lr.png): 32 x 32 px, mode RGB
+  Outcome: Confirmed that physical image resolution is 32x32 input -> 128x128 output (4x upsample), matching 128x128 NAIP ground truth.
+
+Command 3: Dataset File and Metadata Audit
+  Target: C:\Users\CSE-SDPL\Desktop\DL_image\data\small_val_set
+  Output:
+    - Total PNG files: 2,816
+    - Sentinel-2 PNGs: 2,560 (256 tiles x 10 bands: b01, b05, b06, b07, b08, b09, b10, b11, b12, tci)
+    - NAIP PNGs: 256 (256 tiles x 1 rgb.png)
+    - Non-PNG metadata files (JSON, XML, CSV): 0 (Zero external timestamp or cloud-mask metadata present)
+
+Command 4: Good vs. Bad Frame Census across 256 Tiles
+  Executor: Python 3.9.6 (.venv)
+  Logic: Check for black pixel [0, 0, 0] across all 32 frames of all 256 tiles
+  Output:
+    - Total tiles audited: 256
+    - Goods count: Exactly 32 valid frames for all 256 tiles (Counter({32: 256}))
+    - Bads count: Exactly 0 bad frames for all 256 tiles (Counter({0: 256}))
+    - Status: 100% of frames in small_val_set are valid without black pixel nodata artifacts.
+
+--------------------------------------------------------------------------------
+2. RECORD OF FINDINGS & DISCREPANCY RESOLUTIONS
+--------------------------------------------------------------------------------
+- Output Shape Discrepancy Resolved: The 512x512 figure cited in some report narratives was a conflation with standard tiled satellite chips. In small_val_set, inputs are 32x32 pixels, the scale factor is 4, producing 128x128 SR outputs, perfectly matching the 128x128 NAIP reference images.
+- Frame Selection State: The baseline selection uses `random.sample(goods, 8)` seeded once globally with `random.seed(0)`. Because all 32 frames are valid, selection is a pseudorandom draw over [0..31] for each tile in alphabetical order.
+- Metadata Availability: No satellite acquisition timestamps or cloud metadata exist locally in `small_val_set`.
+- Safety Compliance: ZERO inference runs, training runs, or metric evaluations were executed during this audit.

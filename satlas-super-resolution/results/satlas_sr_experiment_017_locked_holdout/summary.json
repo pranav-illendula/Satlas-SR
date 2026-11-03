@@ -1,0 +1,329 @@
+{
+  "experiment_id": "EXP-017",
+  "title": "Frozen Independent Holdout Evaluation of Hybrid Uncertainty",
+  "timestamp": "2026-10-23T16:50:46+0530",
+  "total_holdout_tiles": 107,
+  "total_runtime_seconds": 42.54,
+  "seconds_per_tile": 0.4,
+  "frozen_parameters": {
+    "alpha": 0.19,
+    "one_minus_alpha": 0.81,
+    "mu_tta": 0.083126,
+    "std_tta": 0.051388,
+    "mu_input": 0.057286,
+    "std_input": 0.041238
+  },
+  "registration_statistics": {
+    "mean_shift_px": 1.365,
+    "median_shift_px": 1.0,
+    "max_shift_px": 5.0,
+    "pct_nonzero_shift": 84.11
+  },
+  "spearman_rho_compensated": {
+    "hybrid": {
+      "mean": 0.279966,
+      "std": 0.149602,
+      "median": 0.295692,
+      "ci95_lower": 0.251292,
+      "ci95_upper": 0.308639
+    },
+    "input_sensitivity": {
+      "mean": 0.275427,
+      "std": 0.148836,
+      "median": 0.290095,
+      "ci95_lower": 0.246901,
+      "ci95_upper": 0.303954
+    },
+    "d4_tta": {
+      "mean": 0.169973,
+      "std": 0.151988,
+      "median": 0.171323,
+      "ci95_lower": 0.140843,
+      "ci95_upper": 0.199104
+    },
+    "sobel_gradient": {
+      "mean": 0.200649,
+      "std": 0.142533,
+      "median": 0.211477,
+      "ci95_lower": 0.173331,
+      "ci95_upper": 0.227968
+    },
+    "random_baseline": {
+      "mean": -0.001161,
+      "std": 0.008049,
+      "median": -0.001274,
+      "ci95_lower": -0.002703,
+      "ci95_upper": 0.000382
+    },
+    "constant_baseline": {
+      "mean": 0.0,
+      "std": 0.0,
+      "median": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0
+    }
+  },
+  "spearman_rho_uncompensated": {
+    "hybrid": {
+      "mean": 0.297008,
+      "std": 0.153285,
+      "median": 0.307909,
+      "ci95_lower": 0.267629,
+      "ci95_upper": 0.326388
+    },
+    "input_sensitivity": {
+      "mean": 0.292007,
+      "std": 0.152038,
+      "median": 0.306354,
+      "ci95_lower": 0.262867,
+      "ci95_upper": 0.321147
+    },
+    "d4_tta": {
+      "mean": 0.180741,
+      "std": 0.155423,
+      "median": 0.18951,
+      "ci95_lower": 0.150952,
+      "ci95_upper": 0.21053
+    },
+    "sobel_gradient": {
+      "mean": 0.204559,
+      "std": 0.138415,
+      "median": 0.211184,
+      "ci95_lower": 0.17803,
+      "ci95_upper": 0.231088
+    }
+  },
+  "primary_endpoint_paired_differences": {
+    "hybrid_vs_sobel": {
+      "comparison": "Hybrid vs Sobel_Gradient",
+      "mean_diff": 0.079316,
+      "std_diff": 0.095124,
+      "median_diff": 0.076888,
+      "ci95_lower": 0.061084,
+      "ci95_upper": 0.097548,
+      "t_statistic": 8.625119,
+      "t_p_value": 6.86531667544497e-14,
+      "wilcoxon_stat": 458.0,
+      "wilcoxon_p_value": 4.1700997109387346e-14,
+      "cohens_d": 0.8338,
+      "wins": 93,
+      "ties": 0,
+      "losses": 14,
+      "win_rate_pct": 86.92
+    },
+    "input_vs_sobel": {
+      "comparison": "Input_Sensitivity vs Sobel_Gradient",
+      "mean_diff": 0.074778,
+      "std_diff": 0.104309,
+      "median_diff": 0.069426,
+      "ci95_lower": 0.054785,
+      "ci95_upper": 0.09477,
+      "t_statistic": 7.415529,
+      "t_p_value": 3.125650652746072e-11,
+      "wilcoxon_stat": 625.0,
+      "wilcoxon_p_value": 1.970747072796679e-12,
+      "cohens_d": 0.7169,
+      "wins": 91,
+      "ties": 0,
+      "losses": 16,
+      "win_rate_pct": 85.05
+    },
+    "tta_vs_sobel": {
+      "comparison": "D4_TTA vs Sobel_Gradient",
+      "mean_diff": -0.030676,
+      "std_diff": 0.128077,
+      "median_diff": -0.040072,
+      "ci95_lower": -0.055224,
+      "ci95_upper": -0.006128,
+      "t_statistic": -2.477522,
+      "t_p_value": 0.014809210695056781,
+      "wilcoxon_stat": 1750.0,
+      "wilcoxon_p_value": 0.0004000888915332383,
+      "cohens_d": -0.2395,
+      "wins": 34,
+      "ties": 0,
+      "losses": 73,
+      "win_rate_pct": 31.78
+    },
+    "hybrid_vs_input": {
+      "comparison": "Hybrid vs Input_Sensitivity",
+      "mean_diff": 0.004538,
+      "std_diff": 0.034357,
+      "median_diff": 0.007191,
+      "ci95_lower": -0.002047,
+      "ci95_upper": 0.011123,
+      "t_statistic": 1.366405,
+      "t_p_value": 0.17470335147160773,
+      "wilcoxon_stat": 1783.0,
+      "wilcoxon_p_value": 0.0005871957584328456,
+      "cohens_d": 0.1321,
+      "wins": 71,
+      "ties": 0,
+      "losses": 36,
+      "win_rate_pct": 66.36
+    },
+    "hybrid_vs_tta": {
+      "comparison": "Hybrid vs D4_TTA",
+      "mean_diff": 0.109992,
+      "std_diff": 0.129527,
+      "median_diff": 0.11696,
+      "ci95_lower": 0.085166,
+      "ci95_upper": 0.134818,
+      "t_statistic": 8.784047,
+      "t_p_value": 3.0330079222138283e-14,
+      "wilcoxon_stat": 531.0,
+      "wilcoxon_p_value": 2.3241114107616297e-13,
+      "cohens_d": 0.8492,
+      "wins": 92,
+      "ties": 0,
+      "losses": 15,
+      "win_rate_pct": 85.98
+    }
+  },
+  "secondary_endpoints": {
+    "aurg": {
+      "hybrid": {
+        "mean": 0.015927,
+        "std": 0.009978,
+        "median": 0.015355,
+        "ci95_lower": 0.014014,
+        "ci95_upper": 0.017839
+      },
+      "input_sensitivity": {
+        "mean": 0.015622,
+        "std": 0.009923,
+        "median": 0.014753,
+        "ci95_lower": 0.01372,
+        "ci95_upper": 0.017524
+      },
+      "d4_tta": {
+        "mean": 0.010822,
+        "std": 0.009747,
+        "median": 0.010543,
+        "ci95_lower": 0.008954,
+        "ci95_upper": 0.01269
+      },
+      "sobel_gradient": {
+        "mean": 0.011235,
+        "std": 0.008927,
+        "median": 0.011099,
+        "ci95_lower": 0.009524,
+        "ci95_upper": 0.012946
+      },
+      "paired_hybrid_vs_sobel": {
+        "comparison": "AURG_Hybrid vs AURG_Sobel",
+        "mean_diff": 0.004692,
+        "std_diff": 0.005522,
+        "median_diff": 0.004443,
+        "ci95_lower": 0.003633,
+        "ci95_upper": 0.00575,
+        "t_statistic": 8.788598,
+        "t_p_value": 2.962784454293743e-14,
+        "wilcoxon_stat": 318.0,
+        "wilcoxon_p_value": 1.3417720614679616e-15,
+        "cohens_d": 0.8496,
+        "wins": 94,
+        "ties": 0,
+        "losses": 13,
+        "win_rate_pct": 87.85
+      }
+    },
+    "pct_reduction_10": {
+      "hybrid": {
+        "mean": 6.70886,
+        "std": 3.701172,
+        "median": 7.097,
+        "ci95_lower": 5.999475,
+        "ci95_upper": 7.418245
+      },
+      "sobel_gradient": {
+        "mean": 5.116028,
+        "std": 3.200339,
+        "median": 5.446,
+        "ci95_lower": 4.502635,
+        "ci95_upper": 5.729421
+      }
+    },
+    "pct_reduction_20": {
+      "hybrid": {
+        "mean": 11.265,
+        "std": 6.434142,
+        "median": 11.314,
+        "ci95_lower": 10.031801,
+        "ci95_upper": 12.498199
+      },
+      "input_sensitivity": {
+        "mean": 10.944879,
+        "std": 6.295908,
+        "median": 10.804,
+        "ci95_lower": 9.738174,
+        "ci95_upper": 12.151583
+      },
+      "d4_tta": {
+        "mean": 6.680916,
+        "std": 5.672372,
+        "median": 6.665,
+        "ci95_lower": 5.593721,
+        "ci95_upper": 7.768111
+      },
+      "sobel_gradient": {
+        "mean": 8.427785,
+        "std": 5.76702,
+        "median": 8.588,
+        "ci95_lower": 7.32245,
+        "ci95_upper": 9.53312
+      },
+      "paired_hybrid_vs_sobel": {
+        "comparison": "PctRed20_Hybrid vs PctRed20_Sobel",
+        "mean_diff": 2.837215,
+        "std_diff": 3.02769,
+        "median_diff": 2.466,
+        "ci95_lower": 2.256913,
+        "ci95_upper": 3.417517,
+        "t_statistic": 9.693323,
+        "t_p_value": 2.747908545113679e-16,
+        "wilcoxon_stat": 342.0,
+        "wilcoxon_p_value": 2.4505643161674023e-15,
+        "cohens_d": 0.9371,
+        "wins": 98,
+        "ties": 0,
+        "losses": 9,
+        "win_rate_pct": 91.59
+      }
+    },
+    "pct_reduction_30": {
+      "hybrid": {
+        "mean": 15.080757,
+        "std": 8.946903,
+        "median": 14.681,
+        "ci95_lower": 13.36595,
+        "ci95_upper": 16.795564
+      },
+      "sobel_gradient": {
+        "mean": 11.161131,
+        "std": 8.104336,
+        "median": 10.953,
+        "ci95_lower": 9.607814,
+        "ci95_upper": 12.714448
+      }
+    }
+  },
+  "development_vs_holdout_replication": {
+    "development_exp015_cv": {
+      "mean_rho_hybrid": 0.30476,
+      "mean_rho_sobel": 0.22241,
+      "paired_mean_delta": 0.08235,
+      "relative_gain_pct": 37.03,
+      "t_p_value": 3.2e-11,
+      "win_rate_pct": 77.57
+    },
+    "holdout_exp017": {
+      "mean_rho_hybrid": 0.279965,
+      "mean_rho_sobel": 0.200649,
+      "paired_mean_delta": 0.079316,
+      "relative_gain_pct": 39.53,
+      "t_p_value": 6.86531667544497e-14,
+      "win_rate_pct": 86.92
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "experiment_id": "EXP-002",
+  "title": "Paper-Level Reproduction Gap Analysis",
+  "timestamp": "2026-10-22T09:18:00Z",
+  "target_paper": {
+    "title": "Zooming Out on Zooming In: Advancing Super-Resolution for Remote Sensing",
+    "authors": "Piper Wolters, Favyen Bastani, Aniruddha Kembhavi (Allen Institute for AI)",
+    "arxiv_id": "2311.18082v1",
+    "arxiv_url": "https://arxiv.org/abs/2311.18082",
+    "supplementary_url": "https://pub-25c498004d1e4d4c8da69b2c05676836.r2.dev/Zooming_Out_On_Zooming_In_Supplementary.pdf"
+  },
+  "local_artifacts_inspected": {
+    "checkpoint": {
+      "path": "experiments/esrgan_8S2.pth",
+      "sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+      "file_size_bytes": 134267433,
+      "parameter_count": 16710083,
+      "weights_keys": ["params", "params_ema"],
+      "model_family": "SSR_RRDBNet (ESRGAN Small)",
+      "configuration_mapping": "ssr/options/experiments/esrgan_baseline.yml"
+    },
+    "configs": [
+      "ssr/options/experiments/esrgan_baseline.yml",
+      "ssr/options/experiments/esrgan_larger1.yml",
+      "ssr/options/experiments/esrgan_larger2.yml",
+      "ssr/options/experiments/esrgan_baseline_cliploss.yml",
+      "ssr/options/infer_satlas_full_validation.yml"
+    ],
+    "metrics_implementations": [
+      "ssr/metrics/cpsnr.py",
+      "ssr/metrics/lpips.py",
+      "ssr/metrics/clipscore.py"
+    ],
+    "baseline_results": [
+      "results/satlas_sr_baseline_freeze_v1/baseline_manifest.json",
+      "results/satlas_sr_baseline_freeze_v1/BASELINE_FREEZE_REPORT.md",
+      "results/satlas_sr_revalidation/per_tile_metrics.csv",
+      "results/satlas_sr_experiment_001/experiment_001_summary.json"
+    ]
+  },
+  "paper_models_vs_local_models": {
+    "small_esrgan": {
+      "paper_parameters": "~17M (Section 4.1, Figure 5)",
+      "local_parameters": 16710083,
+      "local_checkpoint_available": true,
+      "local_path": "experiments/esrgan_8S2.pth",
+      "architecture": "num_feat=64, num_block=23, num_grow_ch=32"
+    },
+    "medium_esrgan": {
+      "paper_parameters": "~87M (Section 4.1, Figure 5, Section 5 Table 2)",
+      "local_config": "ssr/options/experiments/esrgan_larger1.yml",
+      "local_parameters_computed": {
+        "generator": 66782083,
+        "discriminator": 17530497,
+        "total_trainable": 84312580
+      },
+      "local_checkpoint_available": false,
+      "status": "MISSING_WEIGHTS"
+    },
+    "large_esrgan": {
+      "paper_parameters": "~347M (Section 4.1, Figure 5)",
+      "local_config": "ssr/options/experiments/esrgan_larger2.yml",
+      "local_parameters_computed": {
+        "generator": 267011843,
+        "discriminator": 70057217,
+        "total_trainable": 337069060
+      },
+      "local_checkpoint_available": false,
+      "status": "MISSING_WEIGHTS"
+    },
+    "best_esrgan": {
+      "paper_parameters": "CLIPScore auxiliary loss + domain knowledge (Section 6, Figure 8)",
+      "paper_clipscore": 0.959,
+      "local_checkpoint_available": false,
+      "status": "MISSING_WEIGHTS"
+    }
+  },
+  "published_table_2_reference_values": {
+    "dataset": "S2-NAIP",
+    "models": {
+      "SRCNN": {"cpsnr_db": 17.9039, "lpips_agreement": 0.3517, "clipscore": 0.7000},
+      "HighResNet": {"cpsnr_db": 20.9171, "lpips_agreement": 0.1990, "clipscore": 0.6705},
+      "ESRGAN_medium_87M": {"cpsnr_db": 22.6506, "lpips_agreement": 0.8406, "clipscore": 0.8745},
+      "SR3_diffusion_97M": {"cpsnr_db": 19.4706, "lpips_agreement": 0.6292, "clipscore": 0.8223}
+    }
+  },
+  "local_frozen_small_baseline_values": {
+    "dataset": "small_val_set (256 urban tiles)",
+    "model": "ESRGAN Small (16.71M)",
+    "metrics": {
+      "cpsnr_stride2_db": {"mean": 20.21, "std": 4.15, "median": 19.46},
+      "cpsnr_dense_stride1_db": {"mean": 20.33, "std": 4.14, "median": 19.53},
+      "standard_psnr_crop4_db": {"mean": 18.89, "std": 3.86, "median": 18.34},
+      "ssim_crop4": {"mean": 0.391, "std": 0.156, "median": 0.378},
+      "lpips_vgg_raw_distance": {"mean": 0.347, "std": 0.081, "median": 0.340},
+      "clipscore_vit_bigg": {"mean": 0.961, "std": 0.034, "median": 0.974}
+    }
+  },
+  "evidence_gaps_summary": {
+    "prerequisites_requiring_external_downloads": [
+      {
+        "item": "Full Benchmark Test/Validation Set",
+        "description": "super_resolution_val_set_2024-01-09.tar (8,192 tiles) or test_set",
+        "size_estimate": "35-45 GB",
+        "local_availability": false
+      },
+      {
+        "item": "Medium (87M) ESRGAN Checkpoint",
+        "description": "Pretrained weights for esrgan_larger1 (Table 2 baseline)",
+        "size_estimate": "~350 MB",
+        "local_availability": false
+      },
+      {
+        "item": "S2-NAIP Urban Training Set",
+        "description": "train_urban_set (4-part 7z archive, ~1.1M pairs) if retraining is required",
+        "size_estimate": ">200 GB",
+        "local_availability": false
+      }
+    ],
+    "prerequisites_resolvable_locally": [
+      {
+        "item": "Metric Implementation & Protocol Audit",
+        "description": "Official cPSNR, dense cPSNR, CLIPScore, and LPIPS functions verified locally",
+        "status": "COMPLETED (EXP-001)"
+      },
+      {
+        "item": "Model Architecture Definitions",
+        "description": "Exact PyTorch module code for Small, Medium, Large RRDBNet verified",
+        "status": "COMPLETED (EXP-002)"
+      },
+      {
+        "item": "Deterministic Validation Runner",
+        "description": "Reproducible inference pipeline with atomic manifests and hash verification",
+        "status": "COMPLETED (Baseline Freeze v1)"
+      }
+    ]
+  }
+}

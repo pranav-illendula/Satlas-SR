@@ -1,0 +1,8 @@
+Experiment: EXP-004 (Authoritative Metric Provenance and Model Availability Audit)
+Timestamp: 2026-10-22T09:35:00Z
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Git Commit: 3e67973f6746bedbd91cc032b4888574980e1daf (branch: experiments)
+Remote Branch Inspected: origin/favyen/20260322-update-links-from-r2-to-gcs (commit 7ccf8d1)
+Audit Type: Read-only authoritative provenance, metric procedure, and model availability audit
+Actions Performed: Inspected paper PDF, arXiv source, git branch/commit history, official upstream repositories, and remote URL accessibility (HTTP HEAD checks)
+Safety Constraints Observed: Zero downloads of checkpoints/datasets/large assets, zero training/inference, zero modifications to existing baseline files

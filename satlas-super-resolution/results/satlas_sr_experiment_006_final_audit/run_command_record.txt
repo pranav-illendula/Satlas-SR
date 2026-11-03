@@ -1,0 +1,61 @@
+================================================================================
+SATLAS-SR EXP-006: READ-ONLY AUDIT RUN COMMAND RECORD
+================================================================================
+Audit Date: 2026-10-22T15:20:00+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Audit Scope: Pure Read-Only Verification of Frozen Baseline v1 and Experiments EXP-001 through EXP-005.
+
+--------------------------------------------------------------------------------
+1. RECORDED INSPECTION & VERIFICATION COMMANDS
+--------------------------------------------------------------------------------
+Command 1: Artifact Existence & Checksum Cross-Validation
+  Executor: Python 3.9.6 (.venv)
+  Script: C:\Users\CSE-SDPL\.gemini\antigravity-ide\brain\e0c89aaf-2130-4a1b-a0df-8c4fd2cfff93\scratch\verify_all_artifacts.py
+  Purpose: Read-only integrity scan of 32 key artifacts (manifests, CSVs, reports, checkpoints, dataset tiles).
+  Result: 100% PASS. All 256 tiles, model weights (SHA-256: 4099b244799c9ef89679fe26a71cb0a8ce885bb3c3dbff061bc4a7ffaa2d59ac),
+          and metric files verified intact with zero bytes altered.
+
+Command 2: Integrity Matrix Generation
+  Executor: Python 3.9.6 (.venv)
+  Script: C:\Users\CSE-SDPL\.gemini\antigravity-ide\brain\e0c89aaf-2130-4a1b-a0df-8c4fd2cfff93\scratch\make_integrity_csv.py
+  Purpose: Formats file sizes, statuses, and checksum verifications into artifact_integrity_check.csv.
+  Result: Output saved cleanly to results/satlas_sr_experiment_006_final_audit/artifact_integrity_check.csv.
+
+Command 3: Metric Summary Re-Verification
+  Executor: Python 3.9.6 (.venv) via inline verification
+  Target Files:
+    - results/satlas_sr_baseline_freeze_v1/metrics_summary.json
+    - results/satlas_sr_paper_metrics/metrics_summary.json
+    - results/satlas_sr_revalidation/per_tile_metrics.csv
+  Verification:
+    - cPSNR crop 4: 20.214436 dB (mean) +/- 4.147781 dB
+    - Raw PSNR: 18.812166 dB (mean) +/- 3.813824 dB
+    - Crop 4 PSNR: 18.887019 dB (mean) +/- 3.859966 dB
+    - Raw SSIM: 0.395015 (mean) +/- 0.149539
+    - Crop 4 SSIM: 0.391219 (mean) +/- 0.156434
+    - VGG LPIPS distance: 0.347035 (mean) +/- 0.080918
+    - CLIPScore: 0.961176 (mean) +/- 0.034371
+  Result: Exact match across all summary JSONs and the 256 per-tile CSV records.
+
+--------------------------------------------------------------------------------
+2. RECORD OF PRIOR EXPERIMENT ARTIFACTS INSPECTED
+--------------------------------------------------------------------------------
+- EXP-001: results/satlas_sr_experiment_001/EXPERIMENT_001_REPORT.md
+  Empirical delta: dense stride-1 search yields +0.1232 dB cPSNR over official stride-2 search across 256 tiles.
+- EXP-002: results/satlas_sr_experiment_002_paper_gap_analysis/GAP_ANALYSIS_REPORT.md
+  Formal 10-dimension gap matrix distinguishing 16.71M Small ESRGAN (local) vs 87M Medium ESRGAN (paper).
+- EXP-003: results/satlas_sr_experiment_003_metric_standardization/METRIC_STANDARDIZATION_REPORT.md
+  Refutation of naive 1 - LPIPS inversion; preservation of raw perceptual distance (0.3470).
+- EXP-004: results/satlas_sr_experiment_004_provenance_audit/PROVENANCE_AUDIT_REPORT.md
+  Git commit 7ccf8d1 inspection, identification of GCS bucket URLs, confirmation that 87M checkpoint was unreleased.
+- EXP-005: results/satlas_sr_experiment_005_supplementary_verification/SUPPLEMENTARY_VERIFICATION_REPORT.md
+  Inspection of Zooming_Out_On_Zooming_In_Supplementary.pdf; established that Section A.1 specifies a 2AFC human AMT study, not a scalar formula.
+
+--------------------------------------------------------------------------------
+3. UNRESOLVED ISSUES & SYSTEM CONSTRAINTS
+--------------------------------------------------------------------------------
+- Unresolved Issue 1: Paper Table 2 evaluated an 87M-parameter Medium ESRGAN model across 8,192 validation tiles. The official open-source repository only released the 16.71M Small ESRGAN model (`esrgan_8S2.pth`) and a 256-tile urban sample. The 87M checkpoint and 8,192-tile benchmark labels remain unavailable in the public repository.
+- Unresolved Issue 2: LPIPS accuracy in Table 2 (reported as 63.8% in paper) represents 2AFC human preference agreement across 11,524 Amazon Mechanical Turk judgments. The raw crowdsourced MTurk judgment pairs are not in the public repository, preventing local reproduction of human-agreement win-rate without collecting new human evaluations.
+- System Constraint: PowerShell profile execution policy warning on startup does not impede script execution when invoking Python directly via absolute path.

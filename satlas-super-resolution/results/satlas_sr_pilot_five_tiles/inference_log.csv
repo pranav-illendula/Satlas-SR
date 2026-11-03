@@ -1,0 +1,6 @@
+tile_id,status,runtime_seconds,gpu_peak_allocated_mib,input_path,output_path,error
+20771_46525,OK,0.500,73.60,C:\Users\CSE-SDPL\Desktop\DL_image\data\small_val_set_tci_five_tiles\sentinel2\20771_46525\tci.png,C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution\results\satlas_sr_pilot_five_tiles\20771_46525\sr.png,
+20890_46801,OK,0.085,73.60,C:\Users\CSE-SDPL\Desktop\DL_image\data\small_val_set_tci_five_tiles\sentinel2\20890_46801\tci.png,C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution\results\satlas_sr_pilot_five_tiles\20890_46801\sr.png,
+20926_46045,OK,0.090,73.60,C:\Users\CSE-SDPL\Desktop\DL_image\data\small_val_set_tci_five_tiles\sentinel2\20926_46045\tci.png,C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution\results\satlas_sr_pilot_five_tiles\20926_46045\sr.png,
+21068_45692,OK,0.078,73.60,C:\Users\CSE-SDPL\Desktop\DL_image\data\small_val_set_tci_five_tiles\sentinel2\21068_45692\tci.png,C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution\results\satlas_sr_pilot_five_tiles\21068_45692\sr.png,
+21856_49804,OK,0.107,73.60,C:\Users\CSE-SDPL\Desktop\DL_image\data\small_val_set_tci_five_tiles\sentinel2\21856_49804\tci.png,C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution\results\satlas_sr_pilot_five_tiles\21856_49804\sr.png,

@@ -1,0 +1,115 @@
+{
+  "evaluation_timestamp_utc": "2026-10-21T18:57:09.849824+00:00",
+  "total_tiles_evaluated": 256,
+  "total_runtime_seconds": 262.37,
+  "exact_matches_with_prior_run": 256,
+  "comparison_count": 256,
+  "metrics": {
+    "cpsnr_crop4_db": {
+      "count": 256,
+      "mean": 20.2144,
+      "std": 4.1478,
+      "median": 19.46,
+      "min": 9.5912,
+      "max": 39.5373,
+      "p25": 17.698,
+      "p75": 21.3346,
+      "iqr": 3.6366
+    },
+    "cpsnr_crop0_db": {
+      "count": 256,
+      "mean": 20.1111,
+      "std": 4.1132,
+      "median": 19.3342,
+      "min": 9.7854,
+      "max": 39.5008,
+      "p25": 17.6834,
+      "p75": 21.2477,
+      "iqr": 3.5643
+    },
+    "lpips_vgg": {
+      "count": 256,
+      "mean": 0.347,
+      "std": 0.0809,
+      "median": 0.3396,
+      "min": 0.1442,
+      "max": 0.7196,
+      "p25": 0.2984,
+      "p75": 0.3818,
+      "iqr": 0.0834
+    },
+    "clipscore": {
+      "count": 256,
+      "mean": 0.9612,
+      "std": 0.0344,
+      "median": 0.9736,
+      "min": 0.7768,
+      "max": 0.993,
+      "p25": 0.9542,
+      "p75": 0.9834,
+      "iqr": 0.0293
+    },
+    "psnr_crop4_db": {
+      "count": 256,
+      "mean": 18.887,
+      "std": 3.86,
+      "median": 18.3366,
+      "min": 5.5999,
+      "max": 34.7798,
+      "p25": 16.8785,
+      "p75": 20.2978,
+      "iqr": 3.4193
+    },
+    "ssim_crop4": {
+      "count": 256,
+      "mean": 0.3912,
+      "std": 0.1564,
+      "median": 0.3784,
+      "min": 0.0501,
+      "max": 0.9129,
+      "p25": 0.2905,
+      "p75": 0.4591,
+      "iqr": 0.1687
+    },
+    "psnr_raw_db": {
+      "count": 256,
+      "mean": 18.8122,
+      "std": 3.8138,
+      "median": 18.322,
+      "min": 5.726,
+      "max": 33.8205,
+      "p25": 16.8006,
+      "p75": 20.2626,
+      "iqr": 3.4621
+    },
+    "ssim_raw": {
+      "count": 256,
+      "mean": 0.395,
+      "std": 0.1495,
+      "median": 0.3904,
+      "min": 0.057,
+      "max": 0.9059,
+      "p25": 0.3009,
+      "p75": 0.466,
+      "iqr": 0.1651
+    },
+    "cpsnr_gain_over_psnr_db": {
+      "count": 256,
+      "mean": 1.3274,
+      "std": 2.0991,
+      "median": 0.6076,
+      "min": -0.1372,
+      "max": 12.8842,
+      "p25": 0.1818,
+      "p75": 1.3655,
+      "iqr": 1.1837
+    }
+  },
+  "gain_analysis": {
+    "fraction_tiles_improved": 0.9414,
+    "fraction_tiles_gain_ge_1db": 0.3594,
+    "fraction_tiles_gain_ge_3db": 0.1172,
+    "max_gain_db": 12.8842,
+    "min_gain_db": -0.1372
+  }
+}

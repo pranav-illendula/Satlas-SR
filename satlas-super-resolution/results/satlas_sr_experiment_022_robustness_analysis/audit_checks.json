@@ -1,0 +1,56 @@
+{
+  "experiment": "EXP-022",
+  "verdict": "VERIFIED",
+  "execution_time_sec": 2.29,
+  "checks": [
+    {
+      "check_id": "CHK-01",
+      "name": "Partition Boundary Verification",
+      "requirement": "Operate strictly on 107 development tiles; locked holdout (107) and quarantine (42) untouched.",
+      "status": "PASS",
+      "evidence": "Split manifest loaded: len(dev_tiles)==107, dev_tiles disjoint with holdout and quarantined partitions."
+    },
+    {
+      "check_id": "CHK-02",
+      "name": "Primary Comparison Reproduction",
+      "requirement": "Reproduce 20% budget comparison across S0, Hybrid, Sobel, Random, and Full Ensemble.",
+      "status": "PASS",
+      "evidence": "Matched EXP-020A Phase 2 and EXP-021 metrics to full floating-point precision (Hybrid vs Random MAE \u0394 = -0.00222, p = 9.86e-22)."
+    },
+    {
+      "check_id": "CHK-03",
+      "name": "Distribution & Outlier Robustness",
+      "requirement": "Test sensitivity under exclusion of top 1 and top 5 most influential tiles.",
+      "status": "PASS",
+      "evidence": "All paired comparisons remain statistically significant at p < 10^-7 even after excluding top 5 most influential tiles."
+    },
+    {
+      "check_id": "CHK-04",
+      "name": "Replacement Fraction Consistency",
+      "requirement": "Evaluate 10%, 20%, 30% budgets without parameter tuning.",
+      "status": "PASS",
+      "evidence": "Hybrid significantly outperforms random control at all fractions (10%: \u0394 = -0.00152, 20%: \u0394 = -0.00222, 30%: \u0394 = -0.00253, all p < 10^-20)."
+    },
+    {
+      "check_id": "CHK-05",
+      "name": "Observable Diagnostic Associations",
+      "requirement": "Analyze associations between observable features and improvement without unverified semantic labels.",
+      "status": "PASS",
+      "evidence": "Temporal disagreement (r = 0.582, p = 1.3e-10) and hybrid uncertainty p90 (r = 0.505, p = 2.4e-8) correlate strongly with S0 improvement."
+    },
+    {
+      "check_id": "CHK-06",
+      "name": "Spatial Group Robustness",
+      "requirement": "Verify that conclusions are consistent across spatial folds and not driven by a single cluster.",
+      "status": "PASS",
+      "evidence": "Hybrid beats Random control across all 5 spatial folds (Fold win rates: 90.5%, 95.2%, 95.2%, 86.4%, 90.9%; all p < 10^-3)."
+    },
+    {
+      "check_id": "CHK-07",
+      "name": "Reconstruction Guardrail Compliance",
+      "requirement": "Gradient magnitude evaluated consistently without claiming enhanced super-resolution.",
+      "status": "PASS",
+      "evidence": "Report explicitly states gradient magnitude is an aggregate variance proxy and lower MAE reflects variance reduction."
+    }
+  ]
+}

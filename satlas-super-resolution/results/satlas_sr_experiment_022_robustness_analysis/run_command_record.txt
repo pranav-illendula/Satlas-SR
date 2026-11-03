@@ -1,0 +1,18 @@
+=== EXP-022 Execution Record ===
+Date: 2026-10-23
+Execution Script: results/satlas_sr_experiment_022_robustness_analysis/run_robustness_analysis.py
+Python: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Duration: 2.3 seconds
+Tiles Evaluated: Exactly 107 development tiles
+Holdout Access: ZERO (Strictly locked)
+Quarantined Access: ZERO (Strictly excluded)
+
+Operations Executed:
+1. Preregistered reproduction of EXP-020A primary 20% comparison.
+2. Distributional profiling and quantile breakdown of per-tile differences.
+3. Outlier sensitivity analysis under exclusion of top 1 and top 5 most influential tiles.
+4. Replacement fraction analysis comparing 10%, 20%, 30% budgets against Random and Sobel.
+5. Observable diagnostic feature extraction and correlation analysis.
+6. Spatial cluster robustness analysis across 5 cross-validation folds.
+7. Gradient sharpness retention accounting.
+8. Generation of 3 publication-quality vector SVG diagnostic figures.

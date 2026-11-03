@@ -1,0 +1,186 @@
+{
+  "report_metadata": {
+    "experiment_id": "EXP-008",
+    "title": "Final Satlas-SR Research Report Consolidation",
+    "consolidation_date": "2026-10-22T15:43:00+05:30",
+    "repository": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution",
+    "git_branch": "master",
+    "git_head_commit": "eb3dcae4cae4492652b04c86cb31d167f8b9d997",
+    "python_environment": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\.venv (Python 3.9.6)",
+    "pytorch_version": "2.1.0+cu121",
+    "cuda_version": "12.1",
+    "gpu_hardware": "NVIDIA RTX 2000 Ada Generation (16 GB VRAM)"
+  },
+  "verified_checkpoint_provenance": {
+    "relative_path": "experiments/esrgan_8S2.pth",
+    "absolute_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\experiments\\esrgan_8S2.pth",
+    "file_size_bytes": 134157518,
+    "sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+    "download_timestamp_utc": "2026-10-15T10:14:59.790044Z",
+    "download_timestamp_local": "2026-10-15 15:44:59.790044",
+    "archive_format": "PyTorch / ZIP archive container",
+    "state_dictionaries": {
+      "params": {
+        "tensor_count": 702,
+        "parameter_count": 16710083,
+        "uncompressed_bytes_float32": 66840332
+      },
+      "params_ema": {
+        "tensor_count": 702,
+        "parameter_count": 16710083,
+        "uncompressed_bytes_float32": 66840332
+      }
+    },
+    "total_uncompressed_weight_bytes": 133680664,
+    "loaded_inference_key": "params_ema",
+    "model_architecture": "SSR_RRDBNet",
+    "model_parameters": 16710083,
+    "model_tier": "Small (16.71M)",
+    "paper_table2_model_tier": "Medium (~87M total parameters)",
+    "strict_load_compatibility": "PASS (0 missing keys, 0 unexpected keys)"
+  },
+  "verified_dataset_provenance": {
+    "directory": "data/small_val_set",
+    "tile_count": 256,
+    "total_files": 512,
+    "input_channels": 72,
+    "input_spectral_bands": 9,
+    "input_temporal_frames": 8,
+    "input_spatial_dimensions": [128, 128],
+    "target_spatial_dimensions": [512, 512],
+    "target_spectral_bands": 3,
+    "target_resolution_m": 0.5,
+    "pairing_correspondence": "256 / 256 exact matching tile IDs (100% paired, zero missing)",
+    "biome_coverage": "Urban (representative sample from continental US)"
+  },
+  "reconciled_baseline_metrics": {
+    "population_count": 256,
+    "metrics": {
+      "cpsnr_crop4_db": {
+        "mean": 20.214439,
+        "std": 4.147816,
+        "min": 9.591200,
+        "max": 39.537300,
+        "min_tile_id": "38624_49179",
+        "max_tile_id": "38719_48115",
+        "metric_direction": "higher_is_better",
+        "implementation": "ssr/metrics/cpsnr.py",
+        "protocol": "PROBA-V stride-2 spatial offset search [-8, +8] with closed-form brightness bias compensation, crop border 4",
+        "faithful_paper_comparison": false,
+        "paper_comparison_notes": "Paper Table 2 evaluated Medium ESRGAN (~87M) across 8,192 multi-biome tiles, not Small ESRGAN (16.71M) on 256 urban tiles."
+      },
+      "psnr_raw_fullframe_db": {
+        "mean": 18.812246,
+        "std": 3.813820,
+        "min": 5.726000,
+        "max": 33.820500,
+        "metric_direction": "higher_is_better",
+        "implementation": "basicsr.metrics.calculate_psnr",
+        "protocol": "Standard unaligned full-frame MSE-based PSNR (no offset or brightness compensation)",
+        "faithful_paper_comparison": false
+      },
+      "psnr_crop4_db": {
+        "mean": 18.886987,
+        "std": 3.859972,
+        "min": 5.599900,
+        "max": 34.779800,
+        "metric_direction": "higher_is_better",
+        "implementation": "basicsr.metrics.calculate_psnr",
+        "protocol": "Standard unaligned PSNR with 4-pixel border exclusion",
+        "faithful_paper_comparison": false
+      },
+      "ssim_raw_fullframe": {
+        "mean": 0.394964,
+        "std": 0.149539,
+        "min": 0.057010,
+        "max": 0.905930,
+        "metric_direction": "higher_is_better",
+        "implementation": "basicsr.metrics.calculate_ssim",
+        "protocol": "Structural Similarity Index evaluated across full uncropped frame",
+        "faithful_paper_comparison": false
+      },
+      "ssim_crop4": {
+        "mean": 0.391208,
+        "std": 0.156356,
+        "min": 0.050120,
+        "max": 0.912870,
+        "metric_direction": "higher_is_better",
+        "implementation": "basicsr.metrics.calculate_ssim",
+        "protocol": "Structural Similarity Index with 4-pixel border exclusion",
+        "faithful_paper_comparison": false
+      },
+      "lpips_vgg_distance": {
+        "mean": 0.346965,
+        "std": 0.080876,
+        "min": 0.144250,
+        "max": 0.719590,
+        "metric_direction": "lower_is_better",
+        "implementation": "lpips.LPIPS(net='vgg')",
+        "protocol": "Raw $L_2$ perceptual feature distance in VGG network embedding space",
+        "faithful_paper_comparison": false,
+        "paper_comparison_notes": "Paper Table 2 reports 63.8% representing 2AFC human-preference agreement accuracy from 11,524 AMT trials, not raw LPIPS distance."
+      },
+      "clipscore_cosine_similarity": {
+        "mean": 0.961174,
+        "std": 0.034389,
+        "min": 0.776810,
+        "max": 0.992970,
+        "metric_direction": "higher_is_better",
+        "implementation": "open_clip (clipa-ViT-bigG-14 datacomp1b)",
+        "protocol": "Normalized cosine similarity between deep image feature embeddings in [-1, 1]",
+        "faithful_paper_comparison": false,
+        "paper_comparison_notes": "Continuous cosine similarity metric, not accuracy or percentage."
+      }
+    }
+  },
+  "exp001_dense_cpsnr_sensitivity": {
+    "sample_count": 256,
+    "official_stride2_mean_db": 20.214439,
+    "experimental_stride1_mean_db": 20.337672,
+    "dense_gain_mean_db": 0.123233,
+    "dense_gain_std_db": 0.184779,
+    "dense_gain_median_db": 0.0464,
+    "dense_gain_min_db": 0.0,
+    "dense_gain_max_db": 1.0044,
+    "bootstrap_95ci_mean_gain_db": [0.1018, 0.1477],
+    "tiles_with_positive_gain": 176,
+    "tiles_with_zero_gain": 80,
+    "interpretation": "Mathematical sensitivity diagnostic: stride-1 search space is a strict superset of stride-2 search space, guaranteeing monotonic non-negative gain. It does not reflect a change in model synthesis quality."
+  },
+  "spatial_registration_diagnostic": {
+    "total_tiles": 256,
+    "reliable_subset_tiles": 214,
+    "reliable_subset_pct": 83.59,
+    "reliable_subset_mean_shift_px": 3.863,
+    "reliable_subset_std_shift_px": 5.741,
+    "reliable_subset_median_shift_px": 1.736,
+    "reliable_subset_le_2px_pct": 55.6,
+    "reliable_subset_le_8px_pct": 86.9,
+    "anomalous_tile_categories": {
+      "spectral_leakage_wraparound": 14,
+      "low_correlation_cloud_water_landcover": 37,
+      "severe_discrepancy_gt15px": 5
+    },
+    "interpretation": "Raster cross-correlation diagnostic evaluating relative high-frequency spatial alignment. Does not prove physical coordinate registration or absence of geometric hallucination."
+  },
+  "reproduction_scope_matrix": {
+    "level_1_completed_local_baseline": {
+      "status": "VERIFIED_PASS",
+      "model": "16.71M Small ESRGAN (esrgan_8S2.pth)",
+      "dataset": "256 urban tiles (small_val_set)",
+      "reproducibility": "100% deterministic, cryptographic hashes verified, all per-tile records consistent"
+    },
+    "level_2_evaluation_pipeline_reproduction": {
+      "status": "VERIFIED_PASS",
+      "scope": "Corrected PSNR (stride-2), raw PSNR/SSIM, VGG LPIPS distance, and CLIPScore cosine similarity algorithms validated"
+    },
+    "level_3_exact_paper_table_2_reproduction": {
+      "status": "UNREPRODUCED_BLOCKED",
+      "blockers": [
+        "Medium ESRGAN (~87M parameters) checkpoint unreleased by authors",
+        "Full 8,192-tile nationwide multi-biome benchmark unavailable locally",
+        "Amazon Mechanical Turk 11,524 human comparison records unavailable locally"
+      ]
+    }
+  }
+}

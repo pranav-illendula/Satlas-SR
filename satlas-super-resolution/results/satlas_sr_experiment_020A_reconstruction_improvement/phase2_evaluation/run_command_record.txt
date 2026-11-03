@@ -1,0 +1,38 @@
+EXP-020A PHASE 2 RUN RECORD
+================================================================================
+Timestamp: 2026-10-23T21:26:43+0530
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Git Commit Hash: 3e67973f6746bedbd91cc032b4888574980e1daf
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Hardware Device: NVIDIA RTX 2000 Ada Generation (CUDA) / Host CPU
+Execution Script: results/satlas_sr_experiment_020A_reconstruction_improvement/phase2_evaluation/run_phase2_evaluation.py
+
+Experimental Configuration:
+- Tiles Evaluated: Exactly 107 Development Partition Tiles
+- Holdout Partition: Strictly Locked and Untouched (0 holdout tiles accessed)
+- Quarantined Tiles: Excluded (0 quarantined tiles used)
+- Evaluation Arms:
+  1. Frozen Baseline S0
+  2. Full Six-Prediction Temporal Ensemble Mean
+  3. Random-Mask Ensemble Replacement (5 fixed seeds: 101, 202, 303, 404, 505)
+  4. Sobel-Ranked Ensemble Replacement
+  5. Frozen Hybrid-Uncertainty-Ranked Ensemble Replacement
+- Replacement Budgets: 10% (1440 px), 20% (2880 px), 30% (4320 px)
+- Frozen Hybrid Parameters: alpha=0.1900, mu_tta=0.083126, std_tta=0.051388, mu_input=0.057286, std_input=0.041238
+- Registration Policy: Fixed integer translation (dx, dy) in [-8, 8] minimizing MSE on interior crop
+
+Outputs Generated in phase2_evaluation/:
+- per_tile_metrics.csv
+- aggregate_statistics.csv
+- source_manifest.csv
+- validation_checks.json
+- run_command_record.txt
+- EXP020A_PHASE2_REPORT.md
+- fig1_mae_comparison_budgets.svg
+- fig2_hybrid_vs_random_paired.svg
+- fig3_gradient_sharpness_tradeoff.svg
+
+Runtime:
+- Total Execution Time: 7.41 seconds
+- Average Latency: 0.07 seconds/tile
+================================================================================

@@ -1,0 +1,53 @@
+================================================================================
+SATLAS-SR EXP-009: INDEPENDENT NUMERICAL VERIFICATION COMMAND RECORD
+================================================================================
+Audit Date: 2026-10-22T15:53:00+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Audit Scope: Pure Read-Only Independent Verification of EXP-008 Report, Deliverables, Metrics, Checkpoint, Git State, and Figures.
+
+--------------------------------------------------------------------------------
+1. RECORDED VERIFICATION & RECOMPUTATION COMMANDS
+--------------------------------------------------------------------------------
+Command 1: Independent Statistical Recalculation & Tolerance Audit
+  Executor: Python 3.9.6 (.venv)
+  Script: scratch/run_independent_verification.py
+  Target Files:
+    - results/satlas_sr_paper_metrics/per_tile_metrics.csv
+    - results/satlas_sr_experiment_001/dense_cpsnr_per_tile.csv
+    - results/satlas_sr_experiment_008_final_research_report/final_report_data.json
+    - results/satlas_sr_baseline_freeze_v1/baseline_manifest.json
+    - experiments/esrgan_8S2.pth
+    - results/satlas_sr_experiment_008_final_research_report/*.svg
+  Verification Checks:
+    - 50 discrete automated assertions evaluated.
+    - 49 checks PASSED.
+    - 1 check FAILED: CHK-GIT-exp008-meta (EXP-008 metadata header cited erratum commit string 'eb3dcae4...', while verified active HEAD and frozen baseline manifest commit is '3e67973f...').
+
+Command 2: Checkpoint File Hash and Byte Audit
+  Executor: Python 3.9.6 (.venv)
+  Target: experiments/esrgan_8S2.pth
+  Output:
+    - Verified Size: 134,157,518 bytes (exact match with baseline_manifest.json line 47)
+    - Verified SHA-256: 167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07 (exact match with baseline_manifest.json line 48 and inference_manifest.csv)
+
+Command 3: Git Repository State Introspection
+  Executor: git rev-parse HEAD / git branch --show-current
+  Output:
+    - Active Branch: experiments
+    - Active HEAD: 3e67973f6746bedbd91cc032b4888574980e1daf
+    - Status: Matches baseline_manifest.json (line 8-9) exactly.
+
+Command 4: Vector SVG Figure Markup & Data Consistency Inspection
+  Executor: Python 3.9.6 (.venv)
+  Target Files:
+    - results/satlas_sr_experiment_008_final_research_report/fig1_cpsnr_distribution.svg (7,997 bytes, valid XML, mean 20.21 dB plotted)
+    - results/satlas_sr_experiment_008_final_research_report/fig2_dense_cpsnr_gain.svg (7,110 bytes, valid XML, mean gain +0.1232 dB plotted)
+    - results/satlas_sr_experiment_008_final_research_report/fig3_metric_profiles.svg (2,668 bytes, valid XML, metric profile cards aligned)
+
+--------------------------------------------------------------------------------
+2. RECORD OF UNRESOLVED ISSUES & METADATA ERRATA
+--------------------------------------------------------------------------------
+- Metadata Erratum: The commit string 'eb3dcae4cae4492652b04c86cb31d167f8b9d997' was introduced during EXP-006 drafting and copied into EXP-008 metadata. The true, verified repository commit is '3e67973f6746bedbd91cc032b4888574980e1daf'.
+- Upstream Model Unavailability: The Medium ESRGAN checkpoint (~87M parameters) and full 8,192-tile nationwide validation set remain unreleased by the original authors, appropriately demarcating the project scope to Level 1/Level 2 reproduction.

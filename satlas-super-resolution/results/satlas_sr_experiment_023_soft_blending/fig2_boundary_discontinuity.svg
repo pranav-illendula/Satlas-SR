@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" style="background-color:#ffffff; font-family:sans-serif;">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="32" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">EXP-023: Boundary Seam &amp; Transition Diagnostics</text>
+  <text x="400" y="52" font-size="12" text-anchor="middle" fill="#64748b">Local Image Gradient Discontinuity in 3-Pixel Boundary Ribbon (N = 107 Tiles)</text>
+
+  <!-- Zero baseline -->
+  <line x1="120" y1="260" x2="720" y2="260" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="730" y="264" font-size="11" fill="#64748b">0.000</text>
+
+  <!-- Group 1: Hard Top-20% Seam Discontinuity -->
+  <g transform="translate(220, 0)">
+    <text x="40" y="95" font-size="13" font-weight="bold" text-anchor="middle" fill="#0f172a">Hard Top-20%</text>
+    <text x="40" y="115" font-size="11" text-anchor="middle" fill="#dc2626">Seam Discontinuity</text>
+    <rect x="10" y="150" width="60" height="110" fill="#fee2e2" stroke="#dc2626" stroke-width="2" rx="4"/>
+    <line x1="10" y1="180" x2="70" y2="180" stroke="#b91c1c" stroke-width="3"/>
+    <text x="40" y="290" font-size="11" text-anchor="middle" fill="#475569">Step-Edge Artifact</text>
+    <text x="40" y="306" font-size="10" text-anchor="middle" fill="#64748b">+0.0182 Boundary Excess</text>
+  </g>
+
+  <!-- Group 2: Soft Blend (β = 0.20) -->
+  <g transform="translate(420, 0)">
+    <text x="40" y="95" font-size="13" font-weight="bold" text-anchor="middle" fill="#0f172a">Soft Blend (β = 0.20)</text>
+    <text x="40" y="115" font-size="11" text-anchor="middle" fill="#059669">Continuous Weights</text>
+    <rect x="10" y="200" width="60" height="60" fill="#dcfce7" stroke="#059669" stroke-width="2" rx="4"/>
+    <line x1="10" y1="225" x2="70" y2="225" stroke="#047857" stroke-width="3"/>
+    <text x="40" y="290" font-size="11" text-anchor="middle" fill="#475569">Suppressed Seam</text>
+    <text x="40" y="306" font-size="10" text-anchor="middle" fill="#64748b">+0.0074 Boundary Excess</text>
+  </g>
+
+  <!-- Group 3: Weight Map Gradient Smoothness Gain -->
+  <g transform="translate(600, 0)">
+    <text x="40" y="95" font-size="13" font-weight="bold" text-anchor="middle" fill="#0f172a">Weight Map Smoothness</text>
+    <text x="40" y="115" font-size="11" text-anchor="middle" fill="#2563eb">Gradient Reduction</text>
+    <rect x="10" y="130" width="60" height="130" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="4"/>
+    <line x1="10" y1="165" x2="70" y2="165" stroke="#1d4ed8" stroke-width="3"/>
+    <text x="40" y="290" font-size="11" text-anchor="middle" fill="#475569">-59.3% Weight Gradient</text>
+    <text x="40" y="306" font-size="10" text-anchor="middle" fill="#64748b">p &lt; 10⁻³⁵ (107/107 Wins)</text>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+{
+  "audit_timestamp_utc": "2026-10-21T18:45:43.143781+00:00",
+  "checkpoint": {
+    "path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\experiments\\esrgan_8S2.pth",
+    "size_bytes": 134157518,
+    "sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+    "expected_official_sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+    "matches_expected": true
+  },
+  "counts": {
+    "total_distinct_tile_ids": 256,
+    "sentinel2_tiles_count": 256,
+    "naip_tiles_count": 256,
+    "prediction_tiles_count": 256,
+    "exact_3_way_match_count": 256,
+    "duplicate_naip_tiles": []
+  },
+  "sentinel2_frame_statistics": {
+    "min_total_frames": 32,
+    "max_total_frames": 32,
+    "mean_total_frames": 32.0,
+    "min_valid_frames": 32,
+    "max_valid_frames": 32,
+    "mean_valid_frames": 32.0,
+    "tiles_with_under_8_valid_frames": 0,
+    "tiles_with_partially_black_frames": 0,
+    "tiles_with_completely_black_frames": 0
+  },
+  "status_distribution": {
+    "s2_status": {
+      "OK": 256
+    },
+    "naip_status": {
+      "OK": 256
+    },
+    "prediction_status": {
+      "OK": 256
+    }
+  }
+}

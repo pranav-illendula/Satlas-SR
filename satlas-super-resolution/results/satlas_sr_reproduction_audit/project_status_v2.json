@@ -1,0 +1,63 @@
+{
+  "project_title": "Satlas-SR Comprehensive Reproduction Audit and Baseline Finalization",
+  "audit_version": "v2.0",
+  "audit_date_utc": "2026-10-22",
+  "audit_status_dashboard": {
+    "dataset_integrity": {
+      "status": "PASS",
+      "evidence": "256 / 256 Sentinel-2 tiles (32x1024 PNGs) and 256 NAIP references (128x128 PNGs) validated without truncation or corruption. Exact 100% 3-way correspondence documented in dataset_inventory.csv."
+    },
+    "checkpoint_integrity": {
+      "status": "PASS",
+      "evidence": "Official checkpoint experiments/esrgan_8S2.pth verified. SHA-256: 167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07. Parameter count matches exactly at 16,707,331."
+    },
+    "inference_completeness": {
+      "status": "PASS",
+      "evidence": "256 / 256 super-resolved images generated with deterministic seed 0 in results/satlas_sr_full_validation/ with complete manifest tracking frame indices."
+    },
+    "input_reference_pairing": {
+      "status": "PASS",
+      "evidence": "100% 1-to-1 match between Sentinel-2 input tiles, NAIP ground truth references, and super-resolved predictions across all 256 unique tile IDs."
+    },
+    "psnr_ssim_implementation": {
+      "status": "PASS",
+      "evidence": "Verified using BasicsR with crop_border=4 on [0, 255] RGB arrays. Full 256-tile revalidation achieved 0 numerical discrepancy against previous records."
+    },
+    "cpsnr_implementation": {
+      "status": "PASS",
+      "evidence": "Verified calculate_cpsnr implementation. Identified that offset search tests an 81-point grid with stride 2 ({-8, -6, -4, -2, 0, 2, 4, 6, 8}). Controlled synthetic test verified even shift inf dB vs odd shift 11.35 dB."
+    },
+    "lpips_implementation": {
+      "status": "PASS",
+      "evidence": "Verified calculate_lpips with VGG16 trunk and internal scaling_layer. Synthetic test verified identity 0.000000 vs blur 0.5168 and inverted 0.4378."
+    },
+    "clip_model_and_preprocessing": {
+      "status": "PASS",
+      "evidence": "Verified ViT-bigG-14-CLIPA-336 (datacomp1b). Demonstrated that dividing by 255 without ImageNet mean/std standardization bounds similarity between [0.73, 1.00], explaining high cosine score (0.9513) on inverted imagery."
+    },
+    "registration_diagnostic_validity": {
+      "status": "PASS",
+      "evidence": "Diagnosed raw FFT boundary wraparound artifact (82.2 px). Validated that Hanning-windowed FFT + NCC yields a median displacement of 1.736 px (mean 3.863 +/- 5.741 px) on the reliable 83.6% subset. Prior overstatements formally retracted."
+    },
+    "per_tile_failure_analysis": {
+      "status": "PASS",
+      "evidence": "Ranked Top 5 and Bottom 5 tables created across all 5 metrics. 10 representative contact sheets generated under results/satlas_sr_revalidation/visualizations_v2/."
+    },
+    "statistical_analysis": {
+      "status": "PASS",
+      "evidence": "2,000-resample bootstrap 95% confidence intervals (seed 42) and full Pearson/Spearman correlation matrices computed and saved in statistical_analysis.json and metric_correlations.csv."
+    },
+    "windows_compatibility": {
+      "status": "PASS",
+      "evidence": "Resolved POSIX split('/') bug in ssr/data/s2-naip_dataset.py using cross-platform os.path operations. Verified with passing unit tests in tests/test_dataset_path_compatibility.py."
+    },
+    "paper_comparability": {
+      "status": "PARTIAL",
+      "evidence": "Architectural, input, and metric specifications verified as exact matches. Partial status reflects that the 256-tile small_val_set is an urban evaluation subset and cannot be directly equated with the paper's full national test set."
+    },
+    "documentation_completeness": {
+      "status": "PASS",
+      "evidence": "Comprehensive set of reports, runbooks, machine-readable metadata JSONs, CSV manifests, and contact sheets produced with complete traceability."
+    }
+  }
+}

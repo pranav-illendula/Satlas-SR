@@ -1,0 +1,33 @@
+{
+  "cpsnr_audit": {
+    "identity_score": "inf",
+    "brightness_bias_score": Infinity,
+    "even_shift_score": Infinity,
+    "odd_shift_score": 11.35,
+    "search_grid": "Offsets in {-8, -6, -4, -2, 0, +2, +4, +6, +8}^2 (81 evaluations, step=2)"
+  },
+  "lpips_audit": {
+    "lpips_vgg_identity": 0.0,
+    "lpips_vgg_blur_r2": 0.5168,
+    "lpips_vgg_inverted": 0.4378,
+    "backbone": "vgg16 (torchvision weights)",
+    "input_handling": "Divided by 255 into [0, 1]; passed to LPIPS scaling_layer"
+  },
+  "clipscore_audit": {
+    "ssr_implementation": {
+      "identity": 1.0,
+      "inverted": 0.9513,
+      "bgr_swap": 0.9816,
+      "different_tile": 0.7333,
+      "uniform_noise": 0.8586,
+      "all_black": 0.8116,
+      "all_white": 0.7785
+    },
+    "standard_openclip_preprocessed": {
+      "inverted": 0.8364,
+      "different_tile": 0.6779,
+      "uniform_noise": 0.7007
+    },
+    "explanation": "In ssr/metrics/clipscore.py, input tensors are only divided by 255 without ImageNet mean and standard deviation normalization. In high-dimensional vision transformer feature spaces, the unnormalized forward pass produces latent vectors clustered in an acute positive hyper-cone (mean feature activation > 0). Consequently, cosine similarity between arbitrary valid natural images is tightly bounded in [0.85, 1.0]. Even severely perturbed images (inverted colors) retain high semantic cosine similarity (~0.9929). Therefore, CLIPScore in this repository must NEVER be interpreted as a percentage quality score, but strictly as a semantic manifold proximity metric where meaningful relative differences occur in the second or third decimal place."
+  }
+}

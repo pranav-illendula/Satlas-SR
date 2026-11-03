@@ -1,0 +1,77 @@
+{
+  "experiment_id": "EXP-001",
+  "description": "Dense Stride-1 vs Official Stride-2 cPSNR Search",
+  "total_tiles": 256,
+  "reproduction_max_diff_db": 4.964e-05,
+  "dense_gain_statistics": {
+    "mean_db": 0.1232,
+    "std_db": 0.1848,
+    "median_db": 0.0464,
+    "iqr_db": [
+      0.0,
+      0.1583
+    ],
+    "min_db": 0.0,
+    "max_db": 1.0044,
+    "bootstrap_95ci_db": [
+      0.1018,
+      0.1477
+    ],
+    "bootstrap_resamples": 2000,
+    "random_seed": 42
+  },
+  "threshold_counts": {
+    "gain_greater_than_0_db": {
+      "count": 176,
+      "pct": 68.75
+    },
+    "gain_at_least_0_1_db": {
+      "count": 93,
+      "pct": 36.33
+    },
+    "gain_at_least_0_25_db": {
+      "count": 43,
+      "pct": 16.8
+    },
+    "gain_at_least_0_5_db": {
+      "count": 16,
+      "pct": 6.25
+    }
+  },
+  "odd_coordinate_distribution": {
+    "tiles_with_odd_best_offset": {
+      "count": 176,
+      "pct": 68.75
+    },
+    "odd_subset_mean_gain_db": 0.1792,
+    "odd_subset_median_gain_db": 0.1107,
+    "even_subset_mean_gain_db": 0.0
+  },
+  "correlations_with_baseline_metrics": {
+    "psnr": {
+      "pearson_r": -0.0631,
+      "pearson_p": 0.31429,
+      "spearman_rho": -0.0701,
+      "spearman_p": 0.26392
+    },
+    "ssim": {
+      "pearson_r": 0.0317,
+      "pearson_p": 0.61415,
+      "spearman_rho": 0.0139,
+      "spearman_p": 0.82473
+    },
+    "lpips": {
+      "pearson_r": -0.3005,
+      "pearson_p": 9.6594e-07,
+      "spearman_rho": -0.2873,
+      "spearman_p": 2.9643e-06
+    },
+    "clipscore": {
+      "pearson_r": 0.2425,
+      "pearson_p": 8.87e-05,
+      "spearman_rho": 0.2533,
+      "spearman_p": 4.1314e-05
+    }
+  },
+  "runtime_seconds": 16.29
+}

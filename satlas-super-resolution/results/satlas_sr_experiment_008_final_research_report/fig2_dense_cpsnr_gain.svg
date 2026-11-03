@@ -1,0 +1,63 @@
+<svg width="600" height="360" viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" style="background:#0f172a; font-family:system-ui, -apple-system, sans-serif;">
+<text x="300.0" y="30" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="bold">EXP-001: Dense Stride-1 cPSNR Search Gain Distribution</text>
+<line x1="60" y1="310" x2="560" y2="310" stroke="#475569" stroke-width="1"/>
+<line x1="60" y1="50" x2="60" y2="310" stroke="#475569" stroke-width="1"/>
+<line x1="60" y1="310.0" x2="560" y2="310.0" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="314.0" text-anchor="end" fill="#94a3b8" font-size="11">0</text>
+<line x1="60" y1="278.4848484848485" x2="560" y2="278.4848484848485" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="282.4848484848485" text-anchor="end" fill="#94a3b8" font-size="11">20</text>
+<line x1="60" y1="246.96969696969697" x2="560" y2="246.96969696969697" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="250.96969696969697" text-anchor="end" fill="#94a3b8" font-size="11">40</text>
+<line x1="60" y1="215.45454545454544" x2="560" y2="215.45454545454544" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="219.45454545454544" text-anchor="end" fill="#94a3b8" font-size="11">60</text>
+<line x1="60" y1="183.93939393939394" x2="560" y2="183.93939393939394" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="187.93939393939394" text-anchor="end" fill="#94a3b8" font-size="11">80</text>
+<line x1="60" y1="152.4242424242424" x2="560" y2="152.4242424242424" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="156.4242424242424" text-anchor="end" fill="#94a3b8" font-size="11">100</text>
+<line x1="60" y1="120.9090909090909" x2="560" y2="120.9090909090909" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="124.9090909090909" text-anchor="end" fill="#94a3b8" font-size="11">120</text>
+<line x1="60" y1="89.39393939393938" x2="560" y2="89.39393939393938" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="93.39393939393938" text-anchor="end" fill="#94a3b8" font-size="11">140</text>
+<line x1="60" y1="57.878787878787875" x2="560" y2="57.878787878787875" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+<text x="50" y="61.878787878787875" text-anchor="end" fill="#94a3b8" font-size="11">160</text>
+<rect x="63.0" y="65.75757575757575" width="35.666666666666664" height="244.24242424242425" fill="#64748b" rx="3" opacity="0.85"/>
+<text x="80.83333333333333" y="60.75757575757575" text-anchor="middle" fill="#cbd5e1" font-size="10">155</text>
+<text x="60.0" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.00</text>
+<rect x="104.66666666666666" y="245.39393939393938" width="35.666666666666664" height="64.60606060606061" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="122.49999999999999" y="240.39393939393938" text-anchor="middle" fill="#cbd5e1" font-size="10">41</text>
+<text x="101.66666666666666" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.09</text>
+<rect x="146.33333333333331" y="281.6363636363636" width="35.666666666666664" height="28.363636363636363" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="164.16666666666666" y="276.6363636363636" text-anchor="middle" fill="#cbd5e1" font-size="10">18</text>
+<text x="143.33333333333331" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.18</text>
+<rect x="188.0" y="283.2121212121212" width="35.666666666666664" height="26.78787878787879" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="205.83333333333334" y="278.2121212121212" text-anchor="middle" fill="#cbd5e1" font-size="10">17</text>
+<text x="185.0" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.26</text>
+<rect x="229.66666666666666" y="297.3939393939394" width="35.666666666666664" height="12.606060606060606" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="247.5" y="292.3939393939394" text-anchor="middle" fill="#cbd5e1" font-size="10">8</text>
+<text x="226.66666666666666" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.35</text>
+<rect x="271.3333333333333" y="306.8484848484849" width="35.666666666666664" height="3.1515151515151514" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="289.16666666666663" y="301.8484848484849" text-anchor="middle" fill="#cbd5e1" font-size="10">2</text>
+<text x="268.3333333333333" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.44</text>
+<rect x="313.0" y="302.1212121212121" width="35.666666666666664" height="7.878787878787879" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="330.8333333333333" y="297.1212121212121" text-anchor="middle" fill="#cbd5e1" font-size="10">5</text>
+<text x="310.0" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.53</text>
+<rect x="354.66666666666663" y="303.6969696969697" width="35.666666666666664" height="6.303030303030303" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="372.49999999999994" y="298.6969696969697" text-anchor="middle" fill="#cbd5e1" font-size="10">4</text>
+<text x="351.66666666666663" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.61</text>
+<rect x="396.3333333333333" y="305.27272727272725" width="35.666666666666664" height="4.727272727272727" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="414.16666666666663" y="300.27272727272725" text-anchor="middle" fill="#cbd5e1" font-size="10">3</text>
+<text x="393.3333333333333" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.70</text>
+<rect x="438.0" y="308.42424242424244" width="35.666666666666664" height="1.5757575757575757" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="455.8333333333333" y="303.42424242424244" text-anchor="middle" fill="#cbd5e1" font-size="10">1</text>
+<text x="435.0" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.79</text>
+<rect x="479.66666666666663" y="310.0" width="35.666666666666664" height="0.0" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="476.66666666666663" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.88</text>
+<rect x="521.3333333333333" y="306.8484848484849" width="35.666666666666664" height="3.1515151515151514" fill="#10b981" rx="3" opacity="0.85"/>
+<text x="539.1666666666666" y="301.8484848484849" text-anchor="middle" fill="#cbd5e1" font-size="10">2</text>
+<text x="518.3333333333333" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">0.96</text>
+<line x1="118.68229166666669" y1="50" x2="118.68229166666669" y2="310" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,2"/>
+<text x="126.68229166666669" y="75" fill="#fbbf24" font-size="11" font-weight="bold">Mean Gain: +0.1232 dB</text>
+<text x="126.68229166666669" y="90" fill="#fbbf24" font-size="10">95% CI: [0.1018, 0.1477] dB</text>
+<text x="300.0" y="350" text-anchor="middle" fill="#cbd5e1" font-size="12">Dense Search Gain (Stride 1 - Stride 2 cPSNR, dB)</text>
+<text x="20" y="180.0" text-anchor="middle" fill="#cbd5e1" font-size="12" transform="rotate(-90 20 180.0)">Tile Count</text>
+</svg>

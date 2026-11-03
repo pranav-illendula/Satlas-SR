@@ -1,0 +1,59 @@
+================================================================================
+SATLAS-SR EXP-008: FINAL RESEARCH REPORT CONSOLIDATION RUN COMMAND RECORD
+================================================================================
+Audit Date: 2026-10-22T15:43:00+05:30
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Python Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv (Python 3.9.6, PyTorch 2.1.0+cu121)
+Hardware Platform: Windows 11 Pro, NVIDIA RTX 2000 Ada Generation (16 GB VRAM)
+Audit Scope: Strictly Read-Only Final Evidence Synthesis across Baseline Freeze v1 and EXP-001 through EXP-007.
+
+--------------------------------------------------------------------------------
+1. RECORDED INSPECTION & RECONCILIATION COMMANDS
+--------------------------------------------------------------------------------
+Command 1: Metric Column Recalculation and Range Audit
+  Executor: Python 3.9.6 (.venv) via csv standard library
+  Target Artifacts:
+    - results/satlas_sr_paper_metrics/per_tile_metrics.csv
+    - results/satlas_sr_revalidation/per_tile_metrics.csv
+    - results/satlas_sr_experiment_001/dense_cpsnr_per_tile.csv
+    - results/satlas_sr_spatial_audit/registration_validation.csv
+  Output / Reconciliation Findings:
+    - Recomputed cPSNR (crop 4) from 256 per-tile records:
+        Mean: 20.214439 dB, Std: 4.147816 dB
+        Min: 9.591200 dB (tile 38624_49179), Max: 39.537300 dB (tile 38719_48115)
+    - Resolved Discrepancy: Confirmed that earlier reported range [9.5912, 39.5373] dB is the authentic, verified ground truth directly calculated from per_tile_metrics.csv. The [11.2330, 33.1592] dB range reported in EXP-006 text was an isolated reporting hallucination.
+    - Recomputed Raw PSNR from 256 per-tile records:
+        Mean: 18.812246 dB, Std: 3.813820 dB, Min: 5.726000 dB, Max: 33.820500 dB.
+    - Recomputed Crop-Border-4 PSNR:
+        Mean: 18.886987 dB, Std: 3.859972 dB, Min: 5.599900 dB, Max: 34.779800 dB.
+    - Recomputed Raw SSIM:
+        Mean: 0.394964, Std: 0.149539, Min: 0.057010, Max: 0.905930.
+    - Recomputed Crop-Border-4 SSIM:
+        Mean: 0.391208, Std: 0.156356, Min: 0.050120, Max: 0.912870.
+    - Recomputed VGG LPIPS distance:
+        Mean: 0.346965, Std: 0.080876, Min: 0.144250, Max: 0.719590.
+    - Recomputed CLIPScore:
+        Mean: 0.961174, Std: 0.034389, Min: 0.776810, Max: 0.992970.
+
+Command 2: Checkpoint Provenance Audit Verification
+  Executor: Inspection of EXP-007 reconciliation records
+  Target Artifacts:
+    - results/satlas_sr_experiment_007_checkpoint_reconciliation/CHECKPOINT_RECONCILIATION_REPORT.md
+    - results/satlas_sr_experiment_007_checkpoint_reconciliation/checkpoint_inventory.json
+    - results/satlas_sr_full_validation/inference_manifest.csv
+  Outcome: Confirmed physical checkpoint on disk (experiments/esrgan_8S2.pth) is 134,157,518 bytes with SHA-256 167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07. Confirmed runtime logging of this exact hash across all 256 tiles in inference_manifest.csv.
+
+Command 3: Figure Generation
+  Executor: Python 3.9.6 (.venv)
+  Script: scratch/generate_exp008_figures.py
+  Outputs:
+    - results/satlas_sr_experiment_008_final_research_report/fig1_cpsnr_distribution.svg
+    - results/satlas_sr_experiment_008_final_research_report/fig2_dense_cpsnr_gain.svg
+    - results/satlas_sr_experiment_008_final_research_report/fig3_metric_profiles.svg
+
+--------------------------------------------------------------------------------
+2. UNRESOLVED ISSUES & SYSTEM CONSTRAINTS
+--------------------------------------------------------------------------------
+- Paper Table 2 Medium Model (~87M parameters) checkpoint remains unreleased upstream by the authors; local evaluation is restricted to the released Small ESRGAN (16.71M parameters).
+- Full 8,192-tile nationwide validation benchmark labels and MTurk pairwise human comparison records remain unavailable in the local repository.
+- PowerShell profile execution warning on startup remains active but does not affect python binary execution.

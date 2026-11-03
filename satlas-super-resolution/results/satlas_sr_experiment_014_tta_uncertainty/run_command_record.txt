@@ -1,0 +1,50 @@
+# EXP-014: Execution and Run Command Record
+Repository: C:\Users\CSE-SDPL\Desktop\DL_image\satlas-super-resolution
+Environment: C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe
+Timestamp: 2026-10-23T15:20:00+05:30
+
+## Command 1: Cluster Analysis and Spatial Leakage Check
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\check_split.py'
+Outcome:
+- Inspected 214 reliable tiles from results/satlas_sr_spatial_audit/registration_validation.csv.
+- Verified Chebyshev distance distribution: exactly 1 directly adjacent pair (37523_49502, 37524_49502) in the entire dataset.
+- Verified spatial buffer: 8 clusters at Chebyshev distance <= 10 tiles (~3.3 km).
+
+## Command 2: Create and Freeze Deterministic Split Manifest
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\freeze_split.py'
+Outcome:
+- Generated and froze results/satlas_sr_experiment_014_tta_uncertainty/split_manifest.json.
+- Partition: 107 development tiles, 107 locked holdout tiles, 42 quarantined unreliable tiles (total 256).
+- Minimum spatial separation between any dev tile and any holdout tile: 11 tiles (>3.3 km buffer). Zero spatial leakage.
+
+## Command 3: D4 Group Transformation Round-Trip Verification Test
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\test_d4.py'
+Outcome:
+- Tested all 8 D4 discrete dihedral group transformations on synthetic tensors.
+- Exact mathematical round-trip correctness: max difference = 0.000000 across all 8 symmetries.
+- Verified all 8 symmetries are unique and bijective.
+
+## Command 4: Development-Only Pilot Verification
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'scratch\run_pilot_tta.py'
+Outcome:
+- Tested on 3 development tiles (20890_46801, 21068_45692, 22202_46519).
+- Exact match against frozen baseline disk prediction: max pixel diff = 0.
+- Exact match on T0 identity: max diff = 0.000000.
+- Verified tensor shapes (1, 24, 32, 32) -> (1, 3, 128, 128).
+- Deterministic repeatability verified: max diff = 0.000000.
+- All pilot checks PASSED.
+
+## Command 5: Full Development Split Evaluation (107 Tiles)
+Command:
+& 'C:\Users\CSE-SDPL\Desktop\DL_image\.venv\Scripts\python.exe' 'results\satlas_sr_experiment_014_tta_uncertainty\run_dev_evaluation.py'
+Outcome:
+- Total development tiles evaluated: 107 (107 / 107 completed, 0 errors, 0 exclusions).
+- Holdout partition (107 tiles) and quarantined tiles (42 tiles) remained strictly locked and untouched.
+- Generated per-tile uncertainty maps in results\satlas_sr_experiment_014_tta_uncertainty\maps\ (107 .npz files).
+- Generated results\satlas_sr_experiment_014_tta_uncertainty\per_tile_uncertainty_metrics.csv.
+- Generated results\satlas_sr_experiment_014_tta_uncertainty\summary.json.
+- Execution runtime: 60.06 seconds.

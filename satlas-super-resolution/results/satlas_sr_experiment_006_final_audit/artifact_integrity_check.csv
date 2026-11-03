@@ -1,0 +1,33 @@
+artifact_path,description,observed_status,file_size_bytes,verification_outcome
+experiments/esrgan_8S2.pth,Official Small ESRGAN 8-S2 Checkpoint Weights,VERIFIED_PRESENT,134157518,PASS
+ssr/options/infer_satlas_full_validation.yml,Full Validation Inference Configuration,VERIFIED_PRESENT,702,PASS
+ssr/options/experiments/esrgan_baseline.yml,Official Baseline Small ESRGAN Training Config,VERIFIED_PRESENT,4422,PASS
+ssr/options/experiments/esrgan_larger1.yml,Official Medium ESRGAN (87M) Training Config,VERIFIED_PRESENT,4367,PASS
+results/satlas_sr_baseline_freeze_v1/baseline_manifest.json,Baseline Freeze v1 Manifest,VERIFIED_PRESENT,8462,PASS
+results/satlas_sr_baseline_freeze_v1/BASELINE_FREEZE_REPORT.md,Baseline Freeze v1 Report,VERIFIED_PRESENT,14095,PASS
+results/satlas_sr_baseline_freeze_v1/REPRODUCTION_RUNBOOK.md,Baseline Freeze v1 Runbook,VERIFIED_PRESENT,6928,PASS
+results/satlas_sr_full_validation/inference_manifest.csv,Full Validation Atomic Inference Manifest (256 tiles),VERIFIED_PRESENT,199322,PASS
+results/satlas_sr_full_validation/run_summary.md,Full Validation Inference Summary,VERIFIED_PRESENT,1912,PASS
+results/satlas_sr_paper_metrics/per_tile_metrics.csv,Paper Metrics Per-Tile CSV (256 tiles),VERIFIED_PRESENT,79558,PASS
+results/satlas_sr_paper_metrics/aggregate_metrics.json,Paper Metrics Aggregate Summary JSON,MISSING,0,FAIL
+results/satlas_sr_revalidation/per_tile_metrics.csv,Revalidation Metrics Per-Tile CSV (256 tiles),VERIFIED_PRESENT,22139,PASS
+results/satlas_sr_revalidation/statistical_analysis.json,Revalidation Statistical Summary JSON,VERIFIED_PRESENT,1988,PASS
+results/satlas_sr_spatial_audit/registration_validation.csv,Spatial Registration Audit CSV (256 tiles),VERIFIED_PRESENT,27193,PASS
+results/satlas_sr_reproduction_audit/final_consistency_reconciliation.md,Final Consistency Reconciliation Report,VERIFIED_PRESENT,13114,PASS
+results/satlas_sr_experiment_001/dense_cpsnr_per_tile.csv,EXP-001 Dense cPSNR Per-Tile CSV (256 tiles),VERIFIED_PRESENT,22830,PASS
+results/satlas_sr_experiment_001/experiment_001_summary.json,EXP-001 Dense cPSNR Summary JSON,VERIFIED_PRESENT,1746,PASS
+results/satlas_sr_experiment_001/EXPERIMENT_001_REPORT.md,EXP-001 Research Report,VERIFIED_PRESENT,3865,PASS
+results/satlas_sr_experiment_001/synthetic_test_results.txt,EXP-001 Synthetic Test Results Log,VERIFIED_PRESENT,1608,PASS
+results/satlas_sr_experiment_002_paper_gap_analysis/PAPER_REPRODUCTION_GAP_MATRIX.md,EXP-002 Paper Gap Matrix,VERIFIED_PRESENT,12607,PASS
+results/satlas_sr_experiment_002_paper_gap_analysis/REPRODUCTION_ROADMAP.md,EXP-002 Reproduction Roadmap,VERIFIED_PRESENT,9536,PASS
+results/satlas_sr_experiment_002_paper_gap_analysis/paper_evidence_inventory.json,EXP-002 Paper Evidence Inventory JSON,VERIFIED_PRESENT,5600,PASS
+results/satlas_sr_experiment_003_metric_standardization/lpips_agreement_per_tile.csv,EXP-003 LPIPS Per-Tile CSV (256 tiles),VERIFIED_PRESENT,40766,PASS
+results/satlas_sr_experiment_003_metric_standardization/metric_standardization_report.md,EXP-003 Metric Standardization Report,VERIFIED_PRESENT,6105,PASS
+results/satlas_sr_experiment_003_metric_standardization/metric_standardization_summary.json,EXP-003 Metric Standardization Summary JSON,VERIFIED_PRESENT,1943,PASS
+results/satlas_sr_experiment_003_metric_standardization/test_results.txt,EXP-003 Unit Test Results Log,VERIFIED_PRESENT,539,PASS
+results/satlas_sr_experiment_004_provenance_audit/PROVENANCE_AUDIT_REPORT.md,EXP-004 Provenance Audit Report,VERIFIED_PRESENT,11874,PASS
+results/satlas_sr_experiment_004_provenance_audit/provenance_inventory.json,EXP-004 Provenance Inventory JSON,VERIFIED_PRESENT,5399,PASS
+results/satlas_sr_experiment_004_provenance_audit/source_evidence.csv,EXP-004 Source Evidence Matrix CSV,VERIFIED_PRESENT,3151,PASS
+results/satlas_sr_experiment_005_supplementary_verification/SUPPLEMENTARY_VERIFICATION_REPORT.md,EXP-005 Supplementary Verification Report,VERIFIED_PRESENT,10220,PASS
+results/satlas_sr_experiment_005_supplementary_verification/source_inventory.json,EXP-005 Source Inventory JSON,VERIFIED_PRESENT,4124,PASS
+results/satlas_sr_experiment_005_supplementary_verification/Zooming_Out_On_Zooming_In_Supplementary.pdf,EXP-005 Downloaded Supplementary PDF (1.74 MB),VERIFIED_PRESENT,1748394,PASS

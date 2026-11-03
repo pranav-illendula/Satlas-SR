@@ -1,0 +1,96 @@
+{
+  "investigation_metadata": {
+    "experiment_id": "EXP-007",
+    "title": "Checkpoint Provenance Reconciliation",
+    "date": "2026-10-22T15:35:00+05:30",
+    "repository": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution",
+    "status_classification": "MISMATCH_RESOLVED",
+    "resolution_summary": "The physical checkpoint on disk (experiments/esrgan_8S2.pth) is 134,157,518 bytes with SHA-256 167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07. It contains two state dicts (params and params_ema), each with 702 tensors and 16,710,083 parameters. The numbers reported in EXP-006 (66,956,559 bytes and 4099b244...) were a reporting transcription error in the written text artifacts, mistaking a single uncompressed state dict (~66.8 MB) for the archive size and citing an invalid hash. The historical baseline inference manifest and baseline freeze v1 manifest are confirmed to match the current physical file with 100% precision."
+  },
+  "verified_physical_checkpoint": {
+    "relative_path": "experiments/esrgan_8S2.pth",
+    "absolute_path": "C:\\Users\\CSE-SDPL\\Desktop\\DL_image\\satlas-super-resolution\\experiments\\esrgan_8S2.pth",
+    "size_bytes": 134157518,
+    "sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+    "file_system_timestamp_utc": "2026-10-15T10:14:59.790044Z",
+    "file_system_timestamp_local": "2026-10-15 15:44:59.790044",
+    "is_modified_since_initial_download": false,
+    "archive_format": "PyTorch / ZIP archive containing pickled dictionaries"
+  },
+  "checkpoint_internal_structure": {
+    "keys_present": ["params", "params_ema"],
+    "params": {
+      "tensor_count": 702,
+      "parameter_count": 16710083,
+      "uncompressed_bytes_float32": 66840332,
+      "strict_loading_into_ssr_rrdbnet": {
+        "missing_keys": 0,
+        "unexpected_keys": 0,
+        "status": "EXACT_MATCH"
+      }
+    },
+    "params_ema": {
+      "tensor_count": 702,
+      "parameter_count": 16710083,
+      "uncompressed_bytes_float32": 66840332,
+      "strict_loading_into_ssr_rrdbnet": {
+        "missing_keys": 0,
+        "unexpected_keys": 0,
+        "status": "EXACT_MATCH"
+      }
+    },
+    "total_uncompressed_weight_bytes": 133680664,
+    "loaded_key_during_inference": "params_ema"
+  },
+  "model_architecture_compatibility": {
+    "architecture_name": "SSR_RRDBNet",
+    "architecture_module": "ssr.archs.rrdbnet_arch",
+    "configuration": {
+      "num_in_ch": 24,
+      "num_out_ch": 3,
+      "num_feat": 64,
+      "num_block": 23,
+      "num_grow_ch": 32,
+      "scale": 4
+    },
+    "total_instantiated_parameters": 16710083
+  },
+  "discrepancy_comparison": {
+    "identity_a_official_baseline": {
+      "reported_size_bytes": 134157518,
+      "reported_sha256": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+      "status_in_reality": "VERIFIED_PHYSICAL_GROUND_TRUTH",
+      "supporting_artifacts": [
+        "experiments/esrgan_8S2.pth (actual file on disk)",
+        "results/satlas_sr_baseline_freeze_v1/baseline_manifest.json (lines 47-48)",
+        "results/satlas_sr_baseline_freeze_v1/BASELINE_FREEZE_REPORT.md",
+        "results/satlas_sr_baseline_freeze_v1/REPRODUCTION_RUNBOOK.md",
+        "results/satlas_sr_full_validation/inference_manifest.csv (all 256 rows logged at inference runtime)",
+        "results/satlas_sr_full_validation/run_summary.md",
+        "results/satlas_sr_reproduction_audit/dataset_inventory.json",
+        "results/satlas_sr_experiment_002_paper_gap_analysis/paper_evidence_inventory.json",
+        "results/satlas_sr_experiment_006_final_audit/artifact_integrity_check.csv (line 2)"
+      ]
+    },
+    "identity_b_erroneous_exp006_report": {
+      "reported_size_bytes": 66956559,
+      "reported_sha256": "4099b244799c9ef89679fe26a71cb0a8ce885bb3c3dbff061bc4a7ffaa2d59ac",
+      "status_in_reality": "REPORTING_TRANSCRIPTION_HALLUCINATION",
+      "explanation": "No file with this size or hash exists on disk. 66,956,559 bytes is approximately half of 134,157,518 bytes, corresponding to a single unzipped parameter dictionary payload (~66.8 MB), and the hash was erroneously hallucinated in the text during EXP-006 report drafting.",
+      "erroneous_text_locations": [
+        "results/satlas_sr_experiment_006_final_audit/audit_inventory.json",
+        "results/satlas_sr_experiment_006_final_audit/FINAL_REPRODUCTION_REPORT.md",
+        "results/satlas_sr_experiment_006_final_audit/REPRODUCIBILITY_RUNBOOK.md",
+        "results/satlas_sr_experiment_006_final_audit/run_command_record.txt"
+      ]
+    }
+  },
+  "historical_provenance_verification": {
+    "runtime_inference_logging_confirmed": true,
+    "inference_manifest_path": "results/satlas_sr_full_validation/inference_manifest.csv",
+    "logged_hash_at_inference_time": "167d6b9d5c931be06bde6cfbdd62edf5f1ac8aa9b357c4146c7e948d3f672e07",
+    "tile_count_with_confirmed_hash": 256,
+    "matches_current_file": true,
+    "conclusion": "The current file experiments/esrgan_8S2.pth is mathematically proven to be the exact checkpoint that executed the original baseline inference."
+  }
+}

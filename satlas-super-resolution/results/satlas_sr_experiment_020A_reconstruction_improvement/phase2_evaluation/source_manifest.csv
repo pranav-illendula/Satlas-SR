@@ -1,0 +1,8 @@
+relative_path,artifact_type,exists_on_disk,role
+results/satlas_sr_experiment_014_tta_uncertainty/split_manifest.json,Split Manifest,True,Verified 107 development partition tile IDs.
+results/satlas_sr_experiment_014_tta_uncertainty/maps/*.npz,Data Directory,True,"Precomputed TTA uncertainty maps and integer shift vectors dx, dy."
+results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/predictions/S0/,Data Directory,True,Frozen baseline ESRGAN prediction for each tile.
+"results/satlas_sr_experiment_011_frame_selection_audit/full_256_tiles/predictions/S{1,3,4,5,6}/",Data Directory,True,Alternative temporal strategy predictions to construct ensemble centroid.
+results/satlas_sr_full_validation/inference_manifest.csv,Inference Manifest,True,NAIP reference aerial imagery paths on disk.
+results/satlas_sr_experiment_017_locked_holdout/preflight_protocol.json,Protocol,True,"Frozen normalization constants mu_tta, std_tta, mu_input, std_input, alpha=0.19."
+results/satlas_sr_experiment_020A_reconstruction_improvement/EXP020A_FEASIBILITY_AUDIT.md,Report,True,Phase 1 feasibility audit specifying candidate mechanisms and hypotheses.
